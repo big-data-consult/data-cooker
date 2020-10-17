@@ -12,6 +12,7 @@ const userRouter = require('./routes/user');
 const courseRouter = require('./routes/course');
 const targetRouter = require('./routes/target');
 const sourceRouter = require('./routes/source');
+const permissionRouter = require('./routes/permission.js');
 const loginRouter = require('./routes/login');
 const defaultRouter = require('./routes/index');
 
@@ -38,6 +39,7 @@ app.use('/api/users', userRouter);
 app.use('/api/courses', courseRouter);
 app.use('/api/targets', targetRouter);
 app.use('/api/sources', sourceRouter);
+app.use('/api/permissions', permissionRouter);
 app.use('/api/login', loginRouter);
 app.use('/api', defaultRouter);
 

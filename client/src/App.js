@@ -35,8 +35,9 @@ const dataProvider = jsonServerProvider('http://localhost:5000/api', httpClient)
 //  <Admin dashboard={Dashboard} authProvider={authProvider} dataProvider={dataProvider}>
 const App = () => (
   <Admin dashboard={Dashboard} authProvider={authProvider} dataProvider={dataProvider} >
-   {permissions => [
-      <Resource name="targets" list={TargetList} edit={permissions ? TargetEdit : null} />,
+    {roleId => [
+      <Resource name="permissions" />,
+      <Resource name="targets" list={TargetList} edit={roleId ? TargetEdit : null} />,
       <Resource name="sources" list={SourceList} />,
       <Resource name="users" list={UserList} />
     ]}
