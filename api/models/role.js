@@ -8,12 +8,12 @@ module.exports = (sequelize, DataTypes) => {
 				primaryKey: true,
 				autoIncrement: true
 			},
-			title: {
+			roleName: {
 				type: DataTypes.STRING,
 				allowNull: false,
 				validate: {
 					notEmpty: {
-						msg: 'Please enter a role title'
+						msg: 'Please enter a role Name'
 					}
 				}
 			}

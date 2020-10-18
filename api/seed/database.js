@@ -36,23 +36,45 @@ class Database {
   createRole(role) {
     return this.context
       .execute(`
-        INSERT INTO Roles
-          (id, title, createdAt, updatedAt)
-        VALUES
-          (?, ?, datetime('now'), datetime('now'));
-      `,
+        INSERT INTO Roles(
+          id, 
+          roleName, 
+          createdAt, 
+          updatedAt
+          )
+        VALUES(
+          ?, /* id */
+          ?, /* roleName */
+          datetime('now'), 
+          datetime('now')
+          );`,
         role.id,
-        role.title);
+        role.roleName);
   }
 
   createUser(user) {
     return this.context
       .execute(`
-        INSERT INTO Users
-          (firstName, lastName, emailAddress, password, roleId, permissionId, createdAt, updatedAt)
-        VALUES
-          (?, ?, ?, ?, ?, ?, datetime('now'), datetime('now'));
-      `,
+        INSERT INTO Users(
+          firstName, 
+          lastName, 
+          emailAddress, 
+          password, 
+          roleId, 
+          permissionId, 
+          createdAt, 
+          updatedAt
+          )
+        VALUES(
+          ?, /* firstName */
+          ?, /* lastName */
+          ?, /* emailAddress */
+          ?, /* password */
+          ?, /* roleId */
+          ?, /* permissionId */
+          datetime('now'), 
+          datetime('now')
+          );`,
         user.firstName,
         user.lastName,
         user.emailAddress,
@@ -64,11 +86,24 @@ class Database {
   createCourse(course) {
     return this.context
       .execute(`
-        INSERT INTO Courses
-          (userId, title, description, estimatedTime, materialsNeeded, createdAt, updatedAt)
-        VALUES
-          (?, ?, ?, ?, ?, datetime('now'), datetime('now'));
-      `,
+        INSERT INTO Courses(
+          userId, 
+          title, 
+          description, 
+          estimatedTime, 
+          materialsNeeded, 
+          createdAt, 
+          updatedAt
+          )
+        VALUES(
+          ?, /* userId */
+          ?, /* title */
+          ?, /* description */
+          ?, /* estimatedTime */
+          ?, /* materialsNeeded */
+          datetime('now'), 
+          datetime('now')
+          );`,
         course.userId,
         course.title,
         course.description,
@@ -101,8 +136,28 @@ class Database {
           createdAt,
           updatedAt
           )
-        VALUES(?, ?, ?, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, ?, datetime('now'), datetime('now'));
-      `,
+        VALUES(
+          ?, /* targetLabel */
+          ?, /* targetData */
+          ?, /* batchControlColumn */
+          5, /* batchControlSize */
+          '', /* batchControlNext */
+          '', /* batchProcessed */
+          '', /* batchProcessing */
+          '', /* batchMicroChunkCurrent */
+          '', /* batchScheduleType */
+          '', /* batchScheduleLast */
+          '', /* patternColumns */
+          '', /* groupByColumns */
+          0, /* groupByPattern */
+          0, /* groupByFlexible */
+          '', /* aggregateColumns */
+          '', /* aggregateFunctions */
+          '', /* suppoetSpVersions */
+          ?, /* permissionId */
+          datetime('now'), 
+          datetime('now')
+          );`,
         target.targetLabel,
         target.targetData,
         target.batchControlColumn,
@@ -127,8 +182,21 @@ class Database {
           createdAt, 
           updatedAt
           )
-        VALUES(?, 0, ?, 0, 0, 0, 0, 0, 0, ?, ?, datetime('now'), datetime('now'));
-      `,
+        VALUES(
+          ?, /* targetId */
+          '', /* sourceLabel */
+          ?, /* sourceData */
+          0, /* sourceEnabled */
+          '', /* sourceReadyTime */
+          '', /* sourceCheckTime */
+          '', /* sourceCheckQuery */
+          0, /* patternDefault */
+          0, /* patternFlexible */
+          ?, /* transformation */
+          ?, /* permissionId */
+          datetime('now'), 
+          datetime('now')
+          );`,
         source.targetId,
         source.sourceData,
         source.transformation,
@@ -194,7 +262,7 @@ class Database {
     await this.context.execute(`
       CREATE TABLE Roles (
         id INTEGER PRIMARY KEY, 
-        title VARCHAR(255) NOT NULL DEFAULT '',
+        roleName VARCHAR(255) NOT NULL DEFAULT '',
         createdAt DATETIME NOT NULL, 
         updatedAt DATETIME NOT NULL
       );

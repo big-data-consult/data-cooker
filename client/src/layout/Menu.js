@@ -1,16 +1,40 @@
 import * as React from 'react';
 import { FC, useState } from 'react';
 import { useSelector } from 'react-redux';
-import SettingsIcon from '@material-ui/icons/Settings';
+// import {
+//     DonutSmall,
+//     DataUsage,
+//     Assessment,
+//     BurstMode,
+//     PermDataSetting,
+//     Storage,
+//     Settings,
+//     PeopleIcon,
+//     LabelIcon,
+//     SettingsIcon
+// } from '@material-ui/icons';
+
+//import DonutLargeIcon from '@material-ui/icons/DonutLarge';
+//import BookIcon from '@material-ui/icons/Book';
+import TableChartIcon from '@material-ui/icons/TableChart';
+import CategoryIcon from '@material-ui/icons/Category';
 import DonutSmall from '@material-ui/icons/DonutSmall';
-import DataUsage from '@material-ui/icons/DataUsage';
-import Assessment from '@material-ui/icons/Assessment';
+import FilterBAndWIcon from '@material-ui/icons/FilterBAndW';
+
+import CollectionIcon from '@material-ui/icons/Collections';
+import SettingsInputComponentIcon from '@material-ui/icons/SettingsInputComponent';
 import PermDataSetting from '@material-ui/icons/PermDataSetting';
-import BurstMode from '@material-ui/icons/BurstMode';
 import Storage from '@material-ui/icons/Storage';
+
+import AccountBalance from '@material-ui/icons/AccountBalance';
+import Assessment from '@material-ui/icons/Assessment';
+import BarChartIcon from '@material-ui/icons/BarChart';
+
 import Settings from '@material-ui/icons/Settings';
 import PeopleIcon from '@material-ui/icons/People';
 import LabelIcon from '@material-ui/icons/Label';
+
+import SettingsIcon from '@material-ui/icons/Settings';
 
 import { useMediaQuery, Theme, Box } from '@material-ui/core';
 import { useTranslate, DashboardMenuItem, MenuItemLink } from 'react-admin';
@@ -18,7 +42,7 @@ import { useTranslate, DashboardMenuItem, MenuItemLink } from 'react-admin';
 import SubMenu from './SubMenu';
 //import { AppState } from './types';
 
-type MenuName = 'menuNormalizer' | 'menuAggregator' | 'menuUserAdmin';
+type MenuName = 'menuNormalizer' | 'menuAggregator' | 'menuAllocator' | 'menuUserAdmin';
 
 interface Props {
     dense: boolean;
@@ -30,6 +54,7 @@ const Menu: FC<Props> = ({ onMenuClick, dense, logout }) => {
     const [state, setState] = useState({
         menuNormalizer: true,
         menuAggregator: true,
+        menuAllocator: true,
         menuUserAdmin: true,
     });
     const translate = useTranslate();
@@ -52,25 +77,35 @@ const Menu: FC<Props> = ({ onMenuClick, dense, logout }) => {
                 isOpen={state.menuNormalizer}
                 sidebarIsOpen={open}
                 name="Data Normalization"
-                icon={<DonutSmall />}
+                icon={<TableChartIcon />}
                 dense={dense}
             >
-                <MenuItemLink
-                    to={`/factdata`}
-                    primaryText={translate(`Fact Data`, {
-                        smart_count: 2,
-                    })}
-                    leftIcon={<DataUsage />}
-                    onClick={onMenuClick}
-                    sidebarIsOpen={open}
-                    dense={dense}
-                />
                 <MenuItemLink
                     to={`/dimensions`}
                     primaryText={translate(`Dimensions`, {
                         smart_count: 2,
                     })}
-                    leftIcon={<Assessment />}
+                    leftIcon={<CategoryIcon />}
+                    onClick={onMenuClick}
+                    sidebarIsOpen={open}
+                    dense={dense}
+                />
+                <MenuItemLink
+                    to={`/factdata`}
+                    primaryText={translate(`Fact Data`, {
+                        smart_count: 2,
+                    })}
+                    leftIcon={<DonutSmall />}
+                    onClick={onMenuClick}
+                    sidebarIsOpen={open}
+                    dense={dense}
+                />
+                <MenuItemLink
+                    to={`/rawdata`}
+                    primaryText={translate(`Raw Data`, {
+                        smart_count: 2,
+                    })}
+                    leftIcon={<FilterBAndWIcon />}
                     onClick={onMenuClick}
                     sidebarIsOpen={open}
                     dense={dense}
@@ -81,9 +116,19 @@ const Menu: FC<Props> = ({ onMenuClick, dense, logout }) => {
                 isOpen={state.menuAggregator}
                 sidebarIsOpen={open}
                 name="Data Aggregation"
-                icon={<BurstMode />}
+                icon={<CollectionIcon />}
                 dense={dense}
             >
+                <MenuItemLink
+                    to={`/landscape`}
+                    primaryText={translate(`Alignment`, {
+                        smart_count: 2,
+                    })}
+                    leftIcon={<SettingsInputComponentIcon />}
+                    onClick={onMenuClick}
+                    sidebarIsOpen={open}
+                    dense={dense}
+                />
                 <MenuItemLink
                     to={`/targets`}
                     primaryText={translate(`Targets`, {
@@ -100,6 +145,35 @@ const Menu: FC<Props> = ({ onMenuClick, dense, logout }) => {
                         smart_count: 2,
                     })}
                     leftIcon={<Storage />}
+                    onClick={onMenuClick}
+                    sidebarIsOpen={open}
+                    dense={dense}
+                />
+            </SubMenu>
+            <SubMenu
+                handleToggle={() => handleToggle('menuAllocator')}
+                isOpen={state.menuAllocator}
+                sidebarIsOpen={open}
+                name="Data Allocation"
+                icon={<AccountBalance />}
+                dense={dense}
+            >
+                <MenuItemLink
+                    to={`/summaries`}
+                    primaryText={translate(`Summaries`, {
+                        smart_count: 2,
+                    })}
+                    leftIcon={<Assessment />}
+                    onClick={onMenuClick}
+                    sidebarIsOpen={open}
+                    dense={dense}
+                />
+                <MenuItemLink
+                    to={`/buckets`}
+                    primaryText={translate(`Buckets`, {
+                        smart_count: 2,
+                    })}
+                    leftIcon={<BarChartIcon />}
                     onClick={onMenuClick}
                     sidebarIsOpen={open}
                     dense={dense}

@@ -1,13 +1,13 @@
 import * as React from "react";
 import { fetchUtils, Admin, Resource, ListGuesser, EditGuesser } from 'react-admin';
-import Dashboard from './providers/Dashboard';
+import Dashboard from './layout/Dashboard';
+import MyLayout from './layout/MyLayout';
 import authProvider from './providers/authProvider';
 import jsonServerProvider from './providers/dataProvider';
 import { TargetList } from './targets/targets';
 import { TargetEdit } from './targets/target';
 import { SourceList } from './sources/sources';
 import { UserList } from './users/users';
-import MyLayout from './layout/MyLayout';
 
 const httpClient = (url, options = {}) => {
 
@@ -34,10 +34,11 @@ const dataProvider = jsonServerProvider('http://localhost:5000/api', httpClient)
 
 //  <Admin dashboard={Dashboard} authProvider={authProvider} dataProvider={dataProvider}>
 const App = () => (
-  <Admin layout={MyLayout} dashboard={Dashboard} authProvider={authProvider} dataProvider={dataProvider} >
+  <Admin title={"Data Cooker Admin"} layout={MyLayout} dashboard={Dashboard} authProvider={authProvider} dataProvider={dataProvider} >
     {roleId => [
-      <Resource name="targets" list={TargetList} edit={roleId ? TargetEdit : null} />,
-      <Resource name="sources" list={SourceList} />,
+      // <Resource name="landscape" options={{ label: 'Data Landscape' }} list={TargetList} edit={roleId ? TargetEdit : null} />,
+      <Resource name="targets" options={{ label: 'Aggregation Targets' }} list={TargetList} edit={roleId ? TargetEdit : null} />,
+      <Resource name="sources" options={{ label: 'Aggregation Sources' }} list={SourceList} />,
       <Resource name="users" list={UserList} />,
       <Resource name="permissions" />
     ]}
