@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Edit, SimpleForm, TextInput, NumberInput, ReferenceInput, SelectInput} from 'react-admin';
 
-export const TargetEdit = ({ permissions, ...props }) => (
+export const TargetEdit = props => (
     <Edit {...props}>
         <SimpleForm>
             <TextInput source="id" />
@@ -9,19 +9,19 @@ export const TargetEdit = ({ permissions, ...props }) => (
             <TextInput source="targetData" />
             <TextInput source="batchControlColumn" />
             <NumberInput source="batchControlSize" />
-            <NumberInput source="batchControlNext" />
-            <NumberInput source="batchProcessed" />
-            <NumberInput source="batchProcessing" />
-            <NumberInput source="batchMicroChunkCurrent" />
-            <NumberInput source="batchScheduleType" />
-            <NumberInput source="batchScheduleLast" />
-            <NumberInput source="patternColumns" />
-            <NumberInput source="groupByColumns" />
+            <TextInput source="batchControlNext" />
+            <TextInput source="batchProcessed" />
+            <TextInput source="batchProcessing" />
+            <TextInput source="batchMicroChunkCurrent" />
+            <TextInput source="batchScheduleType" />
+            <TextInput source="batchScheduleLast" />
+            <TextInput source="patternColumns" />
+            <TextInput source="groupByColumns" />
             <NumberInput source="groupByPattern" />
             <NumberInput source="groupByFlexible" />
-            <NumberInput source="aggregateColumns" />
-            <NumberInput source="aggregateFunctions" />
-            <NumberInput source="suppoetSpVersions" />
+            <TextInput source="aggregateColumns" />
+            <TextInput source="aggregateFunctions" />
+            <TextInput source="suppoetSpVersions" />
             <ReferenceInput source="permissionId" reference="permissions"><SelectInput optionText="id" /></ReferenceInput>
         </SimpleForm>
     </Edit>

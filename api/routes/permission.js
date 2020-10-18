@@ -13,7 +13,7 @@ const router = express.Router();
 // Returns a list of permissions (including the permission that owns each source)
 router.get('/', asyncHandler(async (req, res) => {
 	const permissions = await Permission.findAll({
-		attributes: ["id", "title"]
+		attributes: ["id", "roleName"]
 	});
 	res.header('Access-Control-Expose-Headers', 'X-Total-Count')
 		.header('X-Total-Count', permissions.length)
@@ -25,7 +25,7 @@ router.get('/', asyncHandler(async (req, res) => {
 // Returns a permissions (including the permission that owns the permission) for the provided permission ID
 router.get('/:id', asyncHandler(async (req, res) => {
 	const permission = await Permission.findByPk(req.params.id, {
-		attributes: ["id", "title"]
+		attributes: ["id", "roleName"]
 	});
 
 	if (permission) {

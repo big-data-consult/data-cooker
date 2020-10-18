@@ -26,7 +26,7 @@ router.get('/', asyncHandler(async (req, res) => {
 		// 	{
 		// 		model: Role,
 		// 		as: "role",
-		// 		attributes: ["roleId", "title"]
+		// 		attributes: ["roleId", "roleName"]
 		// 	}
 		// ],
 		where: filter,
@@ -50,7 +50,7 @@ router.get('/:id', authenticate, asyncHandler(async (req, res) => {
 		// 	{
 		// 		model: Role,
 		// 		as: "role",
-		// 		attributes: ["roleId", "title"]
+		// 		attributes: ["roleId", "roleName"]
 		// 	}
 		// ]
 	});
