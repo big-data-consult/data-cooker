@@ -1,13 +1,13 @@
 import * as React from "react";
 import { fetchUtils, Admin, Resource, ListGuesser, EditGuesser } from 'react-admin';
-import Dashboard from './Dashboard';
-import authProvider from './authProvider';
-import jsonServerProvider from './dataProvider';
-import { TargetList } from './targets';
-import { TargetEdit } from './target';
-import { SourceList } from './sources';
-import { UserList } from './users';
-//import { Accordion } from '@material-ui/core';
+import Dashboard from './providers/Dashboard';
+import authProvider from './providers/authProvider';
+import jsonServerProvider from './providers/dataProvider';
+import { TargetList } from './targets/targets';
+import { TargetEdit } from './targets/target';
+import { SourceList } from './sources/sources';
+import { UserList } from './users/users';
+import MyLayout from './layout/MyLayout';
 
 const httpClient = (url, options = {}) => {
 
@@ -34,12 +34,12 @@ const dataProvider = jsonServerProvider('http://localhost:5000/api', httpClient)
 
 //  <Admin dashboard={Dashboard} authProvider={authProvider} dataProvider={dataProvider}>
 const App = () => (
-  <Admin dashboard={Dashboard} authProvider={authProvider} dataProvider={dataProvider} >
+  <Admin layout={MyLayout} dashboard={Dashboard} authProvider={authProvider} dataProvider={dataProvider} >
     {roleId => [
-      <Resource name="permissions" />,
       <Resource name="targets" list={TargetList} edit={roleId ? TargetEdit : null} />,
       <Resource name="sources" list={SourceList} />,
-      <Resource name="users" list={UserList} />
+      <Resource name="users" list={UserList} />,
+      <Resource name="permissions" />
     ]}
   </Admin>
 );
