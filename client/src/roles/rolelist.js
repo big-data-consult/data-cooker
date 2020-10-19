@@ -8,8 +8,8 @@ export const RoleList = props => {
         <List {...props} title="List of the roles">
             {isSmall ? (
                 <SimpleList
-                    primaryText={record => record.roleName}
-                    secondaryText={record => `${record.id} id`}
+                    primaryText={record => record.id}
+                    secondaryText={record => `${record.roleName} roleName`}
                  />
             ) : (
                 <Datagrid rowClick="edit">

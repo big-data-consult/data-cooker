@@ -14,6 +14,7 @@ import { SourceCreate } from './sources/sourcecreate';
 import { UserList } from './users/userlist';
 import { UserEdit } from './users/useredit';
 import { UserCreate } from './users/usercreate';
+import { RoleList } from './roles/rolelist';
 import { Base64 } from 'js-base64';
 
 const httpClient = (url, options = {}) => {
@@ -51,7 +52,7 @@ const App = () => (
       <Resource name="targets" options={{ label: 'Aggregation Targets' }} list={TargetList} edit={TargetEdit} create={TargetCreate} />,
       <Resource name="sources" options={{ label: 'Aggregation Sources' }} list={SourceList} edit={SourceEdit} create={SourceCreate} />,
       <Resource name="users" list={UserList} edit={UserEdit} create={UserCreate} />,
-      <Resource name="Roles" list={ListGuesser} />,
+      <Resource name="Roles" list={RoleList} />,
       <Resource name="permissions" />
     ]}
   </Admin>
