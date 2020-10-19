@@ -6,7 +6,7 @@ const User = require('../models').User;
 const Target = require('../models').Target;
 const Source = require('../models').Source;
 const authenticate = require("./auth");
-//const { check, validationResult } = require("express-validator/check");
+const { check, validationResult } = require("express-validator/check");
 
 const asyncHandler = require('../async');
 const router = express.Router();

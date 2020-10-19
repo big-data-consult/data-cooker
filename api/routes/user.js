@@ -4,6 +4,7 @@ const Role = require('../models').Role;
 const User = require('../models').User;
 const authenticate = require('./auth');
 //const Sequelize = require('sequelize');
+const { check, validationResult } = require('express-validator/check');
 const bcryptjs = require('bcryptjs');
 
 const asyncHandler = require('../async');
@@ -16,9 +17,9 @@ router.get('/', asyncHandler(async (req, res) => {
 	const sort = req.query.sort ? JSON.parse(req.query.sort) : ["emailAddress", "ASC"];
 	const range = req.query.range ? JSON.parse(req.query.range) : [0, 50];
 	const filter = req.header('token') ? {
-			"emailAddress" : JSON.parse(req.header("token")).username,
-			//"password" : bcryptjs.hashSync(JSON.parse(req.headers("token")).password)
-		} : (req.query.filter ? JSON.parse(req.query.filter) : {} ); 
+		"emailAddress": JSON.parse(req.header("token")).username,
+		//"password" : bcryptjs.hashSync(JSON.parse(req.headers("token")).password)
+	} : (req.query.filter ? JSON.parse(req.query.filter) : {});
 
 	const users = await User.findAll({
 		attributes: ["id", "firstName", "lastName", "emailAddress", "roleId", "permissionId"],
@@ -43,24 +44,26 @@ router.get('/', asyncHandler(async (req, res) => {
 
 // GET /api/users/:id 200
 // Returns a user (including the user that owns the user) for the provided user ID
-router.get('/:id', authenticate, asyncHandler(async (req, res) => {
-	const user = await User.findByPk(req.params.id, {
-		attributes: ["id", "firstName", "lastName", "emailAddress", "roleId", "permissionId"],
-		// include: [
-		// 	{
-		// 		model: Role,
-		// 		as: "role",
-		// 		attributes: ["roleId", "roleName"]
-		// 	}
-		// ]
-	});
+router.get('/:id',
+	authenticate,
+	asyncHandler(async (req, res) => {
+		const user = await User.findByPk(req.params.id, {
+			attributes: ["id", "firstName", "lastName", "emailAddress", "roleId", "permissionId"],
+			// include: [
+			// 	{
+			// 		model: Role,
+			// 		as: "role",
+			// 		attributes: ["roleId", "roleName"]
+			// 	}
+			// ]
+		});
 
-	if (user) {
-		res.json({ user });
-	} else {
-		res.status(404).json({ message: 'User id not found.' });
-	}
-}));
+		if (user) {
+			res.json({ user });
+		} else {
+			res.status(404).json({ message: 'User id not found.' });
+		}
+	}));
 
 
 /* POST create user. */
@@ -139,7 +142,8 @@ router.put('/:id',
 	// 	.isLength({ min: 8, max: 20 })
 	// 	.withMessage('Please provide a value for "password" that is between 8 and 20 characters in length'),
 	// ],
-	authenticate, asyncHandler(async (req, res) => {
+	authenticate,
+	asyncHandler(async (req, res) => {
 		// Attempt to get the validation result from the Request object.
 		const errors = validationResult(req);
 

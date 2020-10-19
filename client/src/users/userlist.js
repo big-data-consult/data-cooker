@@ -2,7 +2,7 @@ import * as React from "react";
 import { List, Datagrid, TextField, NumberField, ReferenceField, EmailField, EditButton } from 'react-admin';
 
 export const UserList = props => (
-    <List {...props}>
+    <List {...props} title="List of the users">
         <Datagrid>
             <NumberField source="id" />
             <TextField source="firstName" />

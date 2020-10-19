@@ -1,8 +1,8 @@
 import * as React from "react";
-import { List, Datagrid, TextField, NumberField, ReferenceField, EditButton} from 'react-admin';
+import { List, Datagrid, TextField, NumberField, /*ReferenceField,*/ EditButton} from 'react-admin';
 
 export const TargetList = props => (
-    <List {...props}>
+    <List {...props} title="List of aggregation targets">
         <Datagrid>
             <NumberField source="id" />
             <TextField source="targetLabel" />

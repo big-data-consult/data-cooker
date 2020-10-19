@@ -5,7 +5,7 @@ const express = require('express');
 const User = require('../models').User;
 const Target = require('../models').Target;
 const authenticate = require("./auth");
-//const { check, validationResult } = require('express-validator/check');
+const { check, validationResult } = require('express-validator/check');
 const bcryptjs = require('bcryptjs');
 
 const asyncHandler = require('../async');
@@ -92,18 +92,19 @@ router.get('/:id', asyncHandler(async (req, res) => {
 // POST /api/targets 201
 // Creates a target, sets the Location header to "/", and returns no content
 router.post('/',
-	// [
-	// 	check('targetLabel')
-	// 		.exists({ checkNull: true, checkFalsy: true })
-	// 		.withMessage('Please provide a value for "targetLabel"'),
-	// 	check('targetData')
-	// 		.exists({ checkNull: true, checkFalsy: true })
-	// 		.withMessage('Please provide a value for "targetData"'),
-	// 	check('batchControlColumn')
-	// 		.exists({ checkNull: true, checkFalsy: true })
-	// 		.withMessage('Please provide a value for "batchControlColumn"')
-	// ],
-	authenticate, asyncHandler(async (req, res) => {
+	[
+		check('targetLabel')
+			.exists({ checkNull: true, checkFalsy: true })
+			.withMessage('Please provide a value for "targetLabel"'),
+		check('targetData')
+			.exists({ checkNull: true, checkFalsy: true })
+			.withMessage('Please provide a value for "targetData"'),
+		check('batchControlColumn')
+			.exists({ checkNull: true, checkFalsy: true })
+			.withMessage('Please provide a value for "batchControlColumn"')
+	],
+	authenticate,
+	asyncHandler(async (req, res) => {
 		// Attempt to get the validation result from the Request object.
 		const errors = validationResult(req);
 
@@ -113,67 +114,70 @@ router.post('/',
 			const errorMessages = errors.array().map(error => error.msg);
 			// Return the validation errors to the client.
 			return res.status(400).json({ errors: errorMessages });
-		}
-		// Get the target from the request body.
-		const target = req.body;
-
-		// check if target already exists in Targets table
-		const existingTarget = await Target.findOne({
-			where: {
-				targetData: target.targetData
-			}
-		});
-
-		// create new target if not already in Targets table
-		if (!existingTarget) {
-
-			// Create target
-			Target.create({
-				//id: target.id,
-				targetLabel: target.targetLabel,
-				targetData: target.targetData,
-				batchControlColumn: target.batchControlColumn,
-				batchControlSize: target.batchControlSize,
-				batchControlNext: target.batchControlNext,
-				batchProcessed: target.batchProcessed,
-				batchProcessing: target.batchProcessing,
-				batchMicroChunkCurrent: target.batchMicroChunkCurrent,
-				batchScheduleType: target.batchScheduleType,
-				batchScheduleLast: target.batchScheduleLast,
-				patternColumns: target.patternColumns,
-				groupByColumns: target.groupByColumns,
-				groupByPattern: target.groupByPattern,
-				groupByFlexible: target.groupByFlexible,
-				aggregateColumns: target.aggregateColumns,
-				aggregateFunctions: target.aggregateFunctions,
-				suppoetSpVersions: target.suppoetSpVersions,
-				permissionId: 2
-			});
-
-			// Set the status to 201 Created and end the response.
-			res.location('/').status(201).end();
 		} else {
-			res.status(400).json({ message: `Target data '${target.targetData}' already exists` });
+			// Get the target from the request body.
+			const target = req.body;
+			// check if target already exists in Targets table
+			Target.findOne({
+				where: {
+					targetData: target.targetData
+				}
+			}).then(existingTarget => {
+				// create new target if not already in Targets table
+				if (!existingTarget) {
+
+					// Create target
+					Target.create({
+						//id: target.id,
+						targetLabel: target.targetLabel,
+						targetData: target.targetData,
+						batchControlColumn: target.batchControlColumn,
+						batchControlSize: target.batchControlSize,
+						batchControlNext: target.batchControlNext,
+						batchProcessed: target.batchProcessed,
+						batchProcessing: target.batchProcessing,
+						batchMicroChunkCurrent: target.batchMicroChunkCurrent,
+						batchScheduleType: target.batchScheduleType,
+						batchScheduleLast: target.batchScheduleLast,
+						patternColumns: target.patternColumns,
+						groupByColumns: target.groupByColumns,
+						groupByPattern: target.groupByPattern,
+						groupByFlexible: target.groupByFlexible,
+						aggregateColumns: target.aggregateColumns,
+						aggregateFunctions: target.aggregateFunctions,
+						suppoetSpVersions: target.suppoetSpVersions,
+						permissionId: 2
+					}).then(newTarget => {
+						// Set the status to 201 Created and end the response.
+						res.location('/').status(201).end();
+					});
+
+				} else {
+					res.status(400).json({ message: `Target data '${target.targetData}' already exists` });
+				}
+			});
 		}
-	}
-	));
+
+	})
+);
 
 
 // PUT /api/targets/:id 204
 // Updates a target and returns no content
 router.put('/:id',
-	// [
-	// check('targetLabel')
-	// 	.exists({ checkNull: true, checkFalsy: true })
-	// 	.withMessage('Please provide a value for "targetLabel"'),
-	// check('targetData')
-	// 	.exists({ checkNull: true, checkFalsy: true })
-	// 	.withMessage('Please provide a value for "targetData"'),
-	// check('batchControlColumn')
-	// 	.exists({ checkNull: true, checkFalsy: true })
-	// 	.withMessage('Please provide a value for "batchControlColumn"')
-	// ],
-	authenticate, asyncHandler(async (req, res) => {
+	[
+	check('targetLabel')
+		.exists({ checkNull: true, checkFalsy: true })
+		.withMessage('Please provide a value for "targetLabel"'),
+	check('targetData')
+		.exists({ checkNull: true, checkFalsy: true })
+		.withMessage('Please provide a value for "targetData"'),
+	check('batchControlColumn')
+		.exists({ checkNull: true, checkFalsy: true })
+		.withMessage('Please provide a value for "batchControlColumn"')
+	],
+	authenticate,
+	asyncHandler(async (req, res) => {
 		// Attempt to get the validation result from the Request object.
 		const errors = validationResult(req);
 
@@ -186,7 +190,7 @@ router.put('/:id',
 		} else {
 
 			// find existing target
-			const target = await Target.findByPk(req.params.id, {
+			Target.findByPk(req.params.id, {
 				attributes: [
 					"id",
 					"targetLabel",
@@ -208,10 +212,7 @@ router.put('/:id',
 					"suppoetSpVersions",
 					"permissionId"
 				]
-			});
-
-			// if target exists
-			if (target) {
+			}).then(target => {
 				// if target permission matches current user's role
 				if (target.permissionId >= req.currentUser.roleId) {
 					// Keep original value if field is not provided
@@ -234,7 +235,7 @@ router.put('/:id',
 					target.suppoetSpVersions = req.body.suppoetSpVersions ? req.body.suppoetSpVersions : target.suppoetSpVersions;
 
 					// update target details in Targets table
-					const updatedTarget = await Target.update({
+					Target.update({
 						//id: target.id,
 						targetLabel: target.targetLabel,
 						targetData: target.targetData,
@@ -258,24 +259,18 @@ router.put('/:id',
 						where: {
 							id: target.id
 						}
-					});
-
-					const id = target.id;
-
-					if (updatedTarget) {
+					}).then(updatedTarget => {
+						const id = target.id;
 						res.json({ id }).status(204).end();
-					}
-
+					});
 				} else {
 					// Return a response with a 403 Client forbidden HTTP status code.
-					res.status(403).json({ message: "Access not permitted" });
+					res.status(403).json({ message: "No permission to modify the target." });
 				}
-			} else {
-				res.status(404).json({ message: "Target not found." });
-			}
+			});
 		}
-	}
-	));
+	})
+);
 
 
 // DELETE /api/targets/:id 204
@@ -283,7 +278,7 @@ router.put('/:id',
 router.delete('/:id', authenticate, asyncHandler(async (req, res) => {
 
 	// find existing target
-	const target = await Target.findByPk(req.params.id, {
+	Target.findByPk(req.params.id, {
 		attributes: [
 			"id",
 			"targetLabel",
@@ -305,34 +300,22 @@ router.delete('/:id', authenticate, asyncHandler(async (req, res) => {
 			"suppoetSpVersions",
 			"permissionId"
 		]
-	});
-
-	// if target exists
-	if (target) {
+	}).then(target => {
 		// if target permission matches current user's role
 		if (target.permissionId >= req.currentUser.roleId) {
 			// delete target from Targets table
-			const deletedTarget = await Target.destroy(
-				{
-					where: {
-						id: target.id
-					}
+			Target.destroy({
+				where: {
+					id: target.id
 				}
-			);
-
-			if (deletedTarget) {
+			}).then(deletedTarget => {
 				res.status(204).end();
-			}
-
+			});
 		} else {
 			// Return a response with a 403 Client forbidden HTTP status code.
-			res.status(403).json({ message: "Access not permitted" });
+			res.status(403).json({ message: "No permission to delete target." });
 		}
-	} else {
-		res.status(404).json({ message: "Target not found." });
-	}
-})
-);
-
+	});
+}));
 
 module.exports = router;

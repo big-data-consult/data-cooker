@@ -1,8 +1,17 @@
 import * as React from "react";
-import { List, Datagrid, TextField, NumberField, ReferenceField, EditButton } from 'react-admin';
+import { Filter, ReferenceInput, SelectInput, TextInput, List, Datagrid, TextField, NumberField, ReferenceField, EditButton } from 'react-admin';
+
+const PostFilter = (props) => (
+    <Filter {...props}>
+        <ReferenceInput label="Target" source="targetId" reference="targets" alwaysOn >
+            <SelectInput optionText="targetName" />
+        </ReferenceInput>
+        <TextInput label="sourceData" source="sourceData" allowEmpty />
+    </Filter>
+);
 
 export const SourceList = props => (
-    <List {...props}>
+    <List filters={<PostFilter />} {...props} title="List of aggregation sources">
         <Datagrid>
             <NumberField source="id" />
             <TextField source="sourceLabel" />

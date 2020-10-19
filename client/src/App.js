@@ -5,10 +5,16 @@ import MyLayout from './layout/MyLayout';
 import authProvider from './providers/authProvider';
 import jsonServerProvider from './providers/dataProvider';
 import i18nProvider from './providers/i18nProvider';
-import { TargetList } from './targets/targets';
-import { TargetEdit } from './targets/target';
-import { SourceList } from './sources/sources';
-import { UserList } from './users/users';
+import { TargetList } from './targets/targetlist';
+import { TargetEdit } from './targets/targetedit';
+import { TargetCreate } from './targets/targetcreate';
+import { SourceList } from './sources/sourcelist';
+import { SourceEdit } from './sources/sourceedit';
+import { SourceCreate } from './sources/sourcecreate';
+import { UserList } from './users/userlist';
+import { UserEdit } from './users/useredit';
+import { UserCreate } from './users/usercreate';
+import { Base64 } from 'js-base64';
 
 const httpClient = (url, options = {}) => {
 
@@ -16,40 +22,36 @@ const httpClient = (url, options = {}) => {
     options.headers = new Headers({ Accept: 'application/json' });
   }
 
-  // pre-install a login user for dev
-  // const token_0 = { "name": "joe@smith.com", "pass": "joepassword"};
-  // localStorage.setItem('token', JSON.stringify(token_0));
-
   // Add authentication token
-  const { token } = JSON.parse(localStorage.getItem('token'));
-  options.headers.set('Authorization', `Bearer ${token}`);
-  //options.headers.set('Authorization', `Basic ${token}`);
+  const strToken = localStorage.getItem('token');
+  const token = JSON.parse(strToken);
+  options.headers.set('Authorization', 'Basic ' + Base64.btoa(token.emailAddress + ':' + token.password));
 
   // Add additional headers as needed
   options.headers.set('X-Custom-Header', 'foobar');
   return fetchUtils.fetchJson(url, options);
 };
-const dataProvider = jsonServerProvider('http://localhost:5000/api', httpClient);
 
 // const dataProvider = jsonServerProvider('http://localhost:5000/api');
-// const i18nProvider = polyglotI18nProvider(locale => i18nMessages[locale], 'en', { allowMissing: true });
-// const i18nProvider = polyglotI18nProvider(locale => {
-//   if (locale === 'fr') {
-//       return import('./i18n/fr').then(messages => messages.default);
-//   }
-
-//   // Always fallback on english
-//   return englishMessages;
-// }, 'en', { allowMissing: true });
+const dataProvider = jsonServerProvider('http://localhost:5000/api', httpClient);
 
 //  <Admin dashboard={Dashboard} authProvider={authProvider} dataProvider={dataProvider}>
 const App = () => (
-  <Admin title={"Data Cooker Admin"} layout={MyLayout} dashboard={Dashboard} authProvider={authProvider} dataProvider={dataProvider} i18nProvider={i18nProvider}>
-    {roleId => [
+  <Admin
+    title={"Data Cooker Admin"}
+    layout={MyLayout}
+    dashboard={Dashboard}
+    authProvider={authProvider}
+    dataProvider={dataProvider}
+    i18nProvider={i18nProvider}
+  >
+    {permissions => [
       // <Resource name="landscape" options={{ label: 'Data Landscape' }} list={TargetList} edit={roleId ? TargetEdit : null} />,
-      <Resource name="targets" options={{ label: 'Aggregation Targets' }} list={TargetList} edit={roleId ? TargetEdit : null} />,
-      <Resource name="sources" options={{ label: 'Aggregation Sources' }} list={SourceList} />,
-      <Resource name="users" list={UserList} />,
+      // <Resource name="targets" options={{ label: 'Aggregation Targets' }} list={TargetList} edit={roleId ? TargetEdit : null} />,
+      <Resource name="targets" options={{ label: 'Aggregation Targets' }} list={TargetList} edit={TargetEdit} create={TargetCreate} />,
+      <Resource name="sources" options={{ label: 'Aggregation Sources' }} list={SourceList} edit={SourceEdit} create={SourceCreate} />,
+      <Resource name="users" list={UserList} edit={UserEdit} create={UserCreate} />,
+      <Resource name="Roles" list={ListGuesser} />,
       <Resource name="permissions" />
     ]}
   </Admin>

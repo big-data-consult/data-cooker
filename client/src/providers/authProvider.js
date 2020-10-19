@@ -33,10 +33,6 @@ const authProvider = {
                 // localStorage.setItem('token', token);
                 // localStorage.setItem('permissions', decodedToken.permissions);
             });
-
-        //localStorage.setItem('username', username);
-        // accept all username/password combinations
-        //return Promise.resolve();
     },
 
     // called when the user clicks on the logout button
@@ -62,22 +58,20 @@ const authProvider = {
             localStorage.removeItem('token');
             return Promise.reject();
         }
-        return Promise.resolve();
+        return Promise.resolve(status);
     },
 
     // called when the user navigates to a new location, to check for authentication
     checkAuth: () => {
         return localStorage.getItem('token')
             ? Promise.resolve()
-            : Promise.reject();
-        //: Promise.reject({ redirectTo: '/no-access' });
+            : Promise.reject(); //: Promise.reject({ redirectTo: '/no-access' });
     },
 
     // called when the user navigates to a new location, to check for permissions / roles
     getPermissions: () => {
         //const role = localStorage.getItem('role');
         //return role ? Promise.resolve(role) : Promise.reject();
-        // Promise.resolve()
         const permissions = localStorage.getItem('permissions');
         return Promise.resolve(permissions);
     },
@@ -89,8 +83,6 @@ const authProvider = {
             fullName: localStorage.getItem('fullName'),
             avatar: localStorage.getItem('avatar'),
         };
-        //return { "id": 1, "fullName": "Joe Smith", "avatar": "" };
-        //Promise.resolve()
     }
 };
 
