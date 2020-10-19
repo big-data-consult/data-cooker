@@ -6,7 +6,8 @@ const User = require('../models').User;
 const Target = require('../models').Target;
 const Source = require('../models').Source;
 const authenticate = require("./auth");
-const { check, validationResult } = require("express-validator/check");
+const { check, validationResult } = require("express-validator");
+//const { check, validationResult } = require("express-validator/check");
 
 const asyncHandler = require('../async');
 const router = express.Router();
@@ -244,6 +245,21 @@ router.put('/:id',
 		}
 	}
 	));
+
+
+// DELETE /api/targets/ 204
+// Deletes a target and returns no content
+router.delete('/', authenticate, asyncHandler(async (req, res) => {
+
+	const filter = req.query.filter ? JSON.parse(req.query.filter) : {};
+
+	// delete target from Targets table
+	Source.destroy({
+		where: filter
+	}).then(deletedSource => {
+		res.status(204).end();
+	});
+}));
 
 
 // DELETE /api/sources/:id 204

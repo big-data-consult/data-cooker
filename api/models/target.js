@@ -1,4 +1,6 @@
 'use strict';
+const Course = require("./source");
+
 module.exports = (sequelize, DataTypes) => {
 	const Target = sequelize.define('Target', {
 		id: {
@@ -151,26 +153,16 @@ module.exports = (sequelize, DataTypes) => {
 		},
 		permissionId: DataTypes.INTEGER
 	}, {});
-	Target.associate = (models) => {
-		// define association between tables
-		// a "Target" has many "courses"
-		Target.hasMany(models.Source, {
-			as: 'target',
-			foreignKey: {
-				fieldName: 'targetId',
-				allowNull: false,
-			},
-		});
-	};
+
 	// Target.associate = (models) => {
 	// 	// define association between tables
-	// 	// a "target" belongs to a single "role"
-	// 	Target.belongsTo(models.Role, {
-	// 		as: 'role',
+	// 	// a "Target" has many "courses"
+	// 	Target.hasMany(models.Source, {
+	// 		as: 'target',
 	// 		foreignKey: {
-	// 			fieldName: 'roleId',
-	// 			allowNull: false
-	// 		}
+	// 			fieldName: 'targetId',
+	// 			allowNull: false,
+	// 		},
 	// 	});
 	// };
 

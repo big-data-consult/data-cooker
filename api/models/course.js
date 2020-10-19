@@ -1,6 +1,6 @@
 'use strict';
 
-const User = require("./user");
+// const User = require("./user");
 
 module.exports = function(sequelize, DataTypes) {
   const Course = sequelize.define('Course', {
@@ -45,14 +45,15 @@ module.exports = function(sequelize, DataTypes) {
     },
   });
   
-  Course.associate = (models) => {
-//Course" belongs to a single "User
-    Course.belongsTo(models.User, {
-      foreignKey: {
-        fieldName: 'userId',
+//   Course.associate = (models) => {
+// //Course" belongs to a single "User
+//     Course.belongsTo(models.User, {
+//       foreignKey: {
+//         fieldName: 'userId',
         
-      },
-    });
-  };
+//       },
+//     });
+//   };
+
   return Course;
 };

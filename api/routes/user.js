@@ -4,7 +4,8 @@ const Role = require('../models').Role;
 const User = require('../models').User;
 const authenticate = require('./auth');
 //const Sequelize = require('sequelize');
-const { check, validationResult } = require('express-validator/check');
+const { check, validationResult } = require('express-validator');
+//const { check, validationResult } = require('express-validator/check');
 const bcryptjs = require('bcryptjs');
 
 const asyncHandler = require('../async');
@@ -209,6 +210,23 @@ router.put('/:id',
 	}));
 
 
+// DELETE /api/targets/ 204
+// Deletes a target and returns no content
+router.delete('/',
+	authenticate,
+	asyncHandler(async (req, res) => {
+
+		const filter = req.query.filter ? JSON.parse(req.query.filter) : {};
+
+		// delete user from users table
+		User.destroy({
+			where: filter
+		}).then(deletedUser => {
+			res.status(204).end();
+		});
+	})
+);
+
 
 // DELETE /api/users/:id 204
 // Deletes a user and returns no content
@@ -223,7 +241,7 @@ router.delete('/:id', authenticate, asyncHandler(async (req, res) => {
 		// if user permission matches current user's role
 		if (user.id == req.currentUser.id || req.currentUser.roleId == 1) {
 			// delete user from Users table
-			const deletedUser = await User.destroy(
+			const deletedUser = User.destroy(
 				{
 					where: {
 						id: user.id

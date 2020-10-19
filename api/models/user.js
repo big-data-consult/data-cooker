@@ -1,8 +1,9 @@
 'use strict';
 
-const Course = require("./course");
+const Role = require("./role");
+// const Course = require("./course");
 
-module.exports = function(sequelize, DataTypes) {
+module.exports = function (sequelize, DataTypes) {
   const User = sequelize.define('User', {
     id: {
       type: DataTypes.INTEGER,
@@ -34,7 +35,7 @@ module.exports = function(sequelize, DataTypes) {
         notEmpty: {
           msg: "Email is required"
         },
-        isEmail:{//this makes sure that the email address is formatted properly
+        isEmail: {//this makes sure that the email address is formatted properly
           msg: "Please enter a valid email address"
         }
       }
@@ -48,31 +49,30 @@ module.exports = function(sequelize, DataTypes) {
         },
       }
     },
-	roleId: {
-		type: DataTypes.INTEGER,
-		allowNull: false
-	},
-	permissionId: DataTypes.INTEGER
-  });
+    roleId: {
+      type: DataTypes.INTEGER,
+      allowNull: true
+    },
+    permissionId: DataTypes.INTEGER
+  }, {});
 
   User.associate = (models) => {
-//User" belongs to a single "Role"
-    Course.belongsTo(models.Role, {
+    //User" belongs to a single "Role"
+    User.belongsTo(models.Role, {
       as: 'role',
       foreignKey: {
         fieldName: 'roleId',
       },
     });
+ 
+//   //"User" has many "Courses"
+//   User.hasMany(models.Course, {
+//     foreignKey: {
+//       fieldName: 'userId',
+//     },
+//   });
+
   };
 
-  User.associate = (models) => {
-//"User" has many "Courses"
-   User.hasMany(models.Course, {
-        foreignKey: {
-          fieldName: 'userId',
-        },
-    });
-  };
-  
   return User;
 };
