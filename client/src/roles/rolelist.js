@@ -1,16 +1,23 @@
 import * as React from "react";
-import { List, Datagrid, TextField, NumberField, ReferenceField, EmailField, EditButton } from 'react-admin';
+import { useMediaQuery } from '@material-ui/core';
+import { SimpleList, List, Datagrid, TextField, NumberField, ReferenceField, EmailField, EditButton } from 'react-admin';
 
-export const UserList = props => (
-    <List {...props} title="List of the roles">
-        <Datagrid>
-            <NumberField source="id" />
-            <TextField source="firstName" />
-            <TextField source="lastName" />
-            <EmailField source="emailAddress" />
-            {/* <ReferenceField source="roleId" reference="roles"><TextField source="id" /></ReferenceField> */}
-            {/* <ReferenceField source="permissionId" reference="permissions"><TextField source="id" /></ReferenceField> */}
-			<EditButton />
-        </Datagrid>
-    </List>
-);
+export const RoleList = props => {
+    const isSmall = useMediaQuery(theme => theme.breakpoints.down('sm'));
+    return (
+        <List {...props} title="List of the roles">
+            {isSmall ? (
+                <SimpleList
+                    primaryText={record => record.roleName}
+                    secondaryText={record => `${record.id} id`}
+                 />
+            ) : (
+                <Datagrid rowClick="edit">
+                    <TextField source="id" />
+                    <TextField source="roleName" />
+                </Datagrid>
+
+            )}
+        </List>
+    );
+}
