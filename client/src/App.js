@@ -1,20 +1,24 @@
 import * as React from "react";
-import { fetchUtils, Admin, Resource, ListGuesser, EditGuesser } from 'react-admin';
+import { fetchUtils, Admin, Resource, ListGuesser, EditGuesser, ShowGuesser } from 'react-admin';
 import Dashboard from './layout/Dashboard';
 import MyLayout from './layout/MyLayout';
 import authProvider from './providers/authProvider';
 import jsonServerProvider from './providers/dataProvider';
 import i18nProvider from './providers/i18nProvider';
 import { TargetList } from './targets/targetlist';
+import { TargetShow } from './targets/targetshow';
 import { TargetEdit } from './targets/targetedit';
 import { TargetCreate } from './targets/targetcreate';
 import { SourceList } from './sources/sourcelist';
+import { SourceShow } from './sources/sourceshow';
 import { SourceEdit } from './sources/sourceedit';
 import { SourceCreate } from './sources/sourcecreate';
 import { UserList } from './users/userlist';
+import { UserShow } from './users/usershow';
 import { UserEdit } from './users/useredit';
 import { UserCreate } from './users/usercreate';
 import { RoleList } from './roles/rolelist';
+import { RoleShow } from './roles/roleshow';
 import { Base64 } from 'js-base64';
 
 const httpClient = (url, options = {}) => {
@@ -49,10 +53,10 @@ const App = () => (
     {permissions => [
       // <Resource name="landscape" options={{ label: 'Data Landscape' }} list={TargetList} edit={roleId ? TargetEdit : null} />,
       // <Resource name="targets" options={{ label: 'Aggregation Targets' }} list={TargetList} edit={roleId ? TargetEdit : null} />,
-      <Resource name="targets" options={{ label: 'Aggregation Targets' }} list={TargetList} edit={TargetEdit} create={TargetCreate} />,
-      <Resource name="sources" options={{ label: 'Aggregation Sources' }} list={SourceList} edit={SourceEdit} create={SourceCreate} />,
-      <Resource name="users" list={UserList} edit={UserEdit} create={UserCreate} />,
-      <Resource name="Roles" list={RoleList} />,
+      <Resource name="targets" options={{ label: 'Aggregation Targets' }} list={TargetList} edit={TargetEdit} create={TargetCreate} show={TargetShow} />,
+      <Resource name="sources" options={{ label: 'Aggregation Sources' }} list={SourceList} edit={SourceEdit} create={SourceCreate} show={SourceShow} />,
+      <Resource name="users" list={UserList} edit={UserEdit} create={UserCreate} show={UserShow} />,
+      <Resource name="Roles" list={RoleList} show={RoleShow} />,
       <Resource name="permissions" />
     ]}
   </Admin>

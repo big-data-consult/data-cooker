@@ -24,13 +24,13 @@ router.get('/', asyncHandler(async (req, res) => {
 
 	const users = await User.findAll({
 		attributes: ["id", "firstName", "lastName", "emailAddress", "roleId", "permissionId"],
-		// include: [
-		// 	{
-		// 		model: Role,
-		// 		as: "role",
-		// 		attributes: ["roleId", "roleName"]
-		// 	}
-		// ],
+		include: [
+			{
+				model: Role,
+				as: "role",
+				attributes: ["id", "roleName"]
+			}
+		],
 		where: filter,
 		order: [sort],
 		offset: range[0],
@@ -50,13 +50,13 @@ router.get('/:id',
 	asyncHandler(async (req, res) => {
 		const user = await User.findByPk(req.params.id, {
 			attributes: ["id", "firstName", "lastName", "emailAddress", "roleId", "permissionId"],
-			// include: [
-			// 	{
-			// 		model: Role,
-			// 		as: "role",
-			// 		attributes: ["roleId", "roleName"]
-			// 	}
-			// ]
+			include: [
+				{
+					model: Role,
+					as: "role",
+					attributes: ["id", "roleName"]
+				}
+			]
 		});
 
 		if (user) {
