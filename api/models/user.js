@@ -1,6 +1,6 @@
 'use strict';
 
-const Role = require("./role");
+// const Role = require("./role");
 // const Course = require("./course");
 
 module.exports = function (sequelize, DataTypes) {

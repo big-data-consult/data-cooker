@@ -293,7 +293,7 @@ class Database {
         lastName VARCHAR(255) NOT NULL DEFAULT '', 
         emailAddress VARCHAR(255) NOT NULL DEFAULT '' UNIQUE, 
         password VARCHAR(255) NOT NULL DEFAULT '', 
-        roleId INTEGER NOT NULL REFERENCES Role (id),
+        roleId INTEGER NULL REFERENCES Roles (id),
         permissionId INTEGER NOT NULL, 
         createdAt DATETIME NOT NULL, 
         updatedAt DATETIME NOT NULL

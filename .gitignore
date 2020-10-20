@@ -1,10 +1,12 @@
 # api dependencies
 api/node_modules
+api/fsjstd-restapi.db
+api/RESTAPI.postman_collection.json
+api/README.md
 
 # client dependencies
 client/node_modules
-api/RESTAPI.postman_collection.json
-api/README.md
 client/debug.log
 client/README.md
 client/yarn-error.log
+

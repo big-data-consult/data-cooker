@@ -1,5 +1,5 @@
 'use strict';
-const Target = require("./target");
+// const Target = require("./target");
 
 module.exports = (sequelize, DataTypes) => {
 	const Source = sequelize.define('Source', {
