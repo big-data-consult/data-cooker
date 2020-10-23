@@ -56,7 +56,7 @@ const App = () => (
       <Resource name="targets" options={{ label: 'Aggregation Targets' }} list={TargetList} edit={TargetEdit} create={TargetCreate} show={TargetShow} />,
       <Resource name="sources" options={{ label: 'Aggregation Sources' }} list={SourceList} edit={SourceEdit} create={SourceCreate} show={SourceShow} />,
       <Resource name="users" list={UserList} edit={UserEdit} create={UserCreate} show={UserShow} />,
-      <Resource name="Roles" list={RoleList} show={RoleShow} />,
+      <Resource name="roles" list={RoleList} show={RoleShow} />,
       <Resource name="permissions" />
     ]}
   </Admin>

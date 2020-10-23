@@ -1,11 +1,20 @@
 import * as React from "react";
 import { useMediaQuery } from '@material-ui/core';
-import { SimpleList, List, Datagrid, TextField, NumberField, ReferenceField, EmailField, EditButton } from 'react-admin';
+import { Filter, ReferenceInput, SelectInput, TextInput, SimpleList, List, Datagrid, TextField, NumberField, ReferenceField, EmailField, EditButton } from 'react-admin';
+
+const UserFilter = (props) => (
+    <Filter {...props}>
+        <ReferenceInput label="Role Name" source="roleId" reference="roles" alwaysOn >
+            <SelectInput optionText="roleName" />
+        </ReferenceInput>
+        {/* <TextInput label="User Name" source="emailAddress" allowEmpty /> */}
+    </Filter>
+);
 
 export const UserList = props => {
     const isSmall = useMediaQuery(theme => theme.breakpoints.down('sm'));
     return (
-        <List {...props} title="List of the users">
+        <List {...props} filters={<UserFilter />} title="List of the users">
             {isSmall ? (
                 <SimpleList
                     primaryText={record => record.emailAddress}

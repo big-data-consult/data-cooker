@@ -154,17 +154,17 @@ module.exports = (sequelize, DataTypes) => {
 		permissionId: DataTypes.INTEGER
 	}, {});
 
-	// Target.associate = (models) => {
-	// 	// define association between tables
-	// 	// a "Target" has many "courses"
-	// 	Target.hasMany(models.Source, {
-	// 		as: 'target',
-	// 		foreignKey: {
-	// 			fieldName: 'targetId',
-	// 			allowNull: false,
-	// 		},
-	// 	});
-	// };
+	Target.associate = (models) => {
+		// define association between tables
+		// a "Target" has many "courses"
+		Target.hasMany(models.Source, {
+			as: 'source',
+			foreignKey: {
+				fieldName: 'targetId',
+				allowNull: false,
+			},
+		});
+	};
 
 	return Target;
 };

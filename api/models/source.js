@@ -109,7 +109,7 @@ module.exports = (sequelize, DataTypes) => {
 		Source.belongsTo(models.Target, {
 			as: 'target',
 			foreignKey: {
-				fieldName: 'id',
+				fieldName: 'targetId',
 				allowNull: false
 			}
 		});

@@ -2,19 +2,19 @@ import * as React from "react";
 import { useMediaQuery } from '@material-ui/core';
 import { Filter, ReferenceInput, SelectInput, TextInput, SimpleList, List, Datagrid, TextField, NumberField, ReferenceField, EditButton } from 'react-admin';
 
-const PostFilter = (props) => (
+const SourceFilter = (props) => (
     <Filter {...props}>
-        <ReferenceInput label="Target" source="targetId" reference="targets" alwaysOn >
-            <SelectInput optionText="targetName" />
+        <ReferenceInput label="Target Data" source="targetId" reference="targets" alwaysOn >
+            <SelectInput optionText="targetData" />
         </ReferenceInput>
-        <TextInput label="sourceData" source="sourceData" allowEmpty />
+        {/* <TextInput label="Source Data" source="sourceData" allowEmpty /> */}
     </Filter>
 );
 
 export const SourceList = props => {
     const isSmall = useMediaQuery(theme => theme.breakpoints.down('sm'));
     return (
-        <List filters={<PostFilter />} {...props} title="List of aggregation sources">
+        <List {...props} filters={<SourceFilter />} title="List of aggregation sources">
             {isSmall ? (
                 <SimpleList
                     primaryText={record => record.sourceLabel}

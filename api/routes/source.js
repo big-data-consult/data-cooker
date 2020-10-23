@@ -21,9 +21,9 @@ router.get('/', asyncHandler(async (req, res) => {
 	const range = req.query.range ? JSON.parse(req.query.range) : [0, 50];
 	const filter = req.query.filter ? JSON.parse(req.query.filter) : {};
 
-	// Get current taget from url query string
-	const currentTargetId = req.query.targetId ? req.query.targetId : 1;
-	filter["targetId"] = currentTargetId;
+	// // Get current taget from url query string
+	// const currentTargetId = req.query.targetId ? req.query.targetId : 1;
+	// filter["targetId"] = currentTargetId;
 
 	// Get sources of current taget specified by query string
 	const sources = await Source.findAll({

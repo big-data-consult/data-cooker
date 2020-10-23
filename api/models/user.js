@@ -61,16 +61,16 @@ module.exports = function (sequelize, DataTypes) {
     User.belongsTo(models.Role, {
       as: 'role',
       foreignKey: {
-        fieldName: 'id',
+        fieldName: 'roleId',
       },
     });
  
-//   //"User" has many "Courses"
-//   User.hasMany(models.Course, {
-//     foreignKey: {
-//       fieldName: 'userId',
-//     },
-//   });
+  // //"User" has many "Courses"
+  // User.hasMany(models.Course, {
+  //   foreignKey: {
+  //     fieldName: 'userId',
+  //   },
+  // });
 
   };
 

@@ -19,17 +19,17 @@ module.exports = (sequelize, DataTypes) => {
 		}
 	}, {});
 
-	// Role.associate = (models) => {
-	// 	// define association between tables
-	// 	// a "role" has many "users"
-	// 	Role.hasMany(models.User, {
-	// 		as: 'user',
-	// 		foreignKey: {
-	// 			fieldName: 'roleId',
-	// 			allowNull: true,
-	// 		},
-	// 	});
-	// };
+	Role.associate = (models) => {
+		// define association between tables
+		// a "role" has many "users"
+		Role.hasMany(models.User, {
+			as: 'user',
+			foreignKey: {
+				fieldName: 'roleId',
+				allowNull: true,
+			},
+		});
+	};
 
 	return Role;
 };
