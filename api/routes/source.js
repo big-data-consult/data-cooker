@@ -96,7 +96,7 @@ router.get('/:id', asyncHandler(async (req, res) => {
 
 // POST /api/sources 201
 // Creates a source, sets the Location header to the URI for the source, and returns no content
-router.post('/', 
+router.post('/',
 	// [
 	// 	check('sourceData')
 	// 		.exists({ checkNull: true, checkFalsy: true })
@@ -147,7 +147,7 @@ router.post('/',
 
 // PUT /api/sources/:id 204
 // Updates a source and returns no content
-router.put('/:id', 
+router.put('/:id',
 	// [
 	// 	check('sourceData')
 	// 		.exists({ checkNull: true, checkFalsy: true })
@@ -199,16 +199,16 @@ router.put('/:id',
 				if (source.permissionId >= req.currentUser.roleId) {
 					// Keep original value if field is not provided
 					source.targetId = req.body.targetId ? req.body.targetId : source.targetId,
-					source.sourceLabel = req.body.sourceLabel ? req.body.sourceLabel : source.sourceLabel,
-					source.sourceData = req.body.sourceData ? req.body.sourceData : source.sourceData,
-					source.sourceEnabled = req.body.sourceEnabled ? req.body.sourceEnabled : source.sourceEnabled,
-					source.sourceReadyTime = req.body.sourceReadyTime ? req.body.sourceReadyTime : source.sourceReadyTime,
-					source.sourceCheckTime = req.body.sourceCheckTime ? req.body.sourceCheckTime : source.sourceCheckTime,
-					source.sourceCheckQuery = req.body.sourceCheckQuery ? req.body.sourceCheckQuery : source.sourceCheckQuery,
-					source.patternDefault = req.body.patternDefault ? req.body.patternDefault : source.patternDefault,
-					source.patternFlexible = req.body.patternFlexible ? req.body.patternFlexible : source.patternFlexible,
-					source.transformation = req.body.transformation ? req.body.transformation : source.transformation,
-					source.permissionId = req.body.permissionId ? req.body.permissionId : source.permissionId
+						source.sourceLabel = req.body.sourceLabel ? req.body.sourceLabel : source.sourceLabel,
+						source.sourceData = req.body.sourceData ? req.body.sourceData : source.sourceData,
+						source.sourceEnabled = req.body.sourceEnabled ? req.body.sourceEnabled : source.sourceEnabled,
+						source.sourceReadyTime = req.body.sourceReadyTime ? req.body.sourceReadyTime : source.sourceReadyTime,
+						source.sourceCheckTime = req.body.sourceCheckTime ? req.body.sourceCheckTime : source.sourceCheckTime,
+						source.sourceCheckQuery = req.body.sourceCheckQuery ? req.body.sourceCheckQuery : source.sourceCheckQuery,
+						source.patternDefault = req.body.patternDefault ? req.body.patternDefault : source.patternDefault,
+						source.patternFlexible = req.body.patternFlexible ? req.body.patternFlexible : source.patternFlexible,
+						source.transformation = req.body.transformation ? req.body.transformation : source.transformation,
+						source.permissionId = req.body.permissionId ? req.body.permissionId : source.permissionId
 
 					// update source details in Sources table
 					const updatedSource = await Source.update({
@@ -289,34 +289,25 @@ router.delete('/:id', authenticate, asyncHandler(async (req, res) => {
 				attributes: ["id", "targetLabel", "targetData"]
 			}
 		]
-	});
-
-	// if source exists
-	if (source) {
+	}).then(source => {
 		// if source permission matches current user's role
 		if (source.permissionId >= req.currentUser.roleId) {
 			// delete source from Sources table
-			const deletedSource = await Source.destroy(
+			const deletedSource = Source.destroy(
 				{
 					where: {
 						id: source.id
 					}
 				}
-			);
-
-			if (deletedSource) {
+			).thrn(deletedSource => {
 				res.status(204).end();
-			}
-
+			})
 		} else {
 			// Return a response with a 403 Client forbidden HTTP status code.
 			res.status(403).json({ message: "Access not permitted" });
 		}
-	} else {
-		res.status(404).json({ message: "Source not found." });
-	}
-})
-);
+	})
+}));
 
 
 module.exports = router;

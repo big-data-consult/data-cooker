@@ -215,7 +215,6 @@ router.put('/:id',
 router.delete('/',
 	authenticate,
 	asyncHandler(async (req, res) => {
-
 		const filter = req.query.filter ? JSON.parse(req.query.filter) : {};
 
 		// delete user from users table
@@ -235,9 +234,7 @@ router.delete('/:id', authenticate, asyncHandler(async (req, res) => {
 	// find existing user
 	const user = await User.findByPk(req.params.id, {
 		attributes: ["id", "firstName", "lastName", "emailAddress", "roleId", "permissionId"]
-	});
-	// if user exists
-	if (user) {
+	}).then(user => {
 		// if user permission matches current user's role
 		if (user.id == req.currentUser.id || req.currentUser.roleId == 1) {
 			// delete user from Users table
@@ -247,19 +244,15 @@ router.delete('/:id', authenticate, asyncHandler(async (req, res) => {
 						id: user.id
 					}
 				}
-			);
-
-			if (deletedUser) {
-				res.status(204).end();
-			}
+			).then(deletedUser => {
+				res.status(204).json({ id: user.id });
+			})
 
 		} else {
 			// Return a response with a 403 Client forbidden HTTP status code.
 			res.status(403).json({ message: "Access not permitted" });
 		}
-	} else {
-		res.status(404).json({ message: "User not found." });
-	}
+	})
 }));
 
 
