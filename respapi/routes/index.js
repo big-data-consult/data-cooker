@@ -3,7 +3,7 @@ const router = express.Router();
 
 /* GET current user. */
 router.get('/', function(req, res, next) {
-  res.redirect('/api/targets')
+  res.redirect('/respapi/targets')
 });
 
 module.exports = router;

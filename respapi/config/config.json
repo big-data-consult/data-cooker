@@ -1,15 +1,15 @@
 {
     "development": {
       "dialect": "sqlite",
-      "storage": "fsjstd-restapi.db"
+      "storage": "../graphql/db/database.sqlite"
     },
     "test": {
       "dialect": "sqlite",
-      "storage": "fsjstd-restapi.db"
+      "storage": "../graphql/db/database.sqlite"
     },
     "production": {
       "dialect": "sqlite",
-      "storage": "fsjstd-restapi.db"
+      "storage": "../graphql/db/database.sqlite"
     }
   }
   

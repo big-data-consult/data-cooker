@@ -1,7 +1,7 @@
 import { stringify } from 'query-string';
 import { fetchUtils, DataProvider } from 'ra-core';
 
-//const apiUrl = 'http://localhost:5000/api/';
+//const apiUrl = 'http://localhost:5000/respapi/';
 //const httpClient = fetchUtils.fetchJson;
 
 //export default {

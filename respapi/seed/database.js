@@ -7,11 +7,12 @@ class Database {
 	constructor(seedData, enableLogging) {
 		this.roles = seedData.roles;
 		this.users = seedData.users;
-		this.courses = seedData.courses;
 		this.targets = seedData.targets;
 		this.sources = seedData.sources;
+		this.courses = seedData.courses;
+		this.notes = seedData.notes;
 		this.enableLogging = enableLogging;
-		this.context = new Context('fsjstd-restapi.db', enableLogging);
+		this.context = new Context('../graphql/db/database.sqlite', enableLogging);
 	}
 
 	log(message) {
@@ -77,41 +78,13 @@ class Database {
           datetime('now'), 
           datetime('now')
           );`,
-			user.userName,
-			user.firstName,
-			user.lastName,
-			user.email,
-			user.password,
-			user.roleId,
-			user.permissionId);
-	}
-
-	createCourse(course) {
-		return this.context
-			.execute(`
-        INSERT INTO Courses(
-          userId, 
-          title, 
-          description, 
-          estimatedTime, 
-          materialsNeeded, 
-          createdAt, 
-          updatedAt
-          )
-        VALUES(
-          ?, /* userId */
-          ?, /* title */
-          ?, /* description */
-          ?, /* estimatedTime */
-          ?, /* materialsNeeded */
-          datetime('now'), 
-          datetime('now')
-          );`,
-			course.userId,
-			course.title,
-			course.description,
-			course.estimatedTime,
-			course.materialsNeeded);
+				user.userName,
+				user.firstName,
+				user.lastName,
+				user.email,
+				user.password,
+				user.roleId,
+				user.permissionId);
 	}
 
 	createTarget(target) {
@@ -206,6 +179,55 @@ class Database {
 				source.permissionId);
 	}
 
+	createCourse(course) {
+		return this.context
+			.execute(`
+        INSERT INTO Courses(
+          userId, 
+          title, 
+          description, 
+          estimatedTime, 
+          materialsNeeded, 
+          createdAt, 
+          updatedAt
+          )
+        VALUES(
+          ?, /* userId */
+          ?, /* title */
+          ?, /* description */
+          ?, /* estimatedTime */
+          ?, /* materialsNeeded */
+          datetime('now'), 
+          datetime('now')
+          );`,
+				course.userId,
+				course.title,
+				course.description,
+				course.estimatedTime,
+				course.materialsNeeded);
+	}
+
+	createNote(note) {
+		return this.context
+			.execute(`
+        INSERT INTO Notes(
+          userId, 
+          note, 
+          createdAt, 
+          updatedAt
+          )
+        VALUES(
+          ?, /* userId */
+          ?, /* note */
+          datetime('now'), 
+          datetime('now')
+          );`,
+				note.userId,
+				note.note,
+				note.estimatedTime,
+				note.materialsNeeded);
+	}
+
 	async hashUserPasswords(users) {
 		const usersWithHashedPasswords = [];
 
@@ -229,12 +251,6 @@ class Database {
 		}
 	}
 
-	async createCourses(courses) {
-		for (const course of courses) {
-			await this.createCourse(course);
-		}
-	}
-
 	async createTargets(targets) {
 		for (const target of targets) {
 			await this.createTarget(target);
@@ -244,6 +260,18 @@ class Database {
 	async createSources(sources) {
 		for (const source of sources) {
 			await this.createSource(source);
+		}
+	}
+
+	async createCourses(courses) {
+		for (const course of courses) {
+			await this.createCourse(course);
+		}
+	}
+
+	async createNotes(notes) {
+		for (const note of notes) {
+			await this.createNote(note);
 		}
 	}
 
@@ -311,38 +339,6 @@ class Database {
 		this.log('Creating the user records...');
 
 		await this.createUsers(users);
-
-
-		// load courses
-		const courseTableExists = await this.tableExists('Courses');
-
-		if (courseTableExists) {
-			this.log('Dropping the Courses table...');
-
-			await this.context.execute(`
-        DROP TABLE IF EXISTS Courses;
-      `);
-		}
-
-		this.log('Creating the Courses table...');
-
-		await this.context.execute(`
-      CREATE TABLE Courses (
-        id INTEGER PRIMARY KEY AUTOINCREMENT, 
-        title VARCHAR(255) NOT NULL DEFAULT '', 
-        description TEXT NOT NULL DEFAULT '', 
-        estimatedTime VARCHAR(255), 
-        materialsNeeded VARCHAR(255), 
-        createdAt DATETIME NOT NULL, 
-        updatedAt DATETIME NOT NULL, 
-        userId INTEGER NOT NULL DEFAULT -1 
-          REFERENCES Users (id) ON DELETE CASCADE ON UPDATE CASCADE
-      );
-    `);
-
-		this.log('Creating the course records...');
-
-		await this.createCourses(this.courses);
 
 
 		// load targets
@@ -425,6 +421,67 @@ class Database {
 		this.log('Creating the source records...');
 
 		await this.createSources(this.sources);
+
+		// load courses
+		const courseTableExists = await this.tableExists('Courses');
+
+		if (courseTableExists) {
+			this.log('Dropping the Courses table...');
+
+			await this.context.execute(`
+        DROP TABLE IF EXISTS Courses;
+      `);
+		}
+
+		this.log('Creating the Courses table...');
+
+		await this.context.execute(`
+      CREATE TABLE Courses (
+        id INTEGER PRIMARY KEY AUTOINCREMENT, 
+        title VARCHAR(255) NOT NULL DEFAULT '', 
+        description TEXT NOT NULL DEFAULT '', 
+        estimatedTime VARCHAR(255), 
+        materialsNeeded VARCHAR(255), 
+        createdAt DATETIME NOT NULL, 
+        updatedAt DATETIME NOT NULL, 
+        userId INTEGER NOT NULL DEFAULT -1 
+          REFERENCES Users (id) ON DELETE CASCADE ON UPDATE CASCADE
+      );
+    `);
+
+		this.log('Creating the course records...');
+
+		await this.createCourses(this.courses);
+
+
+		// load notes
+		const noteTableExists = await this.tableExists('Notes');
+
+		if (noteTableExists) {
+			this.log('Dropping the Notes table...');
+
+			await this.context.execute(`
+        DROP TABLE IF EXISTS Notes;
+      `);
+		}
+
+		this.log('Creating the Notes table...');
+
+		await this.context.execute(`
+      CREATE TABLE Notes (
+        id INTEGER PRIMARY KEY AUTOINCREMENT, 
+        note VARCHAR(255) NOT NULL DEFAULT '', 
+        createdAt DATETIME NOT NULL, 
+        updatedAt DATETIME NOT NULL, 
+        userId INTEGER NOT NULL DEFAULT -1 
+          REFERENCES Users (id) ON DELETE CASCADE ON UPDATE CASCADE
+      );
+    `);
+
+		this.log('Creating the Note records...');
+
+		await this.createNotes(this.notes);
+
 
 		this.log('Database successfully initialized!');
 	}

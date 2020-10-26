@@ -37,8 +37,8 @@ const httpClient = (url, options = {}) => {
   return fetchUtils.fetchJson(url, options);
 };
 
-// const dataProvider = jsonServerProvider('http://localhost:5000/api');
-const dataProvider = jsonServerProvider('http://localhost:5000/api', httpClient);
+// const dataProvider = jsonServerProvider('http://localhost:5000/respapi');
+const dataProvider = jsonServerProvider('http://localhost:5000/respapi', httpClient);
 
 //  <Admin dashboard={Dashboard} authProvider={authProvider} dataProvider={dataProvider}>
 const App = () => (

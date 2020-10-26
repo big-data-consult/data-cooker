@@ -34,14 +34,14 @@ app.use(express.json());
 
 
 // routes
-app.use('/api/roles', roleRouter);
-app.use('/api/users', userRouter);
-app.use('/api/courses', courseRouter);
-app.use('/api/targets', targetRouter);
-app.use('/api/sources', sourceRouter);
-app.use('/api/permissions', permissionRouter);
-app.use('/api/login', loginRouter);
-app.use('/api', defaultRouter);
+app.use('/respapi/roles', roleRouter);
+app.use('/respapi/users', userRouter);
+app.use('/respapi/courses', courseRouter);
+app.use('/respapi/targets', targetRouter);
+app.use('/respapi/sources', sourceRouter);
+app.use('/respapi/permissions', permissionRouter);
+app.use('/respapi', defaultRouter);
+app.use('/rest/login', loginRouter);
 
 
 // setup a friendly greeting for the root route

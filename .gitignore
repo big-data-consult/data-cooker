@@ -1,8 +1,11 @@
-# api dependencies
-api/node_modules
-api/fsjstd-restapi.db
-api/RESTAPI.postman_collection.json
-api/README.md
+# respapi dependencies
+respapi/node_modules
+respapi/fsjstd-restapi.db
+respapi/RESTAPI.postman_collection.json
+respapi/README.md
+
+# hraphql dependencies
+graphql
 
 # client dependencies
 client/node_modules
@@ -12,3 +15,5 @@ client/yarn-error.log
 
 todo.txt.txt
 api/fsjstd-restapi.db
+
+.gitignore
