@@ -15,15 +15,15 @@ const router = express.Router();
 router.get('/', asyncHandler(async (req, res) => {
 
 	// Get query string params
-	const sort = req.query.sort ? JSON.parse(req.query.sort) : ["emailAddress", "ASC"];
+	const sort = req.query.sort ? JSON.parse(req.query.sort) : ["email", "ASC"];
 	const range = req.query.range ? JSON.parse(req.query.range) : [0, 50];
 	const filter = req.header('token') ? {
-		"emailAddress": JSON.parse(req.header("token")).username,
+		"email": JSON.parse(req.header("token")).username,
 		//"password" : bcryptjs.hashSync(JSON.parse(req.headers("token")).password)
 	} : (req.query.filter ? JSON.parse(req.query.filter) : {});
 
 	const users = await User.findAll({
-		attributes: ["id", "firstName", "lastName", "emailAddress", "roleId", "permissionId"],
+		attributes: ["id", "userName", "firstName", "lastName", "email", "roleId", "permissionId"],
 		include: [
 			{
 				model: Role,
@@ -49,7 +49,7 @@ router.get('/:id',
 	authenticate,
 	asyncHandler(async (req, res) => {
 		const user = await User.findByPk(req.params.id, {
-			attributes: ["id", "firstName", "lastName", "emailAddress", "roleId", "permissionId"],
+			attributes: ["id", "userName", "firstName", "lastName", "email", "roleId", "permissionId"],
 			include: [
 				{
 					model: Role,
@@ -71,7 +71,7 @@ router.get('/:id',
 // POST /api/users 201
 // Creates a user, sets the Location header to "/", and returns no content
 router.post('/', asyncHandler(async (req, res) => {
-	if (!req.body.emailAddress) {
+	if (!req.body.email) {
 		const err = new Error('Please enter sufficient credentials.');
 		err.status = 400;
 		next(err);
@@ -79,9 +79,10 @@ router.post('/', asyncHandler(async (req, res) => {
 
 		//Create new user object
 		const newUser = {
+			userName: req.body.userName,
 			firstName: req.body.firstName,
 			lastName: req.body.lastName,
-			emailAddress: req.body.emailAddress,
+			email: req.body.email,
 			password: req.body.password,
 			roleId: req.body.roleId,
 			permissionId: 1 // permission is static
@@ -89,7 +90,7 @@ router.post('/', asyncHandler(async (req, res) => {
 		//bcrypt will has the new user's password in the database
 		newUser.password = bcryptjs.hashSync(newUser.password);
 
-		await User.findOne({ where: { emailAddress: newUser.emailAddress } })
+		await User.findOne({ where: { email: newUser.email } })
 			.then(user => {
 				if (user) {
 					const err = new Error('This user already exists.')
@@ -132,7 +133,7 @@ router.put('/:id',
 	// check('lastName')
 	// 	.exists({ checkNull: true, checkFalsy: true })
 	// 	.withMessage('Please provide a value for "last name"'),
-	// check('emailAddress')
+	// check('email')
 	// 	.exists({ checkNull: true, checkFalsy: true })
 	// 	.withMessage('Please provide a value for "email"')
 	// 	.isEmail()
@@ -158,7 +159,7 @@ router.put('/:id',
 
 			// find existing user
 			const user = await User.findByPk(req.params.id, {
-				attributes: ["id", "firstName", "lastName", "emailAddress", "roleId", "permissionId"]
+				attributes: ["id", "userName", "firstName", "lastName", "email", "roleId", "permissionId"]
 			});
 
 			// if user exists
@@ -167,9 +168,10 @@ router.put('/:id',
 				if (user.permissionId >= req.currentUser.roleId || user.id == req.currentUser.id) {
 
 					// Keep original value if field is not provided
+					user.userName = req.body.userName ? req.body.userName : user.userName;
 					user.firstName = req.body.firstName ? req.body.firstName : user.firstName;
 					user.lastName = req.body.lastName ? req.body.lastName : user.lastName;
-					user.emailAddress = req.body.emailAddress ? req.body.emailAddress : user.emailAddress;
+					user.email = req.body.email ? req.body.email : user.email;
 
 					// Hash the new user's password.
 					user.password = req.body.password ? bcryptjs.hashSync(req.body.password) : user.password;
@@ -181,9 +183,10 @@ router.put('/:id',
 
 					// update user details in Users table
 					const updatedUser = await User.update({
+						userName: user.userName,
 						firstName: user.firstName,
 						lastName: user.lastName,
-						emailAddress: user.emailAddress,
+						email: user.email,
 						password: user.password,
 						roleId: user.roleId,
 						permissionId: 1
@@ -233,7 +236,7 @@ router.delete('/:id', authenticate, asyncHandler(async (req, res) => {
 
 	// find existing user
 	const user = await User.findByPk(req.params.id, {
-		attributes: ["id", "firstName", "lastName", "emailAddress", "roleId", "permissionId"]
+		attributes: ["id", "userName", "firstName", "lastName", "email", "roleId", "permissionId"]
 	}).then(user => {
 		// if user permission matches current user's role
 		if (user.id == req.currentUser.id || req.currentUser.roleId == 1) {
@@ -245,7 +248,7 @@ router.delete('/:id', authenticate, asyncHandler(async (req, res) => {
 					}
 				}
 			).then(deletedUser => {
-				res.status(204).json({ id: user.id });
+				res.status(204).json({ id: user.id, data: user });
 			})
 
 		} else {

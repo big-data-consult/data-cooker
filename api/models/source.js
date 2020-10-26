@@ -98,8 +98,6 @@ module.exports = (sequelize, DataTypes) => {
 				}
 			}
 		},
-		estimatedTime: DataTypes.STRING,
-		materialsNeeded: DataTypes.STRING,
 		permissionId: DataTypes.INTEGER
 	},{});
 

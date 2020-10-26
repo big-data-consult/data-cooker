@@ -9,19 +9,19 @@ router.get('/', (req, res, next) => {
 	//Find all courses
 	Course.findAll({
 		//This is all the course data
-			attributes: ['id', 'title', 'description', 'estimatedTime', 'materialsNeeded', 'userId'],
-			include: [{
-				//this is the user data associated with each course
-				model: User,
-				attributes: ['id', 'firstName', 'lastName', 'emailAddress']
-			}]
-		}).then(courses => {
-			res.status(200);
-			//retrieve courses in JSON format
-			res.json({
-				courses
-			});
-		})
+		attributes: ['id', 'title', 'description', 'estimatedTime', 'materialsNeeded', 'userId'],
+		include: [{
+			//this is the user data associated with each course
+			model: User,
+			attributes: ['id', 'userName', 'firstName', 'lastName', 'email']
+		}]
+	}).then(courses => {
+		res.status(200);
+		//retrieve courses in JSON format
+		res.json({
+			courses
+		});
+	})
 		//Catch the errors
 		.catch(err => {
 			err.status = 400;
@@ -38,7 +38,7 @@ router.get('/:id', (req, res, next) => {
 		attributes: ['id', 'title', 'description', 'estimatedTime', 'materialsNeeded', 'userId'],
 		include: [{
 			model: User,
-			attributes: ['id', 'firstName', 'lastName', 'emailAddress']
+			attributes: ['id', 'userName', 'firstName', 'lastName', 'email']
 		}]
 	}).then(course => {
 		//Checks for match for course
@@ -80,9 +80,9 @@ router.post('/', authenticate, (req, res, next) => {
 				next(err);
 			} else {
 				Course.create(req.body).then(course => {
-						res.location(`/api/courses/${course.id}`);
-						res.status(201).end();
-					})
+					res.location(`/api/courses/${course.id}`);
+					res.status(201).end();
+				})
 					//Catch errors
 					.catch(err => {
 						err.status = 400;
@@ -110,32 +110,32 @@ router.put('/:id', authenticate, (req, res, next) => {
 		next(err);
 	} else {
 		Course.findOne({
-				where: {
-					id: req.body.id
+			where: {
+				id: req.body.id
+			}
+		}).then(course => {
+			if (!course) {
+				res.status(404).json({
+					message: 'Course Not Found'
+				});
+			} else if (course) {
+				if (user.id === course.userId) {
+					const updateCourse = {
+						id: req.body.id,
+						title: req.body.title,
+						description: req.body.description,
+						estimatedTime: req.body.estimatedTime,
+						materialsNeeded: req.body.materialsNeeded,
+						userId: req.currentUser.id
+					};
+					course.update(req.body);
+				} else {
+					res.location('/').status(403).json("You do not have permissions to update this course");
 				}
-			}).then(course => {
-				if (!course) {
-					res.status(404).json({
-						message: 'Course Not Found'
-					});
-				} else if (course) {
-					if (user.id === course.userId) {
-						const updateCourse = {
-							id: req.body.id,
-							title: req.body.title,
-							description: req.body.description,
-							estimatedTime: req.body.estimatedTime,
-							materialsNeeded: req.body.materialsNeeded,
-							userId: req.currentUser.id
-						};
-						course.update(req.body);
-					} else {
-						res.location('/').status(403).json("You do not have permissions to update this course");
-					}
-				}
-			}).then(() => {
-				res.status(204).end();
-			})
+			}
+		}).then(() => {
+			res.status(204).end();
+		})
 			//Catch any errors
 			.catch(err => {
 				err.status = 400;
@@ -145,29 +145,29 @@ router.put('/:id', authenticate, (req, res, next) => {
 });
 /* Delete individual course. */
 router.delete('/:id', authenticate, (req, res, next) => {
-  const user = req.currentUser;
+	const user = req.currentUser;
 	//Find one course to delete
 	Course.findOne({
-			where: {
-				id: req.params.id
-			}
-		}).then(course => {
-			//If course doesn't exist
-			if (!course) {
-				//Show error
-				res.status(404).json({
-					message: 'Course Not Found'
-				});
-			} else if (user.id === course.userId) {
-				//Delete the course
-				return course.destroy();
-			} else{
-        res.location('/').status(403).json("You do not have permissions to delete this course");
-      }
-		}).then(() => {
-			//Return no content and end the request
-			res.status(204).end();
-		})
+		where: {
+			id: req.params.id
+		}
+	}).then(course => {
+		//If course doesn't exist
+		if (!course) {
+			//Show error
+			res.status(404).json({
+				message: 'Course Not Found'
+			});
+		} else if (user.id === course.userId) {
+			//Delete the course
+			return course.destroy();
+		} else {
+			res.location('/').status(403).json("You do not have permissions to delete this course");
+		}
+	}).then(() => {
+		//Return no content and end the request
+		res.status(204).end();
+	})
 		//Catch the errors
 		.catch(err => {
 			err.status = 400;

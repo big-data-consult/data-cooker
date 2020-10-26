@@ -5,9 +5,10 @@ export const UserShow = props => (
     <Show {...props}>
         <SimpleShowLayout>
             <TextField source="id" /> 
+            <TextField source="userName" />
             <TextField source="firstName" />
             <TextField source="lastName" />
-            <TextField source="emailAddress" />
+            <TextField source="email" />
             <ReferenceField source="roleId" reference="roles"><TextField source="id" /></ReferenceField>
             <ReferenceField source="permissionId" reference="permissions"><TextField source="id" /></ReferenceField>
             <NumberField source="role.id" />

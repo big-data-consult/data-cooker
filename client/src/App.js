@@ -30,7 +30,7 @@ const httpClient = (url, options = {}) => {
   // Add authentication token
   const strToken = localStorage.getItem('token');
   const token = JSON.parse(strToken);
-  options.headers.set('Authorization', 'Basic ' + Base64.btoa(token.emailAddress + ':' + token.password));
+  options.headers.set('Authorization', 'Basic ' + Base64.btoa(token.email + ':' + token.password));
 
   // Add additional headers as needed
   options.headers.set('X-Custom-Header', 'foobar');

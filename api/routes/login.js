@@ -22,11 +22,11 @@ router.post('/', asyncHandler(async (req, res) => {
 
 		//Create new user object
 		const newUser = {
-			emailAddress: req.body.username,
+			email: req.body.username,
 			password: bcryptjs.hashSync(req.body.password)
 		};
 
-		await User.findOne({ where: { emailAddress: newUser.emailAddress } })
+		await User.findOne({ where: { email: newUser.email } })
 			.then(user => {
 				if (!user) {
 					const err = new Error('User not exist.')

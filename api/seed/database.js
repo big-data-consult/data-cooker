@@ -4,38 +4,38 @@ const bcryptjs = require('bcryptjs');
 const Context = require('./context');
 
 class Database {
-  constructor(seedData, enableLogging) {
-    this.roles = seedData.roles;
-    this.users = seedData.users;
-    this.courses = seedData.courses;
-    this.targets = seedData.targets;
-    this.sources = seedData.sources;
-    this.enableLogging = enableLogging;
-    this.context = new Context('fsjstd-restapi.db', enableLogging);
-  }
+	constructor(seedData, enableLogging) {
+		this.roles = seedData.roles;
+		this.users = seedData.users;
+		this.courses = seedData.courses;
+		this.targets = seedData.targets;
+		this.sources = seedData.sources;
+		this.enableLogging = enableLogging;
+		this.context = new Context('fsjstd-restapi.db', enableLogging);
+	}
 
-  log(message) {
-    if (this.enableLogging) {
-      console.info(message);
-    }
-  }
+	log(message) {
+		if (this.enableLogging) {
+			console.info(message);
+		}
+	}
 
-  tableExists(tableName) {
-    this.log(`Checking if the ${tableName} table exists...`);
+	tableExists(tableName) {
+		this.log(`Checking if the ${tableName} table exists...`);
 
-    return this.context
-      .retrieveValue(`
+		return this.context
+			.retrieveValue(`
         SELECT EXISTS (
           SELECT 1 
           FROM sqlite_master 
           WHERE type = 'table' AND name = ?
         );
       `, tableName);
-  }
+	}
 
-  createRole(role) {
-    return this.context
-      .execute(`
+	createRole(role) {
+		return this.context
+			.execute(`
         INSERT INTO Roles(
           id, 
           roleName, 
@@ -48,17 +48,18 @@ class Database {
           datetime('now'), 
           datetime('now')
           );`,
-        role.id,
-        role.roleName);
-  }
+				role.id,
+				role.roleName);
+	}
 
-  createUser(user) {
-    return this.context
-      .execute(`
+	createUser(user) {
+		return this.context
+			.execute(`
         INSERT INTO Users(
+          userName, 
           firstName, 
           lastName, 
-          emailAddress, 
+          email, 
           password, 
           roleId, 
           permissionId, 
@@ -66,26 +67,28 @@ class Database {
           updatedAt
           )
         VALUES(
+          ?, /* userName */
           ?, /* firstName */
           ?, /* lastName */
-          ?, /* emailAddress */
+          ?, /* email */
           ?, /* password */
           ?, /* roleId */
           ?, /* permissionId */
           datetime('now'), 
           datetime('now')
           );`,
-        user.firstName,
-        user.lastName,
-        user.emailAddress,
-        user.password,
-        user.roleId,
-        user.permissionId);
-  }
+			user.userName,
+			user.firstName,
+			user.lastName,
+			user.email,
+			user.password,
+			user.roleId,
+			user.permissionId);
+	}
 
-  createCourse(course) {
-    return this.context
-      .execute(`
+	createCourse(course) {
+		return this.context
+			.execute(`
         INSERT INTO Courses(
           userId, 
           title, 
@@ -104,16 +107,16 @@ class Database {
           datetime('now'), 
           datetime('now')
           );`,
-        course.userId,
-        course.title,
-        course.description,
-        course.estimatedTime,
-        course.materialsNeeded);
-  }
+			course.userId,
+			course.title,
+			course.description,
+			course.estimatedTime,
+			course.materialsNeeded);
+	}
 
-  createTarget(target) {
-    return this.context
-      .execute(`
+	createTarget(target) {
+		return this.context
+			.execute(`
         INSERT INTO Targets(
           targetLabel,
           targetData,
@@ -158,15 +161,15 @@ class Database {
           datetime('now'), 
           datetime('now')
           );`,
-        target.targetLabel,
-        target.targetData,
-        target.batchControlColumn,
-        target.permissionId);
-  }
+				target.targetLabel,
+				target.targetData,
+				target.batchControlColumn,
+				target.permissionId);
+	}
 
-  createSource(source) {
-    return this.context
-      .execute(`
+	createSource(source) {
+		return this.context
+			.execute(`
         INSERT INTO Sources(
           targetId,
           sourceLabel,
@@ -197,69 +200,69 @@ class Database {
           datetime('now'), 
           datetime('now')
           );`,
-        source.targetId,
-        source.sourceData,
-        source.transformation,
-        source.permissionId);
-  }
+				source.targetId,
+				source.sourceData,
+				source.transformation,
+				source.permissionId);
+	}
 
-  async hashUserPasswords(users) {
-    const usersWithHashedPasswords = [];
+	async hashUserPasswords(users) {
+		const usersWithHashedPasswords = [];
 
-    for (const user of users) {
-      const hashedPassword = await bcryptjs.hash(user.password, 10);
-      usersWithHashedPasswords.push({ ...user, password: hashedPassword });
-    }
+		for (const user of users) {
+			const hashedPassword = await bcryptjs.hash(user.password, 10);
+			usersWithHashedPasswords.push({ ...user, password: hashedPassword });
+		}
 
-    return usersWithHashedPasswords;
-  }
+		return usersWithHashedPasswords;
+	}
 
-  async createRoles(roles) {
-    for (const role of roles) {
-      await this.createRole(role);
-    }
-  }
+	async createRoles(roles) {
+		for (const role of roles) {
+			await this.createRole(role);
+		}
+	}
 
-  async createUsers(users) {
-    for (const user of users) {
-      await this.createUser(user);
-    }
-  }
+	async createUsers(users) {
+		for (const user of users) {
+			await this.createUser(user);
+		}
+	}
 
-  async createCourses(courses) {
-    for (const course of courses) {
-      await this.createCourse(course);
-    }
-  }
+	async createCourses(courses) {
+		for (const course of courses) {
+			await this.createCourse(course);
+		}
+	}
 
-  async createTargets(targets) {
-    for (const target of targets) {
-      await this.createTarget(target);
-    }
-  }
+	async createTargets(targets) {
+		for (const target of targets) {
+			await this.createTarget(target);
+		}
+	}
 
-  async createSources(sources) {
-    for (const source of sources) {
-      await this.createSource(source);
-    }
-  }
+	async createSources(sources) {
+		for (const source of sources) {
+			await this.createSource(source);
+		}
+	}
 
-  async init() {
+	async init() {
 
-    // load roles
-    const roleTableExists = await this.tableExists('Roles');
+		// load roles
+		const roleTableExists = await this.tableExists('Roles');
 
-    if (roleTableExists) {
-      this.log('Dropping the Roles table...');
+		if (roleTableExists) {
+			this.log('Dropping the Roles table...');
 
-      await this.context.execute(`
+			await this.context.execute(`
         DROP TABLE IF EXISTS Roles;
       `);
-    }
+		}
 
-    this.log('Creating the Roles table...');
+		this.log('Creating the Roles table...');
 
-    await this.context.execute(`
+		await this.context.execute(`
       CREATE TABLE Roles (
         id INTEGER PRIMARY KEY, 
         roleName VARCHAR(255) NOT NULL DEFAULT '',
@@ -268,30 +271,31 @@ class Database {
       );
     `);
 
-    this.log('Creating the role records...');
+		this.log('Creating the role records...');
 
-    await this.createRoles(this.roles);
+		await this.createRoles(this.roles);
 
 
-    // load users
-    const userTableExists = await this.tableExists('Users');
+		// load users
+		const userTableExists = await this.tableExists('Users');
 
-    if (userTableExists) {
-      this.log('Dropping the Users table...');
+		if (userTableExists) {
+			this.log('Dropping the Users table...');
 
-      await this.context.execute(`
+			await this.context.execute(`
         DROP TABLE IF EXISTS Users;
       `);
-    }
+		}
 
-    this.log('Creating the Users table...');
+		this.log('Creating the Users table...');
 
-    await this.context.execute(`
+		await this.context.execute(`
       CREATE TABLE Users (
         id INTEGER PRIMARY KEY AUTOINCREMENT, 
+        userName VARCHAR(255) NOT NULL DEFAULT '', 
         firstName VARCHAR(255) NOT NULL DEFAULT '', 
         lastName VARCHAR(255) NOT NULL DEFAULT '', 
-        emailAddress VARCHAR(255) NOT NULL DEFAULT '' UNIQUE, 
+        email VARCHAR(255) NOT NULL DEFAULT '' UNIQUE, 
         password VARCHAR(255) NOT NULL DEFAULT '', 
         roleId INTEGER NULL REFERENCES Roles (id),
         permissionId INTEGER NOT NULL, 
@@ -300,29 +304,29 @@ class Database {
       );
     `);
 
-    this.log('Hashing the user passwords...');
+		this.log('Hashing the user passwords...');
 
-    const users = await this.hashUserPasswords(this.users);
+		const users = await this.hashUserPasswords(this.users);
 
-    this.log('Creating the user records...');
+		this.log('Creating the user records...');
 
-    await this.createUsers(users);
+		await this.createUsers(users);
 
 
-    // load courses
-    const courseTableExists = await this.tableExists('Courses');
+		// load courses
+		const courseTableExists = await this.tableExists('Courses');
 
-    if (courseTableExists) {
-      this.log('Dropping the Courses table...');
+		if (courseTableExists) {
+			this.log('Dropping the Courses table...');
 
-      await this.context.execute(`
+			await this.context.execute(`
         DROP TABLE IF EXISTS Courses;
       `);
-    }
+		}
 
-    this.log('Creating the Courses table...');
+		this.log('Creating the Courses table...');
 
-    await this.context.execute(`
+		await this.context.execute(`
       CREATE TABLE Courses (
         id INTEGER PRIMARY KEY AUTOINCREMENT, 
         title VARCHAR(255) NOT NULL DEFAULT '', 
@@ -336,25 +340,25 @@ class Database {
       );
     `);
 
-    this.log('Creating the course records...');
+		this.log('Creating the course records...');
 
-    await this.createCourses(this.courses);
+		await this.createCourses(this.courses);
 
 
-    // load targets
-    const targetTableExists = await this.tableExists('Targets');
+		// load targets
+		const targetTableExists = await this.tableExists('Targets');
 
-    if (targetTableExists) {
-      this.log('Dropping the Targets table...');
+		if (targetTableExists) {
+			this.log('Dropping the Targets table...');
 
-      await this.context.execute(`
+			await this.context.execute(`
         DROP TABLE IF EXISTS Targets;
       `);
-    }
+		}
 
-    this.log('Creating the Targets table...');
+		this.log('Creating the Targets table...');
 
-    await this.context.execute(`
+		await this.context.execute(`
       CREATE TABLE Targets (
         id INTEGER PRIMARY KEY AUTOINCREMENT, 
         targetLabel STRING,
@@ -380,25 +384,25 @@ class Database {
       );
     `);
 
-    this.log('Creating the target records...');
+		this.log('Creating the target records...');
 
-    await this.createTargets(this.targets);
+		await this.createTargets(this.targets);
 
 
-    // load sources
-    const sourceTableExists = await this.tableExists('Sources');
+		// load sources
+		const sourceTableExists = await this.tableExists('Sources');
 
-    if (sourceTableExists) {
-      this.log('Dropping the Sources table...');
+		if (sourceTableExists) {
+			this.log('Dropping the Sources table...');
 
-      await this.context.execute(`
+			await this.context.execute(`
         DROP TABLE IF EXISTS Sources;
       `);
-    }
+		}
 
-    this.log('Creating the Sources table...');
+		this.log('Creating the Sources table...');
 
-    await this.context.execute(`
+		await this.context.execute(`
       CREATE TABLE Sources (
         id INTEGER PRIMARY KEY AUTOINCREMENT, 
         targetId INTEGER NOT NULL DEFAULT -1 
@@ -418,12 +422,12 @@ class Database {
       );
     `);
 
-    this.log('Creating the source records...');
+		this.log('Creating the source records...');
 
-    await this.createSources(this.sources);
+		await this.createSources(this.sources);
 
-    this.log('Database successfully initialized!');
-  }
+		this.log('Database successfully initialized!');
+	}
 }
 
 module.exports = Database;
