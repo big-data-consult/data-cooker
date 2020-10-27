@@ -1,6 +1,6 @@
 import * as React from "react";
 import { useMediaQuery } from '@material-ui/core';
-import { Filter, ReferenceInput, SelectInput, SimpleList, List, Datagrid, TextField, ImageField, ReferenceField, EmailField, EditButton } from 'react-admin';
+import { Filter, ReferenceInput, SelectInput, SimpleList, List, Datagrid, TextField, ImageField, ChipField, ReferenceField, EmailField, EditButton } from 'react-admin';
 
 const UserFilter = (props) => (
 	<Filter {...props}>
@@ -29,7 +29,7 @@ export const UserList = props => {
 						<TextField source="lastName" />
 						<EmailField source="email" />
 						<ReferenceField source="avatarId" reference="avatars"><ImageField source="avatarData" /></ReferenceField>
-						<ReferenceField source="roleId" reference="roles"><TextField source="roleName" /></ReferenceField>
+						<ReferenceField source="roleId" reference="roles"><ChipField source="roleName" /></ReferenceField>
 						{/* <ReferenceField source="permissionId" reference="permissions"><TextField source="id" /></ReferenceField> */}
 						<EditButton />
 					</Datagrid>

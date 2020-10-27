@@ -72,7 +72,7 @@ const Menu: FC<Props> = ({ onMenuClick, dense, logout }) => {
         <Box mt={1}>
             {' '}
             <DashboardMenuItem onClick={onMenuClick} sidebarIsOpen={open} />
-            <SubMenu
+            {/* <SubMenu
                 handleToggle={() => handleToggle('menuNormalizer')}
                 isOpen={state.menuNormalizer}
                 sidebarIsOpen={open}
@@ -110,7 +110,7 @@ const Menu: FC<Props> = ({ onMenuClick, dense, logout }) => {
                     sidebarIsOpen={open}
                     dense={dense}
                 />
-            </SubMenu>
+            </SubMenu> */}
             <SubMenu
                 handleToggle={() => handleToggle('menuAggregator')}
                 isOpen={state.menuAggregator}
@@ -150,7 +150,7 @@ const Menu: FC<Props> = ({ onMenuClick, dense, logout }) => {
                     dense={dense}
                 />
             </SubMenu>
-            <SubMenu
+            {/* <SubMenu
                 handleToggle={() => handleToggle('menuAllocator')}
                 isOpen={state.menuAllocator}
                 sidebarIsOpen={open}
@@ -178,7 +178,7 @@ const Menu: FC<Props> = ({ onMenuClick, dense, logout }) => {
                     sidebarIsOpen={open}
                     dense={dense}
                 />
-            </SubMenu>
+            </SubMenu> */}
             <SubMenu
                 handleToggle={() => handleToggle('menuUserAdmin')}
                 isOpen={state.menuUserAdmin}

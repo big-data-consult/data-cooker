@@ -1,10 +1,10 @@
 import * as React from "react";
 import { useMediaQuery } from '@material-ui/core';
-import { Filter, ReferenceInput, SelectInput, TextInput, SimpleList, List, Datagrid, TextField, NumberField, ReferenceField, EditButton } from 'react-admin';
+import { Filter, ReferenceInput, SelectInput, ChipField, SimpleList, List, Datagrid, TextField, NumberField, ReferenceField, EditButton } from 'react-admin';
 
 const SourceFilter = (props) => (
     <Filter {...props}>
-        <ReferenceInput label="Target Data" source="targetId" reference="targets" alwaysOn >
+        <ReferenceInput label="Target Data" source="targetId" reference="targets" filterDefaultValues={{ "(all)": true }} alwaysOn >
             <SelectInput optionText="targetData" />
         </ReferenceInput>
         {/* <TextInput label="Source Data" source="sourceData" allowEmpty /> */}
@@ -35,7 +35,7 @@ export const SourceList = props => {
                     <TextField source="transformation" />
                     <ReferenceField source="permissionId" reference="permissions"><TextField source="id" /></ReferenceField>
                     <ReferenceField source="target.targetId" reference="target.targets"><TextField source="id" /></ReferenceField> */}
-                    <ReferenceField source="targetId" reference="targets"><TextField source="targetData" /></ReferenceField>
+                    <ReferenceField source="targetId" reference="targets"><ChipField source="targetData" /></ReferenceField>
                     <EditButton />
                 </Datagrid>
             )}
