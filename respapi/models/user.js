@@ -58,6 +58,10 @@ module.exports = function (sequelize, DataTypes) {
 				},
 			}
 		},
+		avatarId: {
+			type: DataTypes.INTEGER,
+			allowNull: true
+		},
 		roleId: {
 			type: DataTypes.INTEGER,
 			allowNull: true
@@ -71,6 +75,14 @@ module.exports = function (sequelize, DataTypes) {
 			as: 'role',
 			foreignKey: {
 				fieldName: 'roleId',
+			},
+		});
+
+		//User" belongs to a single "Role"
+		User.belongsTo(models.Avatar, {
+			as: 'avatar',
+			foreignKey: {
+				fieldName: 'avatarId',
 			},
 		});
 

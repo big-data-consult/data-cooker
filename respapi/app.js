@@ -7,6 +7,7 @@ const Sequelize = require('sequelize');
 const models = require('./models').sequelize;
 const cors = require('cors');
 //const authenticate = require('./routes/auth');
+const avatarRouter = require('./routes/avatar');
 const roleRouter = require('./routes/role');
 const userRouter = require('./routes/user');
 const courseRouter = require('./routes/course');
@@ -32,8 +33,8 @@ app.use(morgan('dev'));
 // and also that it should be made available in the req.body
 app.use(express.json());
 
-
 // routes
+app.use('/respapi/avatars', avatarRouter);
 app.use('/respapi/roles', roleRouter);
 app.use('/respapi/users', userRouter);
 app.use('/respapi/courses', courseRouter);
@@ -41,7 +42,7 @@ app.use('/respapi/targets', targetRouter);
 app.use('/respapi/sources', sourceRouter);
 app.use('/respapi/permissions', permissionRouter);
 app.use('/respapi', defaultRouter);
-app.use('/rest/login', loginRouter);
+app.use('/respapi/login', loginRouter);
 
 
 // setup a friendly greeting for the root route

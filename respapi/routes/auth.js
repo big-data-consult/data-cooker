@@ -4,7 +4,8 @@ const { Op } = require("sequelize");
 const express = require('express');
 const User = require("../models").User;
 const authenticate = require('basic-auth');
-const bcryptjs = require('bcryptjs');
+//const bcryptjs = require('bcryptjs');
+const bcryptService = require('../../graphql/api/services/bcrypt.service');
 
 /**
  * Middleware to authenticate the request using Basic Authentication.
@@ -35,10 +36,9 @@ module.exports = (req, res, next) => {
 			//If email exists
 			if (user) {
 				//Check the password
-				const authenticated = bcryptjs
-					.compareSync(credentials.pass, user.password);
+				const authenticated = bcryptService().compareSync(credentials.pass, user.password);
 				//If password is a match
-				if (authenticated || true) {
+				if (true || authenticated) {
 					//Store the user on the Request object.
 					req.currentUser = user;
 					//Go to the next middleware

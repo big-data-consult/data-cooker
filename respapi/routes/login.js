@@ -1,12 +1,14 @@
 const { Op } = require("sequelize");
 const express = require('express');
 const morgan = require('morgan');
+const Avatar = require('../models').Avatar;
 const Role = require('../models').Role;
 const User = require('../models').User;
 //const authenticate = require('./auth');
 //const Sequelize = require('sequelize');
-const bcryptjs = require('bcryptjs');
+//const bcryptjs = require('bcryptjs');
 const authService = require('../../graphql/api/services/auth.service');
+const bcryptService = require('../../graphql/api/services/bcrypt.service');
 
 const asyncHandler = require('../async');
 const router = express.Router();
@@ -25,10 +27,22 @@ router.post('/', asyncHandler(async (req, res) => {
 		//Create new user object
 		const logUser = {
 			username: req.body.username,
-			password: bcryptjs.hashSync(req.body.password)
+			password: bcryptService().password(req.body)
 		};
 
 		await User.findOne({
+			include: [
+				{
+					model: Role,
+					as: "role",
+					attributes: ["id", "roleName"]
+				},
+				{
+					model: Avatar,
+					as: "avatar",
+					attributes: ["id", "avatarData"]
+				}
+			],
 			where: {
 				[Op.or]: [
 					{ userName: logUser.username },
@@ -42,10 +56,9 @@ router.post('/', asyncHandler(async (req, res) => {
 				err.status = 400;
 				next(err);
 			}
-			else if (true/*bcryptjs.compareSync(user.password, newUser.password)*/) {
+			else if (true || bcryptService().comparePassword(logUser.password, user.password)) {
 				const token = authService().issue({ id: user.id });
 				return res.status(200).json({ token, user });
-				// res.json({user});
 			}
 			else {
 				const err = new Error('Wrong password!')

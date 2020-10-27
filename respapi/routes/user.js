@@ -1,5 +1,6 @@
 const express = require('express');
 const morgan = require('morgan');
+const Avatar = require('../models').Avatar;
 const Role = require('../models').Role;
 const User = require('../models').User;
 const authenticate = require('./auth');
@@ -23,12 +24,17 @@ router.get('/', asyncHandler(async (req, res) => {
 	} : (req.query.filter ? JSON.parse(req.query.filter) : {});
 
 	const users = await User.findAll({
-		attributes: ["id", "userName", "firstName", "lastName", "email", "roleId", "permissionId"],
+		attributes: ["id", "userName", "firstName", "lastName", "email", "avatarId", "roleId", "permissionId"],
 		include: [
 			{
 				model: Role,
 				as: "role",
 				attributes: ["id", "roleName"]
+			},
+			{
+				model: Avatar,
+				as: "avatar",
+				attributes: ["id", "avatarData"]
 			}
 		],
 		where: filter,
@@ -49,12 +55,17 @@ router.get('/:id',
 	authenticate,
 	asyncHandler(async (req, res) => {
 		const user = await User.findByPk(req.params.id, {
-			attributes: ["id", "userName", "firstName", "lastName", "email", "roleId", "permissionId"],
+			attributes: ["id", "userName", "firstName", "lastName", "email", "avatarId", "roleId", "permissionId"],
 			include: [
 				{
 					model: Role,
 					as: "role",
 					attributes: ["id", "roleName"]
+				},
+				{
+					model: avatarId,
+					as: "avatar",
+					attributes: ["id", "avatarData"]
 				}
 			]
 		});
@@ -84,6 +95,7 @@ router.post('/', asyncHandler(async (req, res) => {
 			lastName: req.body.lastName,
 			email: req.body.email,
 			password: req.body.password,
+			avater: req.body.avatarId,
 			roleId: req.body.roleId,
 			permissionId: 1 // permission is static
 		};
@@ -159,7 +171,7 @@ router.put('/:id',
 
 			// find existing user
 			const user = await User.findByPk(req.params.id, {
-				attributes: ["id", "userName", "firstName", "lastName", "email", "roleId", "permissionId"]
+				attributes: ["id", "userName", "firstName", "lastName", "email", "password", "avatarId", "roleId", "permissionId"]
 			});
 
 			// if user exists
@@ -172,6 +184,9 @@ router.put('/:id',
 					user.firstName = req.body.firstName ? req.body.firstName : user.firstName;
 					user.lastName = req.body.lastName ? req.body.lastName : user.lastName;
 					user.email = req.body.email ? req.body.email : user.email;
+					user.password = req.body.password ? req.body.password : user.password;
+					user.avaterId = req.body.avaterId ? req.body.avaterId : user.avaterId;
+					user.roleId = req.body.roleId ? req.body.roleId : user.roleId;
 
 					// Hash the new user's password.
 					user.password = req.body.password ? bcryptjs.hashSync(req.body.password) : user.password;
@@ -188,6 +203,7 @@ router.put('/:id',
 						lastName: user.lastName,
 						email: user.email,
 						password: user.password,
+						avaterId: user.avatarId,
 						roleId: user.roleId,
 						permissionId: 1
 					}, {
@@ -236,7 +252,7 @@ router.delete('/:id', authenticate, asyncHandler(async (req, res) => {
 
 	// find existing user
 	const user = await User.findByPk(req.params.id, {
-		attributes: ["id", "userName", "firstName", "lastName", "email", "roleId", "permissionId"]
+		attributes: ["id", "userName", "firstName", "lastName", "email", "avatarId", "roleId", "permissionId"]
 	}).then(user => {
 		// if user permission matches current user's role
 		if (user.id == req.currentUser.id || req.currentUser.roleId == 1) {

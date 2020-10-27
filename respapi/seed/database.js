@@ -1,10 +1,12 @@
 'use strict';
 
-const bcryptjs = require('bcryptjs');
+//const bcryptjs = require('bcryptjs');
 const Context = require('./context');
+const bcryptService = require('../../graphql/api/services/bcrypt.service');
 
 class Database {
 	constructor(seedData, enableLogging) {
+		this.avatars = seedData.avatars;
 		this.roles = seedData.roles;
 		this.users = seedData.users;
 		this.targets = seedData.targets;
@@ -32,6 +34,25 @@ class Database {
           WHERE type = 'table' AND name = ?
         );
       `, tableName);
+	}
+
+	createAvatar(avatar) {
+		return this.context
+			.execute(`
+        INSERT INTO Avatars(
+          id, 
+          avatarData, 
+          createdAt, 
+          updatedAt
+          )
+        VALUES(
+          ?, /* id */
+          ?, /* avatarData */
+          datetime('now'), 
+          datetime('now')
+          );`,
+		avatar.id,
+		avatar.avatarData);
 	}
 
 	createRole(role) {
@@ -62,6 +83,7 @@ class Database {
           lastName, 
           email, 
           password, 
+          avatarId, 
           roleId, 
           permissionId, 
           createdAt, 
@@ -73,18 +95,21 @@ class Database {
           ?, /* lastName */
           ?, /* email */
           ?, /* password */
+          ?, /* avatarId */
           ?, /* roleId */
           ?, /* permissionId */
           datetime('now'), 
           datetime('now')
           );`,
-				user.userName,
-				user.firstName,
-				user.lastName,
-				user.email,
-				user.password,
-				user.roleId,
-				user.permissionId);
+			user.userName,
+			user.firstName,
+			user.lastName,
+			user.email,
+			user.password,
+			user.avatarId,
+			user.roleId,
+			user.permissionId
+			);
 	}
 
 	createTarget(target) {
@@ -232,11 +257,17 @@ class Database {
 		const usersWithHashedPasswords = [];
 
 		for (const user of users) {
-			const hashedPassword = await bcryptjs.hash(user.password, 10);
+			const hashedPassword = bcryptService().password(user);
 			usersWithHashedPasswords.push({ ...user, password: hashedPassword });
 		}
 
 		return usersWithHashedPasswords;
+	}
+
+	async createAvatars(avatars) {
+		for (const avatar of avatars) {
+			await this.createAvatar(avatar);
+		}
 	}
 
 	async createRoles(roles) {
@@ -276,6 +307,33 @@ class Database {
 	}
 
 	async init() {
+
+		// load avatars
+		const avatarTableExists = await this.tableExists('Avatars');
+
+		if (avatarTableExists) {
+			this.log('Dropping the Avatars table...');
+
+			await this.context.execute(`
+        DROP TABLE IF EXISTS Avatars;
+      `);
+		}
+
+		this.log('Creating the Avatars table...');
+
+		await this.context.execute(`
+      CREATE TABLE Avatars (
+        id INTEGER PRIMARY KEY, 
+        avatarData VARCHAR(2048) NOT NULL DEFAULT '',
+        createdAt DATETIME NOT NULL, 
+        updatedAt DATETIME NOT NULL
+      );
+    `);
+
+		this.log('Creating the avatar records...');
+
+		await this.createAvatars(this.avatars);
+
 
 		// load roles
 		const roleTableExists = await this.tableExists('Roles');
@@ -325,6 +383,7 @@ class Database {
         lastName VARCHAR(255) NOT NULL DEFAULT '', 
         email VARCHAR(255) NOT NULL DEFAULT '' UNIQUE, 
         password VARCHAR(255) NOT NULL DEFAULT '', 
+        avatarId INTEGER NULL REFERENCES Avatars (id),
         roleId INTEGER NULL REFERENCES Roles (id),
         permissionId INTEGER NOT NULL, 
         createdAt DATETIME NOT NULL, 
