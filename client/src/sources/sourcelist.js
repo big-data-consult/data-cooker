@@ -4,7 +4,7 @@ import { Filter, ReferenceInput, SelectInput, ChipField, SimpleList, List, Datag
 
 const SourceFilter = (props) => (
     <Filter {...props}>
-        <ReferenceInput label="Target Data" source="targetId" reference="targets" filterDefaultValues={{ "(all)": true }} alwaysOn >
+        <ReferenceInput label="Target Data" source="targetId" reference="targets" alwaysOn >
             <SelectInput optionText="targetData" />
         </ReferenceInput>
         {/* <TextInput label="Source Data" source="sourceData" allowEmpty /> */}

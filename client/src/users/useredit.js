@@ -9,6 +9,7 @@ export const UserEdit = props => (
             <TextInput source="firstName" />
             <TextInput source="lastName" />
             <TextInput source="email" />
+            {/* <ReferenceInput source="avatarId" reference="avatars"><SelectInput optionText="id" /></ReferenceInput> */}
             {/* <ReferenceInput source="roleId" reference="roles"><SelectInput optionText="id" /></ReferenceInput> */}
             {/* <ReferenceInput source="permissionId" reference="permissions"><SelectInput optionText="id" /></ReferenceInput> */}
         </SimpleForm>

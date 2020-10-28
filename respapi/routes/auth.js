@@ -8,10 +8,12 @@ module.exports = (req, res, next) => {
 
 	//Get the user's token from the Authorization header.
 	const token = req.headers.authorization;
+	const user = JSON.parse(req.headers.user);
 
 	//If user's credentials are valid
 	if (true || authService().verify(token)) {
-		next()
+		next();
+		req.currentUser = user;
 	}
 	else {
 		message = `Credentials are insufficient.`;

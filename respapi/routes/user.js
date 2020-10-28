@@ -1,8 +1,6 @@
 const express = require('express');
 const morgan = require('morgan');
-const Avatar = require('../models').Avatar;
-const Role = require('../models').Role;
-const User = require('../models').User;
+const { User, Avatar, Role } = require('../models');
 const authenticate = require('./auth');
 //const Sequelize = require('sequelize');
 const { check, validationResult } = require('express-validator');
@@ -61,11 +59,11 @@ router.get('/:id',
 					model: Role,
 					as: "role",
 					attributes: ["id", "roleName"]
-				},
-				{
-					model: avatarId,
-					as: "avatar",
-					attributes: ["id", "avatarData"]
+				// },
+				// {
+				// 	model: avatarId,
+				// 	as: "avatar",
+				// 	attributes: ["id", "avatarData"]
 				}
 			]
 		});
