@@ -42,9 +42,9 @@
 			"lastName": "Smith",
 			"email": "joe@smith.com",
 			"password": "joepassword",
+			"avatarId": 1,
 			"roleId": 1,
-			"permissionId": 1,
-			"avatarId": 1
+			"permissionId": 1
 		},
 		{
 			"userName": "Sally.Jones",
@@ -52,9 +52,9 @@
 			"lastName": "Jones",
 			"email": "sally@jones.com",
 			"password": "sallypassword",
+			"avatarId": 2,
 			"roleId": 2,
-			"permissionId": 1,
-			"avatarId": 2
+			"permissionId": 1
 		},
 		{
 			"userName": "Jojo.Zhong",
@@ -62,9 +62,9 @@
 			"lastName": "Zhong",
 			"email": "jing@zhong.com",
 			"password": "jingpassword",
+			"avatarId": 3,
 			"roleId": 3,
-			"permissionId": 1,
-			"avatarId": 3
+			"permissionId": 1
 		}
 	],
 	"targets": [

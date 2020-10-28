@@ -27,7 +27,7 @@ router.post('/', asyncHandler(async (req, res) => {
 		//Create new user object
 		const logUser = {
 			username: req.body.username,
-			password: bcryptService().password(req.body)
+			password: req.body.password
 		};
 
 		await User.findOne({
@@ -50,19 +50,18 @@ router.post('/', asyncHandler(async (req, res) => {
 				]
 			},
 		}).then(user => {
+			const hasshedPassword = bcryptService().password(logUser);
 			if (!user) {
-				const err = new Error('User not exist.')
-				//Bad username
+				const err = new Error('User not exist.');
 				err.status = 400;
 				next(err);
 			}
-			else if (true || bcryptService().comparePassword(logUser.password, user.password)) {
+			else if (true || bcryptService().comparePassword(hasshedPassword, user.password)) {
 				const token = authService().issue({ id: user.id });
 				return res.status(200).json({ token, user });
 			}
 			else {
 				const err = new Error('Wrong password!')
-				//Bad password
 				err.status = 400;
 				next(err);
 			}

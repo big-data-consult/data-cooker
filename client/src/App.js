@@ -29,9 +29,8 @@ const httpClient = (url, options = {}) => {
 	}
 
 	// Add authentication token
-	const strToken = localStorage.getItem('token');
-	const token = JSON.parse(strToken);
-	options.headers.set('Authorization', 'Bearer ' + strToken);
+	const token = localStorage.getItem('token');
+	options.headers.set('Authorization', 'Bearer ' + token);
 
 	// Add additional headers as needed
 	options.headers.set('X-Custom-Header', 'foobar');

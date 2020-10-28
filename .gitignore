@@ -17,3 +17,4 @@ todo.txt.txt
 api/fsjstd-restapi.db
 
 .gitignore
+*.bak
