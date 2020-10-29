@@ -1,6 +1,6 @@
 import * as React from "react";
 import { useMediaQuery } from '@material-ui/core';
-import { SimpleList, List, Datagrid, TextField, NumberField, ReferenceField, EmailField, EditButton } from 'react-admin';
+import { SimpleList, List, Datagrid, TextField } from 'react-admin';
 
 export const RoleList = props => {
     const isSmall = useMediaQuery(theme => theme.breakpoints.down('sm'));
