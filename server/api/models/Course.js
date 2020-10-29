@@ -1,6 +1,4 @@
-'use strict';
-
-// const User = require("./user");
+// const User = require('./user');
 
 const tableName = 'Courses';
 
@@ -17,12 +15,12 @@ module.exports = function (sequelize, DataTypes) {
 			unique: true,
 			validate: {
 				notEmpty: {
-					msg: "Title is required"
+					msg: 'Title is required',
 				},
 				notNull: {
-					msg: "Must contain a Title property"
-				}
-			}
+					msg: 'Must contain a Title property',
+				},
+			},
 		},
 		description: {
 			type: DataTypes.TEXT,
@@ -30,12 +28,12 @@ module.exports = function (sequelize, DataTypes) {
 			unique: true,
 			validate: {
 				notEmpty: {
-					msg: "Description is required"
+					msg: 'Description is required',
 				},
 				notNull: {
-					msg: "Must contain a description property"
-				}
-			}
+					msg: 'Must contain a description property',
+				},
+			},
 		},
 		estimatedTime: {
 			type: DataTypes.STRING,
@@ -48,7 +46,7 @@ module.exports = function (sequelize, DataTypes) {
 	}, { tableName });
 
 	//   Course.associate = (models) => {
-	// //Course" belongs to a single "User
+	// //Course' belongs to a single User
 	//     Course.belongsTo(models.User, {
 	//       foreignKey: {
 	//         fieldName: 'userId',

@@ -1,47 +1,46 @@
 const express = require('express');
+
 const router = express.Router();
-const Course = require('../models').Course;
-const User = require('../models').User;
-const Sequelize = require('sequelize');
+const { Course, User } = require('../models');
+// const Sequelize = require('sequelize');
 const authenticate = require('./auth');
+
 /* GET course list. */
 router.get('/', (req, res, next) => {
-	//Find all courses
+	// Find all courses
 	Course.findAll({
-		//This is all the course data
+		// This is all the course data
 		attributes: ['id', 'title', 'description', 'estimatedTime', 'materialsNeeded', 'userId'],
 		include: [{
-			//this is the user data associated with each course
+			// this is the user data associated with each course
 			model: User,
-			attributes: ['id', 'userName', 'firstName', 'lastName', 'email']
-		}]
-	}).then(courses => {
+			attributes: ['id', 'userName', 'firstName', 'lastName', 'email'],
+		}],
+	}).then((courses) => {
 		res.status(200);
-		//retrieve courses in JSON format
-		res.json({
-			courses
-		});
+		// retrieve courses in JSON format
+		res.json({courses});
 	})
-		//Catch the errors
-		.catch(err => {
+		// Catch the errors
+		.catch((err) => {
 			err.status = 400;
 			next(err);
 		});
 });
 /* GET course by ID. */
 router.get('/:id', (req, res, next) => {
-	//get course
+	// get course
 	Course.findOne({
 		where: {
-			id: req.params.id
+			id: req.params.id,
 		},
 		attributes: ['id', 'title', 'description', 'estimatedTime', 'materialsNeeded', 'userId'],
 		include: [{
 			model: User,
-			attributes: ['id', 'userName', 'firstName', 'lastName', 'email']
-		}]
-	}).then(course => {
-		//Checks for match for course
+			attributes: ['id', 'userName', 'firstName', 'lastName', 'email'],
+		}],
+	}).then((course) => {
+		// Checks for match for course
 		if (course) {
 			res.status(200);
 			res.json({
@@ -73,7 +72,7 @@ router.post('/', authenticate, (req, res, next) => {
 			where: {
 				title: req.body.title
 			}
-		}).then(title => {
+		}).then((title) => {
 			if (title) {
 				const err = new Error('This course already exists.');
 				err.status = 400;
@@ -83,8 +82,8 @@ router.post('/', authenticate, (req, res, next) => {
 					res.location(`/respapi/courses/${course.id}`);
 					res.status(201).end();
 				})
-					//Catch errors
-					.catch(err => {
+					// Catch errors
+					.catch((err) => {
 						err.status = 400;
 						next(err);
 					});
@@ -95,7 +94,7 @@ router.post('/', authenticate, (req, res, next) => {
 /* PUT update course. */
 router.put('/:id', authenticate, (req, res, next) => {
 	const user = req.currentUser;
-	//If title is left null
+	// If title is left null
 	if (!req.body.title && !req.body.description) {
 		const err = new Error('Please enter a title and a description.');
 		err.status = 400;
@@ -113,7 +112,7 @@ router.put('/:id', authenticate, (req, res, next) => {
 			where: {
 				id: req.body.id
 			}
-		}).then(course => {
+		}).then((course) => {
 			if (!course) {
 				res.status(404).json({
 					message: 'Course Not Found'
@@ -126,18 +125,18 @@ router.put('/:id', authenticate, (req, res, next) => {
 						description: req.body.description,
 						estimatedTime: req.body.estimatedTime,
 						materialsNeeded: req.body.materialsNeeded,
-						userId: req.currentUser.id
+						userId: req.currentUser.id,
 					};
 					course.update(req.body);
 				} else {
-					res.location('/').status(403).json("You do not have permissions to update this course");
+					res.location('/').status(403).json('You do not have permissions to update this course');
 				}
 			}
 		}).then(() => {
 			res.status(204).end();
 		})
-			//Catch any errors
-			.catch(err => {
+			// Catch any errors
+			.catch((err) => {
 				err.status = 400;
 				next(err);
 			});
@@ -146,30 +145,30 @@ router.put('/:id', authenticate, (req, res, next) => {
 /* Delete individual course. */
 router.delete('/:id', authenticate, (req, res, next) => {
 	const user = req.currentUser;
-	//Find one course to delete
+	// Find one course to delete
 	Course.findOne({
 		where: {
 			id: req.params.id
 		}
-	}).then(course => {
-		//If course doesn't exist
+	}).then((course) => {
+		// If course doesn't exist
 		if (!course) {
-			//Show error
+			// Show error
 			res.status(404).json({
 				message: 'Course Not Found'
 			});
 		} else if (user.id === course.userId) {
-			//Delete the course
+			// Delete the course
 			return course.destroy();
 		} else {
-			res.location('/').status(403).json("You do not have permissions to delete this course");
+			res.location('/').status(403).json('You do not have permissions to delete this course');
 		}
 	}).then(() => {
-		//Return no content and end the request
+		// Return no content and end the request
 		res.status(204).end();
 	})
-		//Catch the errors
-		.catch(err => {
+		// Catch the errors
+		.catch((err) => {
 			err.status = 400;
 			next(err);
 		});

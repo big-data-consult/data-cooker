@@ -1,4 +1,3 @@
-'use strict';
 // const Course = require("./source");
 
 const tableName = 'Targets';
@@ -15,7 +14,7 @@ module.exports = (sequelize, DataTypes) => {
 			allowNull: true,
 			validate: {
 				notEmpty: {
-					msg: 'Please enter an aggregation project/stream label'
+					msg: 'Please enter an aggregation project/stream label',
 				},
 			},
 		},
@@ -24,7 +23,7 @@ module.exports = (sequelize, DataTypes) => {
 			allowNull: false,
 			validate: {
 				notEmpty: {
-					msg: 'Please enter an aggregation target data name'
+					msg: 'Please enter an aggregation target data name',
 				},
 			},
 		},
@@ -33,7 +32,7 @@ module.exports = (sequelize, DataTypes) => {
 			allowNull: false,
 			validate: {
 				notEmpty: {
-					msg: 'Please enter a data timestamp column name'
+					msg: 'Please enter a data timestamp column name',
 				},
 			},
 		},
@@ -42,7 +41,7 @@ module.exports = (sequelize, DataTypes) => {
 			allowNull: false,
 			validate: {
 				notEmpty: {
-					msg: 'Please enter a aggregation batch size in minutes'
+					msg: 'Please enter a aggregation batch size in minutes',
 				},
 			},
 		},
@@ -51,7 +50,7 @@ module.exports = (sequelize, DataTypes) => {
 			allowNull: false,
 			validate: {
 				notEmpty: {
-					msg: 'Please enter a batch step calculation function'
+					msg: 'Please enter a batch step calculation function',
 				},
 			},
 		},
@@ -60,7 +59,7 @@ module.exports = (sequelize, DataTypes) => {
 			allowNull: false,
 			validate: {
 				notEmpty: {
-					msg: 'Please enter a timestamp of data aggregation is done'
+					msg: 'Please enter a timestamp of data aggregation is done',
 				},
 			},
 		},
@@ -69,7 +68,7 @@ module.exports = (sequelize, DataTypes) => {
 			allowNull: true,
 			validate: {
 				notEmpty: {
-					msg: 'Please enter a timestamp of data aggregation will be done'
+					msg: 'Please enter a timestamp of data aggregation will be done',
 				},
 			},
 		},
@@ -82,7 +81,7 @@ module.exports = (sequelize, DataTypes) => {
 			allowNull: false,
 			validate: {
 				notEmpty: {
-					msg: 'Please enter a time unit about how often data change'
+					msg: 'Please enter a time unit about how often data change',
 				},
 			},
 		},
@@ -95,7 +94,7 @@ module.exports = (sequelize, DataTypes) => {
 			allowNull: false,
 			validate: {
 				notEmpty: {
-					msg: 'Please enter a column array for pattern space'
+					msg: 'Please enter a column array for pattern space',
 				},
 			},
 		},
@@ -104,7 +103,7 @@ module.exports = (sequelize, DataTypes) => {
 			allowNull: true,
 			validate: {
 				notEmpty: {
-					msg: 'Please enter a column array for group by'
+					msg: 'Please enter a column array for group by',
 				},
 			},
 		},
@@ -113,7 +112,7 @@ module.exports = (sequelize, DataTypes) => {
 			allowNull: false,
 			validate: {
 				notEmpty: {
-					msg: 'Please enter a bitwise value as group by result pattern'
+					msg: 'Please enter a bitwise value as group by result pattern',
 				},
 			},
 		},
@@ -122,7 +121,7 @@ module.exports = (sequelize, DataTypes) => {
 			allowNull: false,
 			validate: {
 				notEmpty: {
-					msg: 'Please enter true or false for fleible pattern allowed'
+					msg: 'Please enter true or false for fleible pattern allowed',
 				},
 			},
 		},
@@ -131,7 +130,7 @@ module.exports = (sequelize, DataTypes) => {
 			allowNull: true,
 			validate: {
 				notEmpty: {
-					msg: 'Please enter a column array as aggregation measures'
+					msg: 'Please enter a column array as aggregation measures',
 				},
 			},
 		},
@@ -140,7 +139,7 @@ module.exports = (sequelize, DataTypes) => {
 			allowNull: true,
 			validate: {
 				notEmpty: {
-					msg: 'Please enter a column array as aggregation functions'
+					msg: 'Please enter a column array as aggregation functions',
 				},
 			},
 		},
@@ -149,11 +148,11 @@ module.exports = (sequelize, DataTypes) => {
 			allowNull: true,
 			validate: {
 				notEmpty: {
-					msg: 'Please enter a column array for supported sp versions'
+					msg: 'Please enter a column array for supported sp versions',
 				},
 			},
 		},
-		permissionId: DataTypes.INTEGER
+		permissionId: DataTypes.INTEGER,
 	}, { tableName });
 
 	Target.associate = (models) => {

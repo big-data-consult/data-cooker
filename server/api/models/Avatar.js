@@ -1,4 +1,3 @@
-'use strict';
 // const User = require("./user");
 
 const tableName = 'Avatars';
@@ -8,17 +7,17 @@ module.exports = (sequelize, DataTypes) => {
 		id: {
 			type: DataTypes.INTEGER,
 			primaryKey: true,
-			autoIncrement: true
+			autoIncrement: true,
 		},
 		avatarData: {
 			type: DataTypes.STRING,
 			allowNull: false,
 			validate: {
 				notEmpty: {
-					msg: 'Please enter a avatar Data'
-				}
-			}
-		}
+					msg: 'Please enter a avatar Data',
+				},
+			},
+		},
 	}, { tableName });
 
 	Avatar.associate = (models) => {

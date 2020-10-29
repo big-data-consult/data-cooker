@@ -1,7 +1,7 @@
 'use strict';
 
 //const bcryptjs = require('bcryptjs');
-const bcryptService = require('../../graphql/api/services/bcrypt.service');
+const bcryptService = require('../api/services/bcrypt.service');
 const Context = require('./context');
 
 class Database {
@@ -15,7 +15,7 @@ class Database {
 		this.courses = seedData.courses;
 		this.notes = seedData.notes;
 		this.enableLogging = enableLogging;
-		this.context = new Context('../graphql/db/database.sqlite', enableLogging);
+		this.context = new Context('./db/database.sqlite', enableLogging);
 		this.PasswordHasher = bcryptService();
 	}
 

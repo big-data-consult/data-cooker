@@ -10,7 +10,7 @@ const { sourceQuery } = require('./queries');
 const { noteQuery } = require('./queries');
 const { createRole, updateRole, deleteRole } = require('./mutations');
 const { createUser, updateUser, deleteUser } = require('./mutations');
-const { createTarget, updateTarget, deleteTarget, } = require('./mutations');
+const { createTarget, updateTarget, deleteTarget } = require('./mutations');
 const { createSource, updateSource, deleteSource } = require('./mutations');
 const { createNote, updateNote, deleteNote } = require('./mutations');
 

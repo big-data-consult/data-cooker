@@ -52,10 +52,10 @@
     "morgan": "^1.10.0",
     "promise.prototype.finally": "^3.1.2",
     "sequelize": "^5.21.9",
-    "sqlite3": "^4.0.4"
+    "sqlite3": "^4.2.0"
   },
   "devDependencies": {
-    "cross-env": "^5.2.0",
+    "cross-env": "^5.2.1",
     "eslint": "^5.9.0",
     "eslint-config-airbnb-base": "^13.1.0",
     "eslint-plugin-import": "^2.14.0",

@@ -1,4 +1,3 @@
-'use strict';
 // const User = require("./user");
 
 const tableName = 'Roles';
@@ -8,17 +7,17 @@ module.exports = (sequelize, DataTypes) => {
 		id: {
 			type: DataTypes.INTEGER,
 			primaryKey: true,
-			autoIncrement: true
+			autoIncrement: true,
 		},
 		roleName: {
 			type: DataTypes.STRING,
 			allowNull: false,
 			validate: {
 				notEmpty: {
-					msg: 'Please enter a role Name'
-				}
-			}
-		}
+					msg: 'Please enter a role Name',
+				},
+			},
+		},
 	}, { tableName });
 
 	Role.associate = (models) => {

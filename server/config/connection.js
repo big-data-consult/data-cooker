@@ -20,7 +20,7 @@ const production = {
 	password: process.env.DB_PASS,
 	host: process.env.DB_HOST || 'localhost',
 	dialect: 'sqlite' || 'mysql' || 'postgres',
-	
+	// new added, may not neccssary
 	secret: process.env.JWT_SECRET, /* services->auth-service.js */
 	port: process.env.PORT, /* index.js */
 };

@@ -1,10 +1,9 @@
-'use strict';
-const Sequelize = require('sequelize');
+// const Sequelize = require('sequelize');
 const bcryptSevice = require('../services/bcrypt.service');
+// const sequelize = require('../../config/database');
 
-const sequelize = require('../../config/database');
-// const Role = require("./role");
-// const Course = require("./course");
+// const Role = require('./role');
+// const Course = require('./course');
 
 const hooks = {
 	beforeCreate(user) {
@@ -26,62 +25,62 @@ module.exports = function (sequelize, DataTypes) {
 			allowNull: false,
 			validate: {
 				notEmpty: {
-					msg: "User name is required"
-				}
-			}
+					msg: 'User name is required',
+				},
+			},
 		},
 		firstName: {
 			type: DataTypes.STRING,
 			allowNull: false,
 			validate: {
 				notEmpty: {
-					msg: "First name is required"
-				}
-			}
+					msg: 'First name is required',
+				},
+			},
 		},
 		lastName: {
 			type: DataTypes.STRING,
 			allowNull: false,
 			validate: {
 				notEmpty: {
-					msg: "Last name is required"
-				}
-			}
+					msg: 'Last name is required',
+				},
+			},
 		},
 		email: {
 			type: DataTypes.STRING,
 			allowNull: false,
 			validate: {
 				notEmpty: {
-					msg: "Email is required"
+					msg: 'Email is required',
 				},
-				isEmail: {//this makes sure that the email address is formatted properly
-					msg: "Please enter a valid email address"
-				}
-			}
+				isEmail: {
+					msg: 'Please enter a valid email address',
+				},
+			},
 		},
 		password: {
 			type: DataTypes.STRING,
 			allowNull: false,
 			validate: {
 				notEmpty: {
-					msg: "Password is required"
+					msg: 'Password is required',
 				},
-			}
+			},
 		},
 		avatarId: {
 			type: DataTypes.INTEGER,
-			allowNull: true
+			allowNull: true,
 		},
 		roleId: {
 			type: DataTypes.INTEGER,
-			allowNull: true
+			allowNull: true,
 		},
-		permissionId: DataTypes.INTEGER
+		permissionId: DataTypes.INTEGER,
 	}, { hooks, tableName });
 
 	User.associate = (models) => {
-		//User" belongs to a single "Role"
+		// User' belongs to a single 'Role'
 		User.belongsTo(models.Role, {
 			as: 'role',
 			foreignKey: {
@@ -89,7 +88,7 @@ module.exports = function (sequelize, DataTypes) {
 			},
 		});
 
-		//User" belongs to a single "Role"
+		// User' belongs to a single 'Role'
 		User.belongsTo(models.Avatar, {
 			as: 'avatar',
 			foreignKey: {
@@ -97,13 +96,12 @@ module.exports = function (sequelize, DataTypes) {
 			},
 		});
 
-		// //"User" has many "Courses"
+		// //'User' has many 'Courses'
 		// User.hasMany(models.Course, {
 		//   foreignKey: {
 		//     fieldName: 'userId',
 		//   },
 		// });
-
 	};
 
 	return User;

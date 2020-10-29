@@ -1,19 +1,16 @@
-'use strict';
-
 const express = require('express');
-const Role = require('../models').Role;
-//const authenticate = require("./auth");
-//const { check, validationResult } = require('express-validator/check');
-const bcryptjs = require('bcryptjs');
-
+const { Role } = require('../models');
+// const authenticate = require('./auth');
+// const { check, validationResult } = require('express-validator/check');
 const asyncHandler = require('../services/async');
+
 const router = express.Router();
 
 // GET /api/roles 200
 // Returns a list of roles (including the role that owns each source)
 router.get('/', asyncHandler(async (req, res) => {
 	const roles = await Role.findAll({
-		attributes: ["id", "roleName"]
+		attributes: ['id', 'roleName'],
 	});
 	res.header('Access-Control-Expose-Headers', 'X-Total-Count')
 		.header('X-Total-Count', roles.length)
@@ -25,7 +22,7 @@ router.get('/', asyncHandler(async (req, res) => {
 // Returns a roles (including the role that owns the role) for the provided role ID
 router.get('/:id', asyncHandler(async (req, res) => {
 	const role = await Role.findByPk(req.params.id, {
-		attributes: ["id", "roleName"]
+		attributes: ['id', 'roleName'],
 	});
 
 	if (role) {

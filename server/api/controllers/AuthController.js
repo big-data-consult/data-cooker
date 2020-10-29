@@ -1,9 +1,9 @@
-const { Op } = require("sequelize");
+const { Op } = require('sequelize');
 const { User } = require('../models');
 const authService = require('../services/auth.service');
 const bcryptService = require('../services/bcrypt.service');
-const Avatar = require('../models').Avatar;
-const Role = require('../models').Role;
+const { Avatar } = require('../models');
+const { Role } = require('../models');
 // const User = require('../models').User;
 
 const AuthController = () => {
@@ -53,20 +53,20 @@ const AuthController = () => {
 					include: [
 						{
 							model: Role,
-							as: "role",
-							attributes: ["id", "roleName"]
+							as: 'role',
+							attributes: ['id', 'roleName'],
 						},
 						{
 							model: Avatar,
-							as: "avatar",
-							attributes: ["id", "avatarData"]
-						}
+							as: 'avatar',
+							attributes: ['id', 'avatarData'],
+						},
 					],
 					where: {
 						[Op.or]: [
 							{ userName: username },
-							{ email: username }
-						]
+							{ email: username },
+						],
 					},
 				});
 

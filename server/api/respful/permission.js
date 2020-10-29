@@ -1,19 +1,16 @@
-'use strict';
-
 const express = require('express');
 const Permission = require('../models').Role;
-//const authenticate = require("./auth");
-//const { check, validationResult } = require('express-validator/check');
-const bcryptjs = require('bcryptjs');
-
+// const authenticate = require('./auth');
+// const { check, validationResult } = require('express-validator/check');
 const asyncHandler = require('../services/async');
+
 const router = express.Router();
 
 // GET /api/permissions 200
 // Returns a list of permissions (including the permission that owns each source)
 router.get('/', asyncHandler(async (req, res) => {
 	const permissions = await Permission.findAll({
-		attributes: ["id", "roleName"]
+		attributes: ['id', 'roleName'],
 	});
 	res.header('Access-Control-Expose-Headers', 'X-Total-Count')
 		.header('X-Total-Count', permissions.length)
@@ -22,10 +19,10 @@ router.get('/', asyncHandler(async (req, res) => {
 
 
 // GET /api/permissions/:id 200
-// Returns a permissions (including the permission that owns the permission) for the provided permission ID
+// Returns a permissions (including the permission that owns the permission)
 router.get('/:id', asyncHandler(async (req, res) => {
 	const permission = await Permission.findByPk(req.params.id, {
-		attributes: ["id", "roleName"]
+		attributes: ['id', 'roleName'],
 	});
 
 	if (permission) {

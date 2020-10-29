@@ -7,5 +7,4 @@ module.exports = function asyncHandler(cb) {
 			next(err);
 		}
 	};
-}
-
+};
