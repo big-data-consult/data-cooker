@@ -5,7 +5,7 @@ const authProvider = {
 
     // called when the user attempts to log in
     login: ({ username, password }) => {
-        const request = new Request('http://localhost:5000/respapi/login', {
+        const request = new Request('http://localhost:5000/userapi/login', {
             method: 'POST',
             headers: new Headers({
                 'Content-Type': 'application/json',

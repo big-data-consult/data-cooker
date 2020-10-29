@@ -41,8 +41,8 @@ const httpClient = (url, options = {}) => {
 };
 
 // // const dataProvider = jsonServerProvider('http://localhost:5000/respapi');
-const dataProvider = jsonServerProvider('http://localhost:5000/respapi', httpClient);
-const loginProvider = jsonServerProvider('http://localhost:5000/respapi/login', httpClient);
+const dataProvider = jsonServerProvider('http://localhost:5000/respful', httpClient);
+const loginProvider = jsonServerProvider('http://localhost:5000/userapi/login', httpClient);
 const schemaProvider = jsonServerProvider('http://localhost:5000/graphql', httpClient);
 
 class App extends Component {

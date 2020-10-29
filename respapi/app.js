@@ -34,15 +34,15 @@ app.use(morgan('dev'));
 app.use(express.json());
 
 // routes
-app.use('/respapi/avatars', avatarRouter);
-app.use('/respapi/roles', roleRouter);
-app.use('/respapi/users', userRouter);
-app.use('/respapi/courses', courseRouter);
-app.use('/respapi/targets', targetRouter);
-app.use('/respapi/sources', sourceRouter);
-app.use('/respapi/permissions', permissionRouter);
-app.use('/respapi', defaultRouter);
-app.use('/respapi/login', loginRouter);
+app.use('/respful/avatars', avatarRouter);
+app.use('/respful/roles', roleRouter);
+app.use('/respful/users', userRouter);
+app.use('/respful/courses', courseRouter);
+app.use('/respful/targets', targetRouter);
+app.use('/respful/sources', sourceRouter);
+app.use('/respful/permissions', permissionRouter);
+app.use('/respful', defaultRouter);
+app.use('/userapi/login', loginRouter);
 
 
 // setup a friendly greeting for the root route
