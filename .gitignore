@@ -5,7 +5,7 @@ respapi/RESTAPI.postman_collection.json
 respapi/README.md
 
 # hraphql dependencies
-graphql
+#graphql
 
 # client dependencies
 client/node_modules
@@ -18,3 +18,4 @@ api/fsjstd-restapi.db
 
 .gitignore
 *.bak
+*.7z

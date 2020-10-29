@@ -1,0 +1,54 @@
+1. Qury example
+
+{"query": "{user{id, username, notes{id, note}}}"}
+
+{
+    "data": {
+        "user": [
+            {
+                "id": 1,
+                "username": "Joe.Smith",
+                "notes": [
+                    {
+                        "id": 1,
+                        "note": "This is first note .."
+                    },
+                    {
+                        "id": 2,
+                        "note": "This is second note .."
+                    }
+                ]
+            },
+            {
+                "id": 2,
+                "username": "Sally.Jones",
+                "notes": [
+                    {
+                        "id": 3,
+                        "note": "This is third note .."
+                    }
+                ]
+            },
+            {
+                "id": 3,
+                "username": "Jojo.Zhong",
+                "notes": []
+            }
+        ]
+    }
+}
+
+
+2. Mutation Example
+
+{"query": "mutation{createNote(userId:1,note:\"this is another note\"){id,userId,note}}"}
+
+{
+    "data": {
+        "createNote": {
+            "id": 4,
+            "userId": 1,
+            "note": "this is another note"
+        }
+    }
+}
