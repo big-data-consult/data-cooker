@@ -15,7 +15,7 @@ const RoleType = new GraphQLObjectType({
 			type: GraphQLInt,
 			resolve: (role) => role.id,
 		},
-		rolename: {
+		roleName: {
 			type: GraphQLString,
 			resolve: (role) => role.roleName,
 		},

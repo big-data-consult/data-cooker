@@ -15,11 +15,11 @@ const targetQuery = {
 			type: GraphQLInt,
 		},
 		targetLabel: {
-			name: 'targetlabel',
+			name: 'targetLabel',
 			type: GraphQLString,
 		},
 		targetData: {
-			name: 'targetdata',
+			name: 'targetData',
 			type: GraphQLString,
 		},
 		createdAt: {

@@ -15,15 +15,15 @@ const UserType = new GraphQLObjectType({
 			type: GraphQLInt,
 			resolve: (user) => user.id,
 		},
-		username: {
+		userName: {
 			type: GraphQLString,
 			resolve: (user) => user.userName,
 		},
-		firstname: {
+		firstName: {
 			type: GraphQLString,
 			resolve: (user) => user.firstName,
 		},
-		lastname: {
+		firstName: {
 			type: GraphQLString,
 			resolve: (user) => user.lastName,
 		},
@@ -35,15 +35,15 @@ const UserType = new GraphQLObjectType({
 			type: GraphQLString,
 			resolve: (user) => user.password,
 		},
-		avatarid: {
+		avatarId: {
 			type: GraphQLInt,
 			resolve: (user) => user.avatarId,
 		},
-		roleid: {
+		roleId: {
 			type: GraphQLInt,
 			resolve: (user) => user.roleId,
 		},
-		permissionid: {
+		permissionId: {
 			type: GraphQLInt,
 			resolve: (user) => user.permissionId,
 		},

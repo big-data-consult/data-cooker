@@ -15,7 +15,7 @@ const AvatarType = new GraphQLObjectType({
 			type: GraphQLInt,
 			resolve: (avatar) => avatar.id,
 		},
-		avatardata: {
+		avatarData: {
 			type: GraphQLString,
 			resolve: (avatar) => avatar.avatarData,
 		},

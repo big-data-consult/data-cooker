@@ -69,7 +69,7 @@ const TargetType = new GraphQLObjectType({
 		},
 		groupByFlexible: {
 			type: GraphQLInt,
-			resolve: (target) => target.updatedAt,
+			resolve: (target) => target.groupByFlexible,
 		},
 		aggregateColumns: {
 			type: GraphQLString, /* ObjType */

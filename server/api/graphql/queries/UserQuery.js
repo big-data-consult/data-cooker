@@ -15,30 +15,30 @@ const userQuery = {
 			type: GraphQLInt,
 		},
 		userName: {
-			name: 'username',
+			name: 'userName',
 			type: GraphQLString,
 		},
 		firstName: {
-			name: 'firstname',
+			name: 'firstName',
 			type: GraphQLString,
 		},
 		lastName: {
-			name: 'lastname',
+			name: 'lastName',
 			type: GraphQLString,
 		},
 		email: {
 			name: 'email',
 			type: GraphQLString,
 		},
-		avatarid: {
+		avatarId: {
 			name: 'avatarId',
 			type: GraphQLInt,
 		},
-		roleid: {
+		roleId: {
 			name: 'roleId',
 			type: GraphQLInt,
 		},
-		permissionid: {
+		permissionId: {
 			name: 'permissionId',
 			type: GraphQLInt,
 		},

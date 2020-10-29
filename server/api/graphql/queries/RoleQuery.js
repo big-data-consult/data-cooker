@@ -15,7 +15,7 @@ const roleQuery = {
 			type: GraphQLInt,
 		},
 		roleName: {
-			name: 'rolename',
+			name: 'roleName',
 			type: GraphQLString,
 		},
 		createdAt: {

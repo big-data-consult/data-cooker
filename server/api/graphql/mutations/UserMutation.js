@@ -86,7 +86,7 @@ const updateUser = {
 		}
 
 		const updatedUser = merge(foundUser, {
-			username: user.username,
+			userName: user.userName,
 			email: user.email,
 			roleId: user.roleId,
 		});

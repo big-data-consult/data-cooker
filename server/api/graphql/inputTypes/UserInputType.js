@@ -38,6 +38,9 @@ const UserInputType = (type) => {
 				password: {
 					type: GraphQLString,
 				},
+				avatarId: {
+					type: GraphQLInt,
+				},
 				roleId: {
 					type: GraphQLInt,
 				},
