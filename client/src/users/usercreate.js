@@ -4,7 +4,7 @@ import { Create, SimpleForm, TextInput /*, ReferenceInput, SelectInput */ } from
 export const UserCreate = props => (
 	<Create {...props}>
 		<SimpleForm>
-			<TextInput source="id" />
+			{/* <TextInput source="id" /> */}
 			<TextInput source="userName" />
 			<TextInput source="firstName" />
 			<TextInput source="lastName" />

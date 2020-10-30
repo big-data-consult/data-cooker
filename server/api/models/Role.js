@@ -4,11 +4,11 @@ const tableName = 'Roles';
 
 module.exports = (sequelize, DataTypes) => {
 	const Role = sequelize.define('Role', {
-		id: {
-			type: DataTypes.INTEGER,
-			primaryKey: true,
-			autoIncrement: true,
-		},
+		// id: {
+		// 	type: DataTypes.INTEGER,
+		// 	primaryKey: true,
+		// 	autoIncrement: true,
+		// },
 		roleName: {
 			type: DataTypes.STRING,
 			allowNull: false,
@@ -24,7 +24,7 @@ module.exports = (sequelize, DataTypes) => {
 		// define association between tables
 		// a "role" has many "users"
 		Role.hasMany(models.User, {
-			as: 'user',
+			as: 'users',
 			foreignKey: {
 				fieldName: 'roleId',
 				allowNull: true,

@@ -4,11 +4,11 @@ const tableName = 'Targets';
 
 module.exports = (sequelize, DataTypes) => {
 	const Target = sequelize.define('Target', {
-		id: {
-			type: DataTypes.INTEGER,
-			primaryKey: true,
-			autoIncrement: true,
-		},
+		// id: {
+		// 	type: DataTypes.INTEGER,
+		// 	primaryKey: true,
+		// 	autoIncrement: true,
+		// },
 		targetLabel: {
 			type: DataTypes.STRING,
 			allowNull: true,
@@ -159,7 +159,7 @@ module.exports = (sequelize, DataTypes) => {
 		// define association between tables
 		// a "Target" has many "courses"
 		Target.hasMany(models.Source, {
-			as: 'source',
+			as: 'sources',
 			foreignKey: {
 				fieldName: 'targetId',
 				allowNull: false,

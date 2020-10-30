@@ -24,16 +24,17 @@ router.get('/', asyncHandler(async (req, res) => {
 	const users = await User.findAll({
 		attributes: ['id', 'userName', 'firstName', 'lastName', 'email', 'avatarId', 'roleId', 'permissionId'],
 		include: [
-			{
-				model: Role,
-				as: 'role',
-				attributes: ['id', 'roleName'],
-			},
-			{
-				model: Avatar,
-				as: 'avatar',
-				attributes: ['id', 'avatarData'],
-			},
+			// {
+			// 	model: Role,
+			// 	as: 'role',
+			// 	attributes: ['id', 'roleName'],
+			// },
+			// {
+			// 	model: Avatar,
+			// 	as: 'avatar',
+			// 	attributes: ['id', 'avatarData'],
+			// },
+			{ all: true, nested: true }
 		],
 		where: filter,
 		order: [sort],
@@ -77,25 +78,26 @@ router.get('/:id', authenticate, asyncHandler(async (req, res) => {
 /* POST create user. */
 // POST /api/users 201
 // Creates a user, sets the Location header to "/", and returns no content
-router.post('/', asyncHandler(async (req, res) => {
-	if (!req.body.email) {
-		const err = new Error('Please enter sufficient credentials.');
+router.post('/', asyncHandler(async (req, res, next) => {
+	if (!req.body.userName || !req.body.email) {
+		const err = new Error('UserName and email are needed.');
 		err.status = 400;
 		next(err);
 	} else {
+		// bcrypt will has the new user's password in the database
+		const hashedPassword = bcryptjs.hashSync(req.body.password);
+
 		// Create new user object
 		const newUser = {
 			userName: req.body.userName,
 			firstName: req.body.firstName,
 			lastName: req.body.lastName,
 			email: req.body.email,
-			password: req.body.password,
+			password: hashedPassword,
 			avater: req.body.avatarId,
 			roleId: req.body.roleId,
 			permissionId: 1, // permission is static
 		};
-		// bcrypt will has the new user's password in the database
-		newUser.password = bcryptjs.hashSync(newUser.password);
 
 		await User.findOne({ where: { email: newUser.email } })
 			.then((user) => {
@@ -108,11 +110,11 @@ router.post('/', asyncHandler(async (req, res) => {
 				} else {
 					// Create new user
 					User.create(newUser)
-						.then(() => {
-							// set the location header
-							res.location('/');
-							// create status of no content
-							res.status(201).end();
+						.then((createdUser) => {
+							const { id } = createdUser;
+							if (createdUser) {
+								res.json({ id }).status(204).end();
+							}
 						})
 						// Catch errors
 						.catch((err) => {

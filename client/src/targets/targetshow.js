@@ -22,7 +22,7 @@ export const TargetShow = props => (
             <TextField source="aggregateColumns" />
             <TextField source="aggregateFunctions" />
             <TextField source="suppoetSpVersions" />
-            <ReferenceField source="permissionId" reference="permissions"><TextField source="id" /></ReferenceField>
+            {/* <ReferenceField source="permissionId" reference="permissions"><TextField source="id" /></ReferenceField> */}
         </SimpleShowLayout>
     </Show>
 );

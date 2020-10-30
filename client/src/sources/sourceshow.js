@@ -15,7 +15,7 @@ export const SourceShow = props => (
             <NumberField source="patternDefault" />
             <NumberField source="patternFlexible" />
             <TextField source="transformation" />
-            <ReferenceField source="permissionId" reference="permissions"><TextField source="id" /></ReferenceField>
+            {/* <ReferenceField source="permissionId" reference="permissions"><TextField source="id" /></ReferenceField> */}
             <NumberField source="target.id" />
         </SimpleShowLayout>
     </Show>

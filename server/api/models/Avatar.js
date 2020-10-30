@@ -4,11 +4,11 @@ const tableName = 'Avatars';
 
 module.exports = (sequelize, DataTypes) => {
 	const Avatar = sequelize.define('Avatar', {
-		id: {
-			type: DataTypes.INTEGER,
-			primaryKey: true,
-			autoIncrement: true,
-		},
+		// id: {
+		// 	type: DataTypes.INTEGER,
+		// 	primaryKey: true,
+		// 	autoIncrement: true,
+		// },
 		avatarData: {
 			type: DataTypes.STRING,
 			allowNull: false,
@@ -24,7 +24,7 @@ module.exports = (sequelize, DataTypes) => {
 		// define association between tables
 		// a "avatar" has many "users"
 		Avatar.hasMany(models.User, {
-			as: 'user',
+			as: 'users',
 			foreignKey: {
 				fieldName: 'avatarId',
 				allowNull: true,

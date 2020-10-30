@@ -22,7 +22,7 @@ export const TargetEdit = props => (
             <TextInput source="aggregateColumns" />
             <TextInput source="aggregateFunctions" />
             <TextInput source="suppoetSpVersions" />
-            <ReferenceInput source="permissionId" reference="permissions"><SelectInput optionText="id" /></ReferenceInput>
+            {/* <ReferenceInput source="permissionId" reference="permissions"><SelectInput optionText="id" /></ReferenceInput> */}
         </SimpleForm>
     </Edit>
 );

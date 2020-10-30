@@ -4,7 +4,7 @@ import { Create, SimpleForm, TextInput, NumberInput, ReferenceInput, SelectInput
 export const TargetCreate = props => (
     <Create {...props}>
         <SimpleForm>
-            <TextInput source="id" />
+            {/* <TextInput source="id" /> */}
             <TextInput source="targetLabel" />
             <TextInput source="targetData" />
             <TextInput source="batchControlColumn" />
@@ -22,7 +22,7 @@ export const TargetCreate = props => (
             <TextInput source="aggregateColumns" />
             <TextInput source="aggregateFunctions" />
             <TextInput source="suppoetSpVersions" />
-            <ReferenceInput source="permissionId" reference="permissions"><SelectInput optionText="id" /></ReferenceInput>
+            {/* <ReferenceInput source="permissionId" reference="permissions"><SelectInput optionText="id" /></ReferenceInput> */}
         </SimpleForm>
     </Create>
 );

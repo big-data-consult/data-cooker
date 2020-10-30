@@ -37,11 +37,12 @@ router.get('/', asyncHandler(async (req, res) => {
 			'permissionId',
 		],
 		include: [
-			{
-				model: Target,
-				as: 'target',
-				attributes: ['id', 'targetLabel', 'targetData'],
-			},
+			// {
+			// 	model: Target,
+			// 	as: 'target',
+			// 	attributes: ['id', 'targetLabel', 'targetData'],
+			// },
+			{ all: true, nested: true }
 		],
 		where: filter,
 		order: [sort],
@@ -129,13 +130,12 @@ router.post('/',
 				patternFlexible: source.patternFlexible,
 				transformation: source.transformation,
 				permissionId: 2,
-			});
-
-			//  get new source id for Location header
-			const id = addedSource.id;
-
-			//  Set the status to 201 Created, set Location header, and end the response.
-			res.json({ id }).location(`/sources/${id}`).status(201).end();
+			}).then((createdSource) => {
+				const { id } = createdSource;
+				// res.json({ id }).status(201).end();
+				//  Set the status to 201 Created, set Location header, and end the response.
+				res.json({ id }).location(`/sources/${id}`).status(201).end();
+			})
 		}
 	}));
 

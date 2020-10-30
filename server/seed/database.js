@@ -1,6 +1,5 @@
 'use strict';
 
-//const bcryptjs = require('bcryptjs');
 const bcryptService = require('../api/services/bcrypt.service');
 const Context = require('./context');
 
@@ -28,96 +27,94 @@ class Database {
 	tableExists(tableName) {
 		this.log(`Checking if the ${tableName} table exists...`);
 
-		return this.context
-			.retrieveValue(`
-				SELECT EXISTS (
+		return this.context.retrieveValue(`
+			SELECT EXISTS (
 				SELECT 1 
 				FROM sqlite_master 
 				WHERE type = 'table' AND name = ?
-				);`,
-				tableName);
+			);`,
+			tableName
+		);
 	}
 
 	createAvatar(avatar) {
-		return this.context
-			.execute(`
-				INSERT INTO Avatars(
+		return this.context.execute(`
+			INSERT INTO Avatars(
 				id, 
 				avatarData, 
 				createdAt, 
 				updatedAt
-				)
-				VALUES(
+			)
+			VALUES(
 				?, /* id */
 				?, /* avatarData */
 				datetime('now'), 
 				datetime('now')
-				);`,
-				avatar.id,
-				avatar.avatarData);
+			);`,
+			avatar.id,
+			avatar.avatarData
+		);
 	}
 
 	createRole(role) {
-		return this.context
-			.execute(`
-				INSERT INTO Roles(
+		return this.context.execute(`
+			INSERT INTO Roles(
 				id, 
 				roleName, 
 				createdAt, 
 				updatedAt
-				)
-				VALUES(
+			)
+			VALUES(
 				?, /* id */
 				?, /* roleName */
 				datetime('now'), 
 				datetime('now')
-				);`,
-				role.id,
-				role.roleName);
+			);`,
+			role.id,
+			role.roleName
+		);
 	}
 
 	createUser(user) {
-		return this.context
-			.execute(`
-				INSERT INTO Users(
+		return this.context.execute(`
+			INSERT INTO Users(
 				userName, 
 				firstName, 
 				lastName, 
 				email, 
 				password, 
-				avatarId, 
-				roleId, 
 				permissionId, 
 				createdAt, 
-				updatedAt
-				)
-				VALUES(
+				updatedAt,
+				avatarId, 
+				roleId 
+			)
+			VALUES(
 				?, /* userName */
 				?, /* firstName */
 				?, /* lastName */
 				?, /* email */
 				?, /* password */
-				?, /* avatarId */
-				?, /* roleId */
 				?, /* permissionId */
 				datetime('now'), 
-				datetime('now')
-				);`,
-				user.userName,
-				user.firstName,
-				user.lastName,
-				user.email,
-				user.password,
-				user.avatarId,
-				user.roleId,
-				user.permissionId
-			);
+				datetime('now'),
+				?, /* avatarId */
+				? /* roleId */
+			);`,
+			user.userName,
+			user.firstName,
+			user.lastName,
+			user.email,
+			user.password,
+			user.permissionId,
+			user.avatarId,
+			user.roleId
+		);
 	}
 
 	createTarget(target) {
-		return this.context
-			.execute(`
-				INSERT INTO Targets(
+		return this.context.execute(`
+			INSERT INTO Targets(
 				targetLabel,
 				targetData,
 				batchControlColumn,
@@ -138,8 +135,8 @@ class Database {
 				permissionId,
 				createdAt,
 				updatedAt
-				)
-				VALUES(
+			)
+			VALUES(
 				?, /* targetLabel */
 				?, /* targetData */
 				?, /* batchControlColumn */
@@ -160,18 +157,17 @@ class Database {
 				?, /* permissionId */
 				datetime('now'), 
 				datetime('now')
-				);`,
-				target.targetLabel,
-				target.targetData,
-				target.batchControlColumn,
-				target.permissionId);
+			);`,
+			target.targetLabel,
+			target.targetData,
+			target.batchControlColumn,
+			target.permissionId
+		);
 	}
 
 	createSource(source) {
-		return this.context
-			.execute(`
-				INSERT INTO Sources(
-				targetId,
+		return this.context.execute(`
+			INSERT INTO Sources(
 				sourceLabel,
 				sourceData,
 				sourceEnabled,
@@ -183,11 +179,11 @@ class Database {
 				transformation,
 				permissionId,
 				createdAt, 
-				updatedAt
-				)
-				VALUES(
-				?, /* targetId */
-				'', /* sourceLabel */
+				updatedAt,
+				targetId
+			)
+			VALUES(
+				?, /* sourceLabel */
 				?, /* sourceData */
 				0, /* sourceEnabled */
 				'', /* sourceReadyTime */
@@ -198,61 +194,62 @@ class Database {
 				?, /* transformation */
 				?, /* permissionId */
 				datetime('now'), 
-				datetime('now')
-				);`,
-				source.targetId,
-				source.sourceData,
-				source.transformation,
-				source.permissionId);
+				datetime('now'),
+				? /* targetId */
+			);`,
+			source.sourceLabel,
+			source.sourceData,
+			source.transformation,
+			source.permissionId,
+			source.targetId
+		);
 	}
 
 	createCourse(course) {
-		return this.context
-			.execute(`
-				INSERT INTO Courses(
-				userId, 
+		return this.context.execute(`
+			INSERT INTO Courses(
 				title, 
 				description, 
 				estimatedTime, 
 				materialsNeeded, 
 				createdAt, 
-				updatedAt
-				)
-				VALUES(
-				?, /* userId */
+				updatedAt,
+				userId
+			)
+			VALUES(
 				?, /* title */
 				?, /* description */
 				?, /* estimatedTime */
 				?, /* materialsNeeded */
 				datetime('now'), 
-				datetime('now')
-				);`,
-				course.userId,
-				course.title,
-				course.description,
-				course.estimatedTime,
-				course.materialsNeeded);
+				datetime('now'),
+				? /* userId */
+			);`,
+			course.title,
+			course.description,
+			course.estimatedTime,
+			course.materialsNeeded,
+			course.userId
+		);
 	}
 
 	createNote(note) {
-		return this.context
-			.execute(`
-				INSERT INTO Notes(
-				userId, 
+		return this.context.execute(`
+			INSERT INTO Notes(
 				note, 
 				createdAt, 
-				updatedAt
-				)
-				VALUES(
-				?, /* userId */
+				updatedAt,
+				userId
+			)
+			VALUES(
 				?, /* note */
 				datetime('now'), 
-				datetime('now')
-				);`,
-				note.userId,
-				note.note,
-				note.estimatedTime,
-				note.materialsNeeded);
+				datetime('now'),
+				? /* userId */
+			);`,
+			note.note,
+			note.userId
+		);
 	}
 
 	async hashUserPasswords(users) {
@@ -308,11 +305,24 @@ class Database {
 		}
 	}
 
-	async init() {
+	async init(migrate) {
 
+		// clear tables
+		if (migrate) {
+			await this.context.execute(`
+				DELETE FROM Notes;
+				DELETE FROM Courses;
+				DELETE FROM Sources;
+				DELETE FROM Targets;
+				DELETE FROM Users;
+				DELETE FROM Roles;
+				DELETE FROM Avatars;
+			`);
+		}
+		
 		// load avatars
 		const avatarTableExists = await this.tableExists('Avatars');
-		if (avatarTableExists) {
+		if (!migrate && avatarTableExists) {
 			this.log('Dropping the Avatars table...');
 			await this.context.execute(`
 				DROP TABLE IF EXISTS Avatars;
@@ -321,8 +331,8 @@ class Database {
 
 		this.log('Creating the Avatars table...');
 		await this.context.execute(`
-			CREATE TABLE Avatars (
-				id INTEGER PRIMARY KEY, 
+			CREATE TABLE IF NOT EXISTS Avatars (
+				id INTEGER PRIMARY KEY AUTOINCREMENT, 
 				avatarData VARCHAR(2048) NOT NULL DEFAULT '',
 				createdAt DATETIME NOT NULL, 
 				updatedAt DATETIME NOT NULL
@@ -335,7 +345,7 @@ class Database {
 
 		// load roles
 		const roleTableExists = await this.tableExists('Roles');
-		if (roleTableExists) {
+		if (!migrate && roleTableExists) {
 			this.log('Dropping the Roles table...');
 			await this.context.execute(`
 				DROP TABLE IF EXISTS Roles;
@@ -344,8 +354,8 @@ class Database {
 
 		this.log('Creating the Roles table...');
 		await this.context.execute(`
-			CREATE TABLE Roles (
-				id INTEGER PRIMARY KEY, 
+			CREATE TABLE IF NOT EXISTS Roles (
+				id INTEGER PRIMARY KEY AUTOINCREMENT, 
 				roleName VARCHAR(255) NOT NULL DEFAULT '',
 				createdAt DATETIME NOT NULL, 
 				updatedAt DATETIME NOT NULL
@@ -358,7 +368,7 @@ class Database {
 
 		// load users
 		const userTableExists = await this.tableExists('Users');
-		if (userTableExists) {
+		if (!migrate && userTableExists) {
 			this.log('Dropping the Users table...');
 			await this.context.execute(`
 				DROP TABLE IF EXISTS Users;
@@ -367,18 +377,18 @@ class Database {
 
 		this.log('Creating the Users table...');
 		await this.context.execute(`
-			CREATE TABLE Users (
+			CREATE TABLE IF NOT EXISTS Users (
 				id INTEGER PRIMARY KEY AUTOINCREMENT, 
 				userName VARCHAR(255) NOT NULL DEFAULT '', 
 				firstName VARCHAR(255) NOT NULL DEFAULT '', 
 				lastName VARCHAR(255) NOT NULL DEFAULT '', 
 				email VARCHAR(255) NOT NULL DEFAULT '' UNIQUE, 
 				password VARCHAR(255) NOT NULL DEFAULT '', 
-				avatarId INTEGER NULL REFERENCES Avatars (id),
-				roleId INTEGER NULL REFERENCES Roles (id),
 				permissionId INTEGER NOT NULL, 
 				createdAt DATETIME NOT NULL, 
-				updatedAt DATETIME NOT NULL
+				updatedAt DATETIME NOT NULL,
+				avatarId INTEGER NULL REFERENCES Avatars (id),
+				roleId INTEGER NULL REFERENCES Roles (id)
 			);
 			`);
 
@@ -392,7 +402,7 @@ class Database {
 
 		// load targets
 		const targetTableExists = await this.tableExists('Targets');
-		if (targetTableExists) {
+		if (!migrate && targetTableExists) {
 			this.log('Dropping the Targets table...');
 			await this.context.execute(`
 				DROP TABLE IF EXISTS Targets;
@@ -401,7 +411,7 @@ class Database {
 
 		this.log('Creating the Targets table...');
 		await this.context.execute(`
-			CREATE TABLE Targets (
+			CREATE TABLE IF NOT EXISTS Targets (
 				id INTEGER PRIMARY KEY AUTOINCREMENT, 
 				targetLabel STRING,
 				targetData STRING,
@@ -432,7 +442,7 @@ class Database {
 
 		// load sources
 		const sourceTableExists = await this.tableExists('Sources');
-		if (sourceTableExists) {
+		if (!migrate && sourceTableExists) {
 			this.log('Dropping the Sources table...');
 			await this.context.execute(`
 				DROP TABLE IF EXISTS Sources;
@@ -441,10 +451,8 @@ class Database {
 
 		this.log('Creating the Sources table...');
 		await this.context.execute(`
-			CREATE TABLE Sources (
+			CREATE TABLE IF NOT EXISTS Sources (
 				id INTEGER PRIMARY KEY AUTOINCREMENT, 
-				targetId INTEGER NOT NULL DEFAULT -1 
-				REFERENCES Targets (id) ON DELETE CASCADE ON UPDATE CASCADE,
 				sourceLabel STRING,
 				sourceData STRING,
 				sourceEnabled INTEGER,
@@ -456,7 +464,9 @@ class Database {
 				transformation STRING,
 				permissionId INTEGER NOT NULL, 
 				createdAt DATETIME NOT NULL, 
-				updatedAt DATETIME NOT NULL
+				updatedAt DATETIME NOT NULL,
+				targetId INTEGER NULL DEFAULT NULL
+					REFERENCES Targets (id) ON DELETE CASCADE ON UPDATE CASCADE
 			);
 			`);
 
@@ -465,7 +475,7 @@ class Database {
 
 		// load courses
 		const courseTableExists = await this.tableExists('Courses');
-		if (courseTableExists) {
+		if (!migrate && courseTableExists) {
 			this.log('Dropping the Courses table...');
 			await this.context.execute(`
 				DROP TABLE IF EXISTS Courses;
@@ -474,7 +484,7 @@ class Database {
 
 		this.log('Creating the Courses table...');
 		await this.context.execute(`
-			CREATE TABLE Courses (
+			CREATE TABLE IF NOT EXISTS Courses (
 				id INTEGER PRIMARY KEY AUTOINCREMENT, 
 				title VARCHAR(255) NOT NULL DEFAULT '', 
 				description TEXT NOT NULL DEFAULT '', 
@@ -482,8 +492,8 @@ class Database {
 				materialsNeeded VARCHAR(255), 
 				createdAt DATETIME NOT NULL, 
 				updatedAt DATETIME NOT NULL, 
-				userId INTEGER NOT NULL DEFAULT -1 
-				REFERENCES Users (id) ON DELETE CASCADE ON UPDATE CASCADE
+				userId INTEGER NULL DEFAULT NULL 
+					REFERENCES Users (id) ON DELETE CASCADE ON UPDATE CASCADE
 			);
 			`);
 
@@ -493,7 +503,7 @@ class Database {
 
 		// load notes
 		const noteTableExists = await this.tableExists('Notes');
-		if (noteTableExists) {
+		if (!migrate && noteTableExists) {
 			this.log('Dropping the Notes table...');
 			await this.context.execute(`
 				DROP TABLE IF EXISTS Notes;
@@ -502,13 +512,13 @@ class Database {
 
 		this.log('Creating the Notes table...');
 		await this.context.execute(`
-			CREATE TABLE Notes (
+			CREATE TABLE IF NOT EXISTS Notes (
 				id INTEGER PRIMARY KEY AUTOINCREMENT, 
 				note VARCHAR(255) NOT NULL DEFAULT '', 
 				createdAt DATETIME NOT NULL, 
 				updatedAt DATETIME NOT NULL, 
-				userId INTEGER NOT NULL DEFAULT -1 
-				REFERENCES Users (id) ON DELETE CASCADE ON UPDATE CASCADE
+				userId INTEGER NULL DEFAULT NULL
+					REFERENCES Users (id) ON DELETE CASCADE ON UPDATE CASCADE
 			);
 			`);
 

@@ -110,48 +110,48 @@ router.post('/',
 			const errorMessages = errors.array().map(error => error.msg);
 			// Return the validation errors to the client.
 			return res.status(400).json({ errors: errorMessages });
-		} else {
+		}
+		else {
 			// Get the target from the request body.
 			const target = req.body;
 			// check if target already exists in Targets table
-			Target.findOne({
+			const existingTarget = Target.findOne({
 				where: {
-					targetData: target.targetData,
+					targetData: target.targetData
 				},
-			}).then((existingTarget) => {
-				// create new target if not already in Targets table
-				if (!existingTarget) {
-					// Create target
-					Target.create({
-						// id: target.id,
-						targetLabel: target.targetLabel,
-						targetData: target.targetData,
-						batchControlColumn: target.batchControlColumn,
-						batchControlSize: target.batchControlSize,
-						batchControlNext: target.batchControlNext,
-						batchProcessed: target.batchProcessed,
-						batchProcessing: target.batchProcessing,
-						batchMicroChunkCurrent: target.batchMicroChunkCurrent,
-						batchScheduleType: target.batchScheduleType,
-						batchScheduleLast: target.batchScheduleLast,
-						patternColumns: target.patternColumns,
-						groupByColumns: target.groupByColumns,
-						groupByPattern: target.groupByPattern,
-						groupByFlexible: target.groupByFlexible,
-						aggregateColumns: target.aggregateColumns,
-						aggregateFunctions: target.aggregateFunctions,
-						suppoetSpVersions: target.suppoetSpVersions,
-						permissionId: 2,
-					}).then((newTarget) => {
-						// Set the status to 201 Created and end the response.
-						res.location('/').status(201).end(newTarget);
-					});
-				} else {
-					res.status(400).json({ message: `Target data '${target.targetData}' already exists` });
-				}
 			});
+			// create new target if not already in Targets table
+			if (true || existingTarget === null) {
+				// Create target
+				await Target.create({
+					// id: target.id,
+					targetLabel: target.targetLabel,
+					targetData: target.targetData,
+					batchControlColumn: target.batchControlColumn,
+					batchControlSize: target.batchControlSize,
+					batchControlNext: target.batchControlNext,
+					batchProcessed: target.batchProcessed,
+					batchProcessing: target.batchProcessing,
+					batchMicroChunkCurrent: target.batchMicroChunkCurrent,
+					batchScheduleType: target.batchScheduleType,
+					batchScheduleLast: target.batchScheduleLast,
+					patternColumns: target.patternColumns,
+					groupByColumns: target.groupByColumns,
+					groupByPattern: target.groupByPattern,
+					groupByFlexible: target.groupByFlexible,
+					aggregateColumns: target.aggregateColumns,
+					aggregateFunctions: target.aggregateFunctions,
+					suppoetSpVersions: target.suppoetSpVersions,
+					permissionId: 2,
+				}).then((createdTarget) => {
+					const { id } = createdTarget;
+					res.json({ id }).status(201).end();
+				})
+			}
+			else {
+				res.status(400).json({ message: `Target data '${target.targetData}' already exists` });
+			}
 		}
-
 	})
 );
 
@@ -205,7 +205,7 @@ router.put('/:id',
 					'suppoetSpVersions',
 					'permissionId',
 				],
-			}).then(( target ) => {
+			}).then((target) => {
 				// if target permission matches current user's role
 				if (target.permissionId >= req.currentUser.roleId) {
 					// Keep original value if field is not provided

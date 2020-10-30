@@ -9,6 +9,7 @@ const database = new Database(data, enableLogging);
 
 promiseFinally.shim();
 
-database.init()
+const migrate = false;
+database.init(migrate)
   .catch(err => console.error(err))
   .finally(() => process.exit());

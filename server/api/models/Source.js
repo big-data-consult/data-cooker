@@ -4,20 +4,20 @@ const tableName = 'Sources';
 
 module.exports = (sequelize, DataTypes) => {
 	const Source = sequelize.define('Source', {
-		id: {
-			type: DataTypes.INTEGER,
-			primaryKey: true,
-			autoIncrement: true,
-		},
-		targetId: {
-			type: DataTypes.INTEGER,
-			allowNull: false,
-			validate: {
-				notEmpty: {
-					msg: 'Please enter the id value of the aggration target',
-				},
-			},
-		},
+		// id: {
+		// 	type: DataTypes.INTEGER,
+		// 	primaryKey: true,
+		// 	autoIncrement: true,
+		// },
+		// targetId: {
+		// 	type: DataTypes.INTEGER,
+		// 	allowNull: false,
+		// 	validate: {
+		// 		notEmpty: {
+		// 			msg: 'Please enter the id value of the aggration target',
+		// 		},
+		// 	},
+		// },
 		sourceLabel: {
 			type: DataTypes.STRING,
 			allowNull: true,

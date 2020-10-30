@@ -51,16 +51,17 @@ const AuthController = () => {
 			try {
 				const user = await User.findOne({
 					include: [
-						{
-							model: Role,
-							as: 'role',
-							attributes: ['id', 'roleName'],
-						},
-						{
-							model: Avatar,
-							as: 'avatar',
-							attributes: ['id', 'avatarData'],
-						},
+						// {
+						// 	model: Role,
+						// 	as: 'role',
+						// 	attributes: ['id', 'roleName'],
+						// },
+						// {
+						// 	model: Avatar,
+						// 	as: 'avatar',
+						// 	attributes: ['id', 'avatarData'],
+						// },
+						{ all: true, nested: true }
 					],
 					where: {
 						[Op.or]: [

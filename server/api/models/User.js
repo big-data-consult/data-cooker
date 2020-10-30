@@ -7,7 +7,8 @@ const bcryptSevice = require('../services/bcrypt.service');
 
 const hooks = {
 	beforeCreate(user) {
-		user.password = bcryptSevice().password(user); // eslint-disable-line no-param-reassign
+		// eslint-disable-line no-param-reassign
+		user.password = bcryptSevice().password(user);
 	},
 };
 
@@ -15,11 +16,11 @@ const tableName = 'Users';
 
 module.exports = function (sequelize, DataTypes) {
 	const User = sequelize.define('User', {
-		id: {
-			type: DataTypes.INTEGER,
-			primaryKey: true,
-			autoIncrement: true,
-		},
+		// id: {
+		// 	type: DataTypes.INTEGER,
+		// 	primaryKey: true,
+		// 	autoIncrement: true,
+		// },
 		userName: {
 			type: DataTypes.STRING,
 			allowNull: false,
@@ -68,15 +69,15 @@ module.exports = function (sequelize, DataTypes) {
 				},
 			},
 		},
-		avatarId: {
-			type: DataTypes.INTEGER,
-			allowNull: true,
-		},
-		roleId: {
-			type: DataTypes.INTEGER,
-			allowNull: true,
-		},
 		permissionId: DataTypes.INTEGER,
+		// avatarId: {
+		// 	type: DataTypes.INTEGER,
+		// 	allowNull: true,
+		// },
+		// roleId: {
+		// 	type: DataTypes.INTEGER,
+		// 	allowNull: true,
+		// },
 	}, { hooks, tableName });
 
 	User.associate = (models) => {
@@ -96,12 +97,21 @@ module.exports = function (sequelize, DataTypes) {
 			},
 		});
 
-		// //'User' has many 'Courses'
-		// User.hasMany(models.Course, {
-		//   foreignKey: {
-		//     fieldName: 'userId',
-		//   },
-		// });
+		//'User' has many 'Courses'
+		User.hasMany(models.Course, {
+			as: 'courses',
+			foreignKey: {
+				fieldName: 'userId',
+			},
+		});
+
+		//'User' has many 'Notes'
+		User.hasMany(models.Note, {
+			as: 'notes',
+			foreignKey: {
+				fieldName: 'userId',
+			},
+		});
 	};
 
 	return User;
