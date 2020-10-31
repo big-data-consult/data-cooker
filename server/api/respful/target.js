@@ -131,7 +131,7 @@ router.post('/',
 					batchControlSize: target.batchControlSize,
 					batchControlNext: target.batchControlNext,
 					batchProcessed: target.batchProcessed,
-					batchProcessing: target.batchProcessing,
+					batchProcessing: target.batchProcessing ? target.batchProcessing : Date.now(),
 					batchMicroChunkCurrent: target.batchMicroChunkCurrent,
 					batchScheduleType: target.batchScheduleType,
 					batchScheduleLast: target.batchScheduleLast,
@@ -143,8 +143,8 @@ router.post('/',
 					aggregateFunctions: target.aggregateFunctions,
 					suppoetSpVersions: target.suppoetSpVersions,
 					permissionId: 2,
-				}).then((createdTarget) => {
-					const { id } = createdTarget;
+				}).then((created) => {
+					const { id } = created;
 					res.json({ id }).status(201).end();
 				})
 			}
@@ -255,8 +255,8 @@ router.put('/:id',
 							id: target.id,
 						},
 					}).then((updated) => {
-						const { id } = target;
-						res.json({ id }).status(204).end(updated);
+						const { id } = updated;
+						res.json({ id }).status(204).end();
 					});
 				} else {
 					// Return a response with a 403 Client forbidden HTTP status code.
@@ -317,7 +317,8 @@ router.delete('/:id', authenticate, asyncHandler(async (req, res) => {
 					id: target.id
 				}
 			}).then((deleted) => {
-				res.status(204).end(deleted);
+				const { id } = deleted;
+				res.json({ id }).status(204).end();
 			});
 		} else {
 			// Return a response with a 403 Client forbidden HTTP status code.

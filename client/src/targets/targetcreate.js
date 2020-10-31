@@ -11,10 +11,10 @@ export const TargetCreate = props => (
             <NumberInput source="batchControlSize" />
             <TextInput source="batchControlNext" />
             <TextInput source="batchProcessed" />
-            <TextInput source="batchProcessing" />
-            <TextInput source="batchMicroChunkCurrent" />
+            {/* <TextInput source="batchProcessing" /> */}
+            {/* <TextInput source="batchMicroChunkCurrent" /> */}
             <TextInput source="batchScheduleType" />
-            <TextInput source="batchScheduleLast" />
+            {/* <TextInput source="batchScheduleLast" /> */}
             <TextInput source="patternColumns" />
             <TextInput source="groupByColumns" />
             <NumberInput source="groupByPattern" />

@@ -21,6 +21,8 @@ import { UserEdit } from './users/useredit';
 import { UserCreate } from './users/usercreate';
 import { RoleList } from './roles/rolelist';
 import { RoleShow } from './roles/roleshow';
+import { AvatarList } from './avatars/avatarlist';
+import { AvatarShow } from './avatars/avatarshow';
 // import { Base64 } from 'js-base64';
 
 const httpClient = (url, options = {}) => {
@@ -94,6 +96,7 @@ class App extends Component {
 					<Resource name="targets" options={{ label: 'Aggregation Targets' }} list={TargetList} edit={TargetEdit} create={TargetCreate} show={TargetShow} />,
 					<Resource name="sources" options={{ label: 'Aggregation Sources' }} list={SourceList} edit={SourceEdit} create={SourceCreate} show={SourceShow} />,
 					<Resource name="users" list={UserList} edit={UserEdit} create={UserCreate} show={UserShow} />,
+					<Resource name="avatars" list={AvatarList} show={AvatarShow} />,
 					<Resource name="roles" list={RoleList} show={RoleShow} />,
 					<Resource name="permissions" />
 				]}

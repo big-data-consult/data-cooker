@@ -94,7 +94,7 @@ router.post('/', asyncHandler(async (req, res, next) => {
 			lastName: req.body.lastName,
 			email: req.body.email,
 			password: hashedPassword,
-			avater: req.body.avatarId,
+			avatarId: req.body.avatarId,
 			roleId: req.body.roleId,
 			permissionId: 1, // permission is static
 		};
@@ -110,9 +110,9 @@ router.post('/', asyncHandler(async (req, res, next) => {
 				} else {
 					// Create new user
 					User.create(newUser)
-						.then((createdUser) => {
-							const { id } = createdUser;
-							if (createdUser) {
+						.then((created) => {
+							const { id } = created;
+							if (created) {
 								res.json({ id }).status(204).end();
 							}
 						})
@@ -172,48 +172,45 @@ router.put('/:id',
 			// if user exists
 			if (user) {
 				// if user permission matches current user's role
-				if (user.permissionId >= req.currentUser.roleId || user.id === req.currentUser.id) {
-					// Keep original value if field is not provided
-					user.userName = req.body.userName ? req.body.userName : user.userName;
-					user.firstName = req.body.firstName ? req.body.firstName : user.firstName;
-					user.lastName = req.body.lastName ? req.body.lastName : user.lastName;
-					user.email = req.body.email ? req.body.email : user.email;
-					user.password = req.body.password ? req.body.password : user.password;
-					user.avaterId = req.body.avaterId ? req.body.avaterId : user.avaterId;
-					user.roleId = req.body.roleId ? req.body.roleId : user.roleId;
-
-					// Hash the new user's password.
-					user.password = req.body.password ? bcryptjs.hashSync(req.body.password) : user.password;
-
-					// Only admin can change user's role
-					if (req.currentUser.roleId === 1) {
-						user.roleId = req.body.roleId;
-					}
+				if (req.currentUser.roleId !== 1 && user.id !== req.currentUser.id) {
+					// Return a response with a 403 Client forbidden HTTP status code.
+					res.status(403).json({ message: 'No permission to change user profile!' });
+				}
+				else if (req.currentUser.roleId !== 1) {
+					res.status(403).json({ message: 'No permission to change user\'s role!' });
+				}
+				else {
+					// Keep original value if any field is not provided
+					const hashedPassword = req.body.password ? bcryptjs.hashSync(req.body.password) : user.password;
+					const newRole = req.currentUser.roleId === 1 ? req.body.roleId : user.roleId;
+					const updatedUser = {
+						userName: req.body.userName ? req.body.userName : user.userName,
+						firstName: req.body.firstName ? req.body.firstName : user.firstName,
+						lastName: req.body.lastName ? req.body.lastName : user.lastName,
+						email: req.body.email ? req.body.email : user.email,
+						password: hashedPassword,
+						avatarId: req.body.avatarId ? req.body.avatarId : user.avatarId,
+						roleId: newRole
+					};
 
 					// update user details in Users table
-					const updatedUser = await User.update({
-						userName: user.userName,
-						firstName: user.firstName,
-						lastName: user.lastName,
-						email: user.email,
-						password: user.password,
-						avaterId: user.avatarId,
-						roleId: user.roleId,
-						permissionId: 1,
+					await User.update({
+						userName: updatedUser.userName,
+						firstName: updatedUser.firstName,
+						lastName: updatedUser.lastName,
+						email: updatedUser.email,
+						password: updatedUser.password,
+						avatarId: updatedUser.avatarId,
+						roleId: updatedUser.roleId,
+						permissionId: 1
 					}, {
 						where: {
 							id: user.id,
 						},
-					});
-
-					const { id } = user;
-
-					if (updatedUser) {
+					}).then((updated) => {
+						const { id } = updated;
 						res.json({ id }).status(204).end();
-					}
-				} else {
-					// Return a response with a 403 Client forbidden HTTP status code.
-					res.status(403).json({ message: 'Access not permitted' });
+					});
 				}
 			} else {
 				res.status(404).json({ message: 'User not found.' });
@@ -253,8 +250,9 @@ router.delete('/:id', authenticate, asyncHandler(async (req, res) => {
 						id: user.id,
 					},
 				}
-			).then((deletedUser) => {
-				res.status(204).json(deletedUser);
+			).then((deleted) => {
+				const { id } = deleted;
+				res.json({ id }).status(204).end();
 			});
 		} else {
 			// Return a response with a 403 Client forbidden HTTP status code.

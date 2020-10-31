@@ -38,7 +38,7 @@ module.exports = (sequelize, DataTypes) => {
 		},
 		sourceEnabled: {
 			type: DataTypes.INTEGER,
-			allowNull: false,
+			allowNull: true,
 			validate: {
 				notEmpty: {
 					msg: 'Please enter a true or false to enable or disable source',
@@ -56,7 +56,7 @@ module.exports = (sequelize, DataTypes) => {
 		},
 		sourceCheckTime: {
 			type: DataTypes.STRING,
-			allowNull: false,
+			allowNull: true,
 			validate: {
 				notEmpty: {
 					msg: 'Please enter a true or false to enable or disable source',
@@ -65,7 +65,7 @@ module.exports = (sequelize, DataTypes) => {
 		},
 		sourceCheckQuery: {
 			type: DataTypes.STRING,
-			allowNull: false,
+			allowNull: true,
 			validate: {
 				notEmpty: {
 					msg: 'Please enter a true or false to enable or disable source',

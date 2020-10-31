@@ -24,11 +24,11 @@ export const UserList = props => {
 			) : (
 					<Datagrid>
 						<TextField source="id" />
+						<ReferenceField source="avatarId" reference="avatars"><ImageField source="avatarData" /></ReferenceField>
 						<TextField source="userName" />
 						<TextField source="firstName" />
 						<TextField source="lastName" />
 						<EmailField source="email" />
-						<ReferenceField source="avatarId" reference="avatars"><ImageField source="avatarData" /></ReferenceField>
 						<ReferenceField source="roleId" reference="roles"><ChipField source="roleName" /></ReferenceField>
 						{/* <ReferenceField source="permissionId" reference="permissions"><TextField source="id" /></ReferenceField> */}
 						<EditButton />

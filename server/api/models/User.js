@@ -89,7 +89,7 @@ module.exports = function (sequelize, DataTypes) {
 			},
 		});
 
-		// User' belongs to a single 'Role'
+		// User' belongs to a single 'Avatar'
 		User.belongsTo(models.Avatar, {
 			as: 'avatar',
 			foreignKey: {

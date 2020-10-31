@@ -123,15 +123,15 @@ router.post('/',
 				sourceLabel: source.sourceLabel,
 				sourceData: source.sourceData,
 				sourceEnabled: source.sourceEnabled,
-				sourceReadyTime: source.sourceReadyTime,
+				sourceReadyTime: source.sourceReadyTime ? source.sourceReadyTime : Date.now(),
 				sourceCheckTime: source.sourceCheckTime,
 				sourceCheckQuery: source.sourceCheckQuery,
 				patternDefault: source.patternDefault,
 				patternFlexible: source.patternFlexible,
 				transformation: source.transformation,
 				permissionId: 2,
-			}).then((createdSource) => {
-				const { id } = createdSource;
+			}).then((created) => {
+				const { id } = created;
 				// res.json({ id }).status(201).end();
 				//  Set the status to 201 Created, set Location header, and end the response.
 				res.json({ id }).location(`/sources/${id}`).status(201).end();
@@ -207,7 +207,7 @@ router.put('/:id',
 					};
 
 					//  update source details in Sources table
-					const updated = await Source.update({
+					await Source.update({
 						targetId: updatedSource.targetId,
 						sourceLabel: updatedSource.sourceLabel,
 						sourceData: updatedSource.sourceData,
@@ -223,14 +223,10 @@ router.put('/:id',
 						where: {
 							id: source.id
 						}
-					});
-
-					const { id } = source;
-
-					if (updated) {
+					}).then((updated) => {
+						const { id } = updated;
 						res.json({ id }).status(204).end();
-					}
-
+					});
 				} else {
 					//  Return a response with a 403 Client forbidden HTTP status code.
 					res.status(403).json({ message: 'Access not permitted' });
@@ -293,9 +289,10 @@ router.delete('/:id', authenticate, asyncHandler(async (req, res) => {
 						id: source.id
 					}
 				}
-			).thrn(deletedSource => {
-				res.status(204).end();
-			})
+			).then((deleted) => {
+				const { id } = deleted;
+				res.json({ id }).status(204).end();
+			});
 		} else {
 			//  Return a response with a 403 Client forbidden HTTP status code.
 			res.status(403).json({ message: 'Access not permitted' });
