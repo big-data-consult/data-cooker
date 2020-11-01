@@ -1,10 +1,10 @@
 const { Op } = require('sequelize');
-const { User } = require('../models');
-const authService = require('../services/auth.service');
-const bcryptService = require('../services/bcrypt.service');
-const { Avatar } = require('../models');
-const { Role } = require('../models');
-// const User = require('../models').User;
+const { User } = require('../../models');
+const authService = require('../../services/auth.service');
+const bcryptService = require('../../services/bcrypt.service');
+const { Avatar } = require('../../models');
+const { Role } = require('../../models');
+// const User = require('../../models').User;
 
 const AuthController = () => {
 	const register = async (req, res) => {

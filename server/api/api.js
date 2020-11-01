@@ -26,22 +26,23 @@ const environment = process.env.NODE_ENV;
 const DB = dbService(environment, config.migrate).start();
 const api = express();
 const server = http.Server(api);
-const mappedRoutes = mapRoutes(config.publicRoutes, 'api/controllers/');
+const publicRouter = mapRoutes(config.publicRoutes, 'api/controllers/publicControllers/');
 // const DB = dbService(environment, config.migrate).start();
 
 // private routes
-const roleRouter = require('./respful/role');
-const userRouter = require('./respful/user');
-const avatarRouter = require('./respful/avatar');
-const courseRouter = require('./respful/course');
-const noteRouter = require('./respful/note');
-const jobRouter = require('./respful/job');
-const taskRouter = require('./respful/task');
-const permissionRouter = require('./respful/permission.js');
-const targetRouter = require('./respful/target');
-const sourceRouter = require('./respful/source');
-// const loginRouter = require('./respful/login');
-// const defaultRouter = require('./respful/index');
+const privateRouter = mapRoutes(config.privateRoutes, 'api/controllers/privateControllers/');
+// const roleRouter = require('./respful/role');
+// const userRouter = require('./respful/user');
+// const avatarRouter = require('./respful/avatar');
+// const courseRouter = require('./respful/course');
+// const noteRouter = require('./respful/note');
+// const jobRouter = require('./respful/job');
+// const taskRouter = require('./respful/task');
+// const permissionRouter = require('./respful/permission.js');
+// const targetRouter = require('./respful/target');
+// const sourceRouter = require('./respful/source');
+// // const loginRouter = require('./respful/login');
+// // const defaultRouter = require('./respful/index');
 
 // allow cross origin requests
 // configure to allow only requests from certain origins
@@ -59,21 +60,23 @@ api.use(bodyParser.urlencoded({ extended: false }));
 api.use(bodyParser.json());
 
 // public auth REST API
-api.use('/userapi', mappedRoutes);
+api.use('/userapi', publicRouter);
 
 // private REST API
-api.use('/respful/roles', roleRouter);
-api.use('/respful/users', userRouter);
-api.use('/respful/avatars', avatarRouter);
-api.use('/respful/courses', courseRouter);
-api.use('/respful/notes', noteRouter);
-api.use('/respful/jobs', jobRouter);
-api.use('/respful/tasks', taskRouter);
-api.use('/respful/permissions', permissionRouter);
-api.use('/respful/targets', targetRouter);
-api.use('/respful/sources', sourceRouter);
-// api.use('/respful', defaultRouter);
-// api.use('/respful/login', loginRouter);
+api.use('/respful', privateRouter);
+
+// api.use('/respful/roles', roleRouter);
+// api.use('/respful/users', userRouter);
+// api.use('/respful/avatars', avatarRouter);
+// api.use('/respful/courses', courseRouter);
+// api.use('/respful/notes', noteRouter);
+// api.use('/respful/jobs', jobRouter);
+// api.use('/respful/tasks', taskRouter);
+// api.use('/respful/permissions', permissionRouter);
+// api.use('/respful/targets', targetRouter);
+// api.use('/respful/sources', sourceRouter);
+// // api.use('/respful', defaultRouter);
+// // api.use('/respful/login', loginRouter);
 
 
 // private GraphQL API

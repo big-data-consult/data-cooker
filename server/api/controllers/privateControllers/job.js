@@ -1,94 +1,69 @@
-const express = require('express');
 const { check, validationResult } = require('express-validator');
-const { Job } = require('../models');
-const authenticate = require('./auth');
-// const { check, validationResult } = require('express-validator/check');
-
-const asyncHandler = require('../services/async');
-const router = express.Router();
-
-// GET /api/jobs 200
-// Returns a list of jobs (including the job that owns each task)
-router.get('/', asyncHandler(async (req, res) => {
-
-	// Get query string params
-	const sort = req.query.sort ? JSON.parse(req.query.sort) : ['jobDescription', 'ASC'];
-	const range = req.query.range ? JSON.parse(req.query.range) : [0, 50];
-	const filter = req.query.filter ? JSON.parse(req.query.filter) : {};
-
-	// Get tagets controled by query string params
-	const jobs = await Job.findAll({
-		attributes: [
-			'id',
-			'jobName',
-			'jobDescription',
-			'jobStatus',
-			'jobEnabled',
-			'repeatSchedule',
-			'scheduleType',
-			'scheduleCron',
-			'scheduleBegin',
-			'scheduleEnd',
-			'nextSchedule',
-			'lastSchedule',
-			'permissionId',
-		],
-		where: filter,
-		order: [sort],
-		offset: range[0],
-		limit: range[1] - range[0],
-	});
-	res.header('Access-Control-Expose-Headers', 'X-Total-Count')
-		.header('X-Total-Count', jobs.length)
-		.json({ jobs });
-}));
+const { Job } = require('../../models');
 
 
-// GET /api/jobs/:id 200
-// Returns a jobs (including the job that owns the job) for the provided job ID
-router.get('/:id', asyncHandler(async (req, res) => {
-	const job = await Job.findByPk(req.params.id, {
-		attributes: [
-			'id',
-			'jobName',
-			'jobDescription',
-			'jobStatus',
-			'jobEnabled',
-			'repeatSchedule',
-			'scheduleType',
-			'scheduleCron',
-			'scheduleBegin',
-			'scheduleEnd',
-			'nextSchedule',
-			'lastSchedule',
-			'permissionId',
-		],
-	});
+const JobController = () => {
+	const getJobs = async (req, res) => {
+		const sort = req.query.sort ? JSON.parse(req.query.sort) : ['jobDescription', 'ASC'];
+		const range = req.query.range ? JSON.parse(req.query.range) : [0, 50];
+		const filter = req.query.filter ? JSON.parse(req.query.filter) : {};
 
-	if (job) {
-		res.json({ job });
-	} else {
-		res.status(404).json({ message: 'Job id not found.' });
-	}
-}));
+		// Get tagets controled by query string params
+		const jobs = await Job.findAll({
+			attributes: [
+				'id',
+				'jobName',
+				'jobDescription',
+				'jobStatus',
+				'jobEnabled',
+				'repeatSchedule',
+				'scheduleType',
+				'scheduleCron',
+				'scheduleBegin',
+				'scheduleEnd',
+				'nextSchedule',
+				'lastSchedule',
+				'permissionId',
+			],
+			where: filter,
+			order: [sort],
+			offset: range[0],
+			limit: range[1] - range[0],
+		});
+		res.header('Access-Control-Expose-Headers', 'X-Total-Count')
+			.header('X-Total-Count', jobs.length)
+			.json({ jobs });
+	};
 
 
-// POST /api/jobs 201
-// Creates a job, sets the Location header to "/", and returns no content
-router.post('/',
-	[
-		check('jobName')
-			.exists({ checkNull: true, checkFalsy: true })
-			.withMessage('Please provide a value for "jobName"'),
-		// check('jobDescription')
-		// 	.exists({ checkNull: true, checkFalsy: true })
-		// 	.withMessage('Please provide a value for "jobDescription"'),
-		// check('jobStatus')
-		// 	.exists({ checkNull: true, checkFalsy: true })
-		// 	.withMessage('Please provide a value for "jobStatus"'),
-	],
-	authenticate,
-	asyncHandler(async (req, res) => {
+	const getJob = async (req, res) => {
+		const job = await Job.findByPk(req.params.id, {
+			attributes: [
+				'id',
+				'jobName',
+				'jobDescription',
+				'jobStatus',
+				'jobEnabled',
+				'repeatSchedule',
+				'scheduleType',
+				'scheduleCron',
+				'scheduleBegin',
+				'scheduleEnd',
+				'nextSchedule',
+				'lastSchedule',
+				'permissionId',
+			],
+		});
+
+		if (job) {
+			res.json({ job });
+		} else {
+			res.status(404).json({ message: 'Job id not found.' });
+		}
+	};
+
+
+	const postJob = async (req, res) => {
 		// Attempt to get the validation result from the Request object.
 		const errors = validationResult(req);
 
@@ -134,26 +109,10 @@ router.post('/',
 				res.status(400).json({ message: `Job data '${job.jobDescription}' already exists` });
 			}
 		}
-	})
-);
+	};
 
 
-// PUT /api/jobs/:id 204
-// Updates a job and returns no content
-router.put('/:id',
-	[
-		check('jobName')
-			.exists({ checkNull: true, checkFalsy: true })
-			.withMessage('Please provide a value for "jobName"'),
-		// check('jobDescription')
-		// 	.exists({ checkNull: true, checkFalsy: true })
-		// 	.withMessage('Please provide a value for "jobDescription"'),
-		// check('jobStatus')
-		// 	.exists({ checkNull: true, checkFalsy: true })
-		// 	.withMessage('Please provide a value for "jobStatus"'),
-	],
-	authenticate,
-	asyncHandler(async (req, res) => {
+	const putJob = async (req, res) => {
 		// Attempt to get the validation result from the Request object.
 		const errors = validationResult(req);
 
@@ -228,61 +187,67 @@ router.put('/:id',
 				}
 			});
 		}
-	})
-);
+	};
 
 
-// DELETE /api/jobs/ 204
-// Deletes a job and returns no content
-router.delete('/', authenticate, asyncHandler(async (req, res) => {
-	const filter = req.query.filter ? JSON.parse(req.query.filter) : {};
+	const deleteJobs = async (req, res) => {
+		const filter = req.query.filter ? JSON.parse(req.query.filter) : {};
 
-	// delete job from Jobs table
-	Job.destroy({
-		where: filter
-	}).then((deletedJob) => {
-		res.status(204).end(deletedJob);
-	});
-}));
+		// delete job from Jobs table
+		Job.destroy({
+			where: filter
+		}).then((deleted) => {
+			res.status(204).end(deleted);
+		});
+	};
 
 
-// DELETE /api/jobs/:id 204
-// Deletes a job and returns no content
-router.delete('/:id', authenticate, asyncHandler(async (req, res) => {
-	// find existing job
-	Job.findByPk(req.params.id, {
-		attributes: [
-			'id',
-			'jobName',
-			'jobDescription',
-			'jobStatus',
-			'jobEnabled',
-			'repeatSchedule',
-			'scheduleType',
-			'scheduleCron',
-			'scheduleBegin',
-			'scheduleEnd',
-			'nextSchedule',
-			'lastSchedule',
-			'permissionId'
-		]
-	}).then((job) => {
-		// if job permission matches current user's role
-		if (job.permissionId >= req.currentUser.roleId) {
-			// delete job from Jobs table
-			Job.destroy({
-				where: {
-					id: job.id
-				}
-			}).then((deleted) => {
-				const { id } = deleted;
-				res.json({ id }).status(204).end();
-			});
-		} else {
-			// Return a response with a 403 Client forbidden HTTP status code.
-			res.status(403).json({ message: 'No permission to delete job.' });
-		}
-	});
-}));
+	const deleteJob = async (req, res) => {
+		// find existing job
+		Job.findByPk(req.params.id, {
+			attributes: [
+				'id',
+				'jobName',
+				'jobDescription',
+				'jobStatus',
+				'jobEnabled',
+				'repeatSchedule',
+				'scheduleType',
+				'scheduleCron',
+				'scheduleBegin',
+				'scheduleEnd',
+				'nextSchedule',
+				'lastSchedule',
+				'permissionId'
+			]
+		}).then((job) => {
+			// if job permission matches current user's role
+			if (job.permissionId >= req.currentUser.roleId) {
+				// delete job from Jobs table
+				Job.destroy({
+					where: {
+						id: job.id
+					}
+				}).then((deleted) => {
+					const { id } = deleted;
+					res.json({ id }).status(204).end();
+				});
+			} else {
+				// Return a response with a 403 Client forbidden HTTP status code.
+				res.status(403).json({ message: 'No permission to delete job.' });
+			}
+		});
+	};
 
-module.exports = router;
+	return {
+		getJobs,
+		getJob,
+		postJob,
+		putJob,
+		deleteJobs,
+		deleteJob,
+	};
+};
+
+module.exports = JobController;
+
