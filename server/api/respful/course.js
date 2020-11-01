@@ -79,7 +79,7 @@ router.post('/', authenticate, (req, res, next) => {
 				next(err);
 			} else {
 				Course.create(req.body).then(course => {
-					res.location(`/respapi/courses/${course.id}`);
+					res.location(`/respful/courses/${course.id}`);
 					res.status(201).end();
 				})
 					// Catch errors

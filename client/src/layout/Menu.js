@@ -42,7 +42,7 @@ import { useTranslate, DashboardMenuItem, MenuItemLink } from 'react-admin';
 import SubMenu from './SubMenu';
 //import { AppState } from './types';
 
-type MenuName = 'menuNormalizer' | 'menuAggregator' | 'menuAllocator' | 'menuUserAdmin';
+type MenuName = 'menuNormalizer' | 'menuAggregator' | 'menuAllocator' | 'menuScheduler' | 'menuUserAdmin';
 
 interface Props {
     dense: boolean;
@@ -55,6 +55,7 @@ const Menu: FC<Props> = ({ onMenuClick, dense, logout }) => {
         menuNormalizer: true,
         menuAggregator: true,
         menuAllocator: true,
+        menuScheduler: true,
         menuUserAdmin: true,
     });
     const translate = useTranslate();
@@ -179,6 +180,35 @@ const Menu: FC<Props> = ({ onMenuClick, dense, logout }) => {
                     dense={dense}
                 />
             </SubMenu> */}
+            <SubMenu
+                handleToggle={() => handleToggle('menuScheduler')}
+                isOpen={state.menuScheduler}
+                sidebarIsOpen={open}
+                name="Task Scheduler"
+                icon={<CollectionIcon />}
+                dense={dense}
+            >
+                <MenuItemLink
+                    to={`/jobs`}
+                    primaryText={translate(`Jobs`, {
+                        smart_count: 2,
+                    })}
+                    leftIcon={<PermDataSetting />}
+                    onClick={onMenuClick}
+                    sidebarIsOpen={open}
+                    dense={dense}
+                />
+                <MenuItemLink
+                    to={`/tasks`}
+                    primaryText={translate(`Tasks`, {
+                        smart_count: 2,
+                    })}
+                    leftIcon={<Storage />}
+                    onClick={onMenuClick}
+                    sidebarIsOpen={open}
+                    dense={dense}
+                />
+            </SubMenu>
             <SubMenu
                 handleToggle={() => handleToggle('menuUserAdmin')}
                 isOpen={state.menuUserAdmin}

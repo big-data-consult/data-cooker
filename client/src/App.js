@@ -7,6 +7,22 @@ import MyLayout from './layout/MyLayout';
 import authProvider from './providers/authProvider';
 import jsonServerProvider from './providers/dataProvider';
 import i18nProvider from './providers/i18nProvider';
+import { RoleList } from './roles/rolelist';
+import { RoleShow } from './roles/roleshow';
+import { UserList } from './users/userlist';
+import { UserShow } from './users/usershow';
+import { UserEdit } from './users/useredit';
+import { UserCreate } from './users/usercreate';
+import { AvatarList } from './avatars/avatarlist';
+import { AvatarShow } from './avatars/avatarshow';
+import { JobList } from './jobs/joblist';
+import { JobShow } from './jobs/jobshow';
+import { JobEdit } from './jobs/jobedit';
+import { JobCreate } from './jobs/jobcreate';
+import { TaskList } from './tasks/tasklist';
+import { TaskShow } from './tasks/taskshow';
+import { TaskEdit } from './tasks/taskedit';
+import { TaskCreate } from './tasks/taskcreate';
 import { TargetList } from './targets/targetlist';
 import { TargetShow } from './targets/targetshow';
 import { TargetEdit } from './targets/targetedit';
@@ -15,14 +31,6 @@ import { SourceList } from './sources/sourcelist';
 import { SourceShow } from './sources/sourceshow';
 import { SourceEdit } from './sources/sourceedit';
 import { SourceCreate } from './sources/sourcecreate';
-import { UserList } from './users/userlist';
-import { UserShow } from './users/usershow';
-import { UserEdit } from './users/useredit';
-import { UserCreate } from './users/usercreate';
-import { RoleList } from './roles/rolelist';
-import { RoleShow } from './roles/roleshow';
-import { AvatarList } from './avatars/avatarlist';
-import { AvatarShow } from './avatars/avatarshow';
 // import { Base64 } from 'js-base64';
 
 const httpClient = (url, options = {}) => {
@@ -95,6 +103,8 @@ class App extends Component {
 					// <Resource name="targets" options={{ label: 'Aggregation Targets' }} list={TargetList} edit={roleId ? TargetEdit : null} />,
 					<Resource name="targets" options={{ label: 'Aggregation Targets' }} list={TargetList} edit={TargetEdit} create={TargetCreate} show={TargetShow} />,
 					<Resource name="sources" options={{ label: 'Aggregation Sources' }} list={SourceList} edit={SourceEdit} create={SourceCreate} show={SourceShow} />,
+					<Resource name="jobs" options={{ label: 'Scheduled Jobs' }} list={JobList} edit={JobEdit} create={JobCreate} show={ShowGuesser} />,
+					<Resource name="tasks" options={{ label: 'Job Tasks' }} list={TaskList} edit={TaskEdit} create={TaskCreate} show={ShowGuesser} />,
 					<Resource name="users" list={UserList} edit={UserEdit} create={UserCreate} show={UserShow} />,
 					<Resource name="avatars" list={AvatarList} show={AvatarShow} />,
 					<Resource name="roles" list={RoleList} show={RoleShow} />,

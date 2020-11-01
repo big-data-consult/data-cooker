@@ -9,6 +9,8 @@ class Database {
 		this.avatars = seedData.avatars;
 		this.roles = seedData.roles;
 		this.users = seedData.users;
+		this.jobs = seedData.jobs;
+		this.tasks = seedData.tasks;
 		this.targets = seedData.targets;
 		this.sources = seedData.sources;
 		this.courses = seedData.courses;
@@ -109,6 +111,87 @@ class Database {
 			user.permissionId,
 			user.avatarId,
 			user.roleId
+		);
+	}
+
+	createJob(job) {
+		return this.context.execute(`
+			INSERT INTO Jobs(
+				jobName,
+				jobDescription,
+				jobStatus,
+				jobEnabled,
+				repeatSchedule,
+				scheduleType,
+				scheduleCron,
+				scheduleBegin,
+				scheduleEnd,
+				nextSchedule,
+				lastSchedule,
+				permissionId,
+				createdAt,
+				updatedAt
+			)
+			VALUES(
+				?, /* jobName */
+				?, /* jobDescription */
+				'', /* jobStatus */
+				1, /* jobEnabled */
+				1, /* repeatSchedule */
+				?, /* scheduleType */
+				?, /* scheduleCron */
+				'', /* scheduleBegin */
+				'', /* scheduleEnd */
+				'', /* nextSchedule */
+				'', /* lastSchedule */
+				2, /* permissionId */
+				datetime('now'), 
+				datetime('now')
+			);`,
+			job.jobName,
+			job.jobDescription,
+			job.scheduleType,
+			job.scheduleCron
+		);
+	}
+
+	createTask(task) {
+		return this.context.execute(`
+			INSERT INTO Tasks(
+				taskNo,
+				taskName,
+				taskDescription,
+				taskExecutor,
+				taskStatus,
+				nextTaskOnSuccess,
+				nextTaskOnFailure,
+				lastScheduledTime,
+				lastCompleteTime,
+				permissionId,
+				createdAt, 
+				updatedAt,
+				jobId
+			)
+			VALUES(
+				?, /* taskNo */
+				?, /* taskName */
+				'', /* taskDescription */
+				'', /* taskExecutor */
+				'', /* taskStatus */
+				?, /* nextTaskOnSuccess */
+				?, /* nextTaskOnFailure */
+				'', /* lastScheduledTime */
+				'', /* lastCompleteTime */
+				2, /* permissionId */
+				datetime('now'), 
+				datetime('now'),
+				? /* jobId */
+			);`,
+			task.taskNo,
+			task.taskName,
+			task.nextTaskOnSuccess,
+			task.nextTaskOnFailure,
+			task.jobId
 		);
 	}
 
@@ -281,6 +364,18 @@ class Database {
 		}
 	}
 
+	async createJobs(jobs) {
+		for (const job of jobs) {
+			await this.createJob(job);
+		}
+	}
+
+	async createTasks(tasks) {
+		for (const task of tasks) {
+			await this.createTask(task);
+		}
+	}
+
 	async createTargets(targets) {
 		for (const target of targets) {
 			await this.createTarget(target);
@@ -399,6 +494,73 @@ class Database {
 				this.createUsers(hasshedUsers);
 			});
 
+
+		// load jobs
+		const jobTableExists = await this.tableExists('Jobs');
+		if (!migrate && jobTableExists) {
+			this.log('Dropping the Jobs table...');
+			await this.context.execute(`
+				DROP TABLE IF EXISTS Jobs;
+			`);
+		}
+
+		this.log('Creating the Jobs table...');
+		await this.context.execute(`
+			CREATE TABLE IF NOT EXISTS Jobs (
+				id INTEGER PRIMARY KEY AUTOINCREMENT, 
+				jobName STRING NOT NULL,
+				jobDescription STRING,
+				jobStatus STRING,
+				jobEnabled INTEGER NOT NULL,
+				repeatSchedule STRING NOT NULL,
+				scheduleType STRING NOT NULL,
+				scheduleCron STRING NOT NULL,
+				scheduleBegin STRING,
+				scheduleEnd STRING,
+				nextSchedule STRING,
+				lastSchedule STRING,
+				permissionId INTEGER, 
+				createdAt DATETIME NOT NULL, 
+				updatedAt DATETIME NOT NULL
+			);
+			`);
+
+		this.log('Creating the job records...');
+		await this.createJobs(this.jobs);
+
+
+		// load tasks
+		const taskTableExists = await this.tableExists('Tasks');
+		if (!migrate && taskTableExists) {
+			this.log('Dropping the Tasks table...');
+			await this.context.execute(`
+				DROP TABLE IF EXISTS Tasks;
+			`);
+		}
+
+		this.log('Creating the Tasks table...');
+		await this.context.execute(`
+			CREATE TABLE IF NOT EXISTS Tasks (
+				id INTEGER PRIMARY KEY AUTOINCREMENT, 
+				taskNo INTEGER NOT NULL,
+				taskName STRING NOT NULL,
+				taskDescription STRING,
+				taskExecutor STRING NOT NULL,
+				taskStatus STRING,
+				nextTaskOnSuccess NTEGER,
+				nextTaskOnFailure INTEGER,
+				lastScheduledTime STRING,
+				lastCompleteTime STRING,
+				permissionId INTEGER NOT NULL, 
+				createdAt DATETIME NOT NULL, 
+				updatedAt DATETIME NOT NULL,
+				jobId INTEGER NOT NULL
+					REFERENCES Jobs (id) ON DELETE CASCADE ON UPDATE CASCADE
+			);
+			`);
+
+		this.log('Creating the task records...');
+		await this.createTasks(this.tasks);
 
 		// load targets
 		const targetTableExists = await this.tableExists('Targets');

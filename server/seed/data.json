@@ -67,6 +67,57 @@
 			"roleId": 3
 		}
 	],
+	"jobs": [
+		{
+			"jobName": "Test job 1",
+			"jobDescription": "test job 1 ...",
+			"scheduleType": "hour",
+			"scheduleCron": "15 * * * *"
+		},
+		{
+			"jobName": "Test job 2",
+			"jobDescription": "Test job 2 ...",
+			"scheduleType": "hour",
+			"scheduleCron": "15 * * * *"
+		}
+	],
+	"tasks": [
+		{
+			"taskNo": 1,
+			"taskName": "test_task_1",
+			"nextTaskOnSuccess": 2,
+			"nextTaskOnFailure": 3,
+			"jobId": 1
+		},
+		{
+			"taskNo": 2,
+			"taskName": "test_task_2",
+			"nextTaskOnSuccess": 3,
+			"nextTaskOnFailure": null,
+			"jobId": 1
+		},
+		{
+			"taskNo": 3,
+			"taskName": "test_task_3",
+			"nextTaskOnSuccess": null,
+			"nextTaskOnFailure": null,
+			"jobId": 1
+		},
+		{
+			"taskNo": 1,
+			"taskName": "test_task_4",
+			"nextTaskOnSuccess": null,
+			"nextTaskOnFailure": 2,
+			"jobId": 2
+		},
+		{
+			"taskNo": 2,
+			"taskName": "test_task_5",
+			"nextTaskOnSuccess": null,
+			"nextTaskOnFailure": null,
+			"jobId": 2
+		}
+	],
 	"targets": [
 		{
 			"targetLabel": "Test target 1",
@@ -75,7 +126,6 @@
 			"permissionId": 2
 		},
 		{
-			"sourceLabel": "Test Source 1",
 			"targetLabel": "Test target 2",
 			"targetData": "test_target_2",
 			"batchControlColumn": "data_ts",
