@@ -1,171 +1,173 @@
-// const Course = require("./source");
+const { Sequelize } = require('sequelize');
 
-const tableName = 'Targets';
+const sequelize = require('../../config/database');
+const { Source } = require('./Source');
 
-module.exports = (sequelize, DataTypes) => {
-	const Target = sequelize.define('Target', {
-		// id: {
-		// 	type: DataTypes.INTEGER,
-		// 	primaryKey: true,
-		// 	autoIncrement: true,
-		// },
-		targetLabel: {
-			type: DataTypes.STRING,
-			allowNull: true,
-			validate: {
-				notEmpty: {
-					msg: 'Please enter an aggregation project/stream label',
-				},
+const Target = sequelize.define('Target', {
+	targetLabel: {
+		type: Sequelize.STRING,
+		unique: true,
+		allowNull: true,
+		validate: {
+			notEmpty: {
+				msg: 'Please enter an aggregation project/stream label',
 			},
 		},
-		targetData: {
-			type: DataTypes.STRING,
-			allowNull: false,
-			validate: {
-				notEmpty: {
-					msg: 'Please enter an aggregation target data name',
-				},
+	},
+	targetData: {
+		type: Sequelize.STRING,
+		unique: true,
+		allowNull: false,
+		validate: {
+			notEmpty: {
+				msg: 'Please enter an aggregation target data name',
 			},
 		},
-		batchControlColumn: {
-			type: DataTypes.STRING,
-			allowNull: false,
-			validate: {
-				notEmpty: {
-					msg: 'Please enter a data timestamp column name',
-				},
+	},
+	batchControlColumn: {
+		type: Sequelize.STRING,
+		allowNull: false,
+		validate: {
+			notEmpty: {
+				msg: 'Please enter a data timestamp column name',
 			},
 		},
-		batchControlSize: {
-			type: DataTypes.INTEGER,
-			allowNull: false,
-			validate: {
-				notEmpty: {
-					msg: 'Please enter a aggregation batch size in minutes',
-				},
+	},
+	batchControlSize: {
+		type: Sequelize.INTEGER,
+		allowNull: false,
+		validate: {
+			notEmpty: {
+				msg: 'Please enter a aggregation batch size in minutes',
 			},
 		},
-		batchControlNext: {
-			type: DataTypes.STRING,
-			allowNull: false,
-			validate: {
-				notEmpty: {
-					msg: 'Please enter a batch step calculation function',
-				},
+	},
+	batchControlNext: {
+		type: Sequelize.STRING,
+		allowNull: false,
+		validate: {
+			notEmpty: {
+				msg: 'Please enter a batch step calculation function',
 			},
 		},
-		batchProcessed: {
-			type: DataTypes.INTEGER,
-			allowNull: false,
-			validate: {
-				notEmpty: {
-					msg: 'Please enter a timestamp of data aggregation is done',
-				},
+	},
+	batchProcessed: {
+		type: Sequelize.INTEGER,
+		allowNull: false,
+		validate: {
+			notEmpty: {
+				msg: 'Please enter a timestamp of data aggregation is done',
 			},
 		},
-		batchProcessing: {
-			type: DataTypes.INTEGER,
-			allowNull: true,
-			validate: {
-				notEmpty: {
-					msg: 'Please enter a timestamp of data aggregation will be done',
-				},
+	},
+	batchProcessing: {
+		type: Sequelize.INTEGER,
+		allowNull: true,
+		validate: {
+			notEmpty: {
+				msg: 'Please enter a timestamp of data aggregation will be done',
 			},
 		},
-		batchMicroChunkCurrent: {
-			type: DataTypes.INTEGER,
-			allowNull: true,
-		},
-		batchScheduleType: {
-			type: DataTypes.STRING,
-			allowNull: false,
-			validate: {
-				notEmpty: {
-					msg: 'Please enter a time unit about how often data change',
-				},
+	},
+	batchMicroChunkCurrent: {
+		type: Sequelize.INTEGER,
+		allowNull: true,
+	},
+	batchScheduleType: {
+		type: Sequelize.STRING,
+		allowNull: false,
+		validate: {
+			notEmpty: {
+				msg: 'Please enter a time unit about how often data change',
 			},
 		},
-		batchScheduleLast: {
-			type: DataTypes.INTEGER,
-			allowNull: true,
-		},
-		patternColumns: {
-			type: DataTypes.BLOB,
-			allowNull: false,
-			validate: {
-				notEmpty: {
-					msg: 'Please enter a column array for pattern space',
-				},
+	},
+	batchScheduleLast: {
+		type: Sequelize.INTEGER,
+		allowNull: true,
+	},
+	patternColumns: {
+		type: Sequelize.BLOB,
+		allowNull: false,
+		validate: {
+			notEmpty: {
+				msg: 'Please enter a column array for pattern space',
 			},
 		},
-		groupByColumns: {
-			type: DataTypes.BLOB,
-			allowNull: true,
-			validate: {
-				notEmpty: {
-					msg: 'Please enter a column array for group by',
-				},
+	},
+	groupByColumns: {
+		type: Sequelize.BLOB,
+		allowNull: true,
+		validate: {
+			notEmpty: {
+				msg: 'Please enter a column array for group by',
 			},
 		},
-		groupByPattern: {
-			type: DataTypes.INTEGER,
-			allowNull: false,
-			validate: {
-				notEmpty: {
-					msg: 'Please enter a bitwise value as group by result pattern',
-				},
+	},
+	groupByPattern: {
+		type: Sequelize.INTEGER,
+		allowNull: false,
+		validate: {
+			notEmpty: {
+				msg: 'Please enter a bitwise value as group by result pattern',
 			},
 		},
-		groupByFlexible: {
-			type: DataTypes.INTEGER,
-			allowNull: false,
-			validate: {
-				notEmpty: {
-					msg: 'Please enter true or false for fleible pattern allowed',
-				},
+	},
+	groupByFlexible: {
+		type: Sequelize.INTEGER,
+		allowNull: false,
+		validate: {
+			notEmpty: {
+				msg: 'Please enter true or false for fleible pattern allowed',
 			},
 		},
-		aggregateColumns: {
-			type: DataTypes.BLOB,
-			allowNull: true,
-			validate: {
-				notEmpty: {
-					msg: 'Please enter a column array as aggregation measures',
-				},
+	},
+	aggregateColumns: {
+		type: Sequelize.BLOB,
+		allowNull: true,
+		validate: {
+			notEmpty: {
+				msg: 'Please enter a column array as aggregation measures',
 			},
 		},
-		aggregateFunctions: {
-			type: DataTypes.BLOB,
-			allowNull: true,
-			validate: {
-				notEmpty: {
-					msg: 'Please enter a column array as aggregation functions',
-				},
+	},
+	aggregateFunctions: {
+		type: Sequelize.BLOB,
+		allowNull: true,
+		validate: {
+			notEmpty: {
+				msg: 'Please enter a column array as aggregation functions',
 			},
 		},
-		suppoetSpVersions: {
-			type: DataTypes.BLOB,
-			allowNull: true,
-			validate: {
-				notEmpty: {
-					msg: 'Please enter a column array for supported sp versions',
-				},
+	},
+	suppoetSpVersions: {
+		type: Sequelize.BLOB,
+		allowNull: true,
+		validate: {
+			notEmpty: {
+				msg: 'Please enter a column array for supported sp versions',
 			},
 		},
-		permissionId: DataTypes.INTEGER,
-	}, { tableName });
+	},
+	permissionId: Sequelize.INTEGER,
+}, {
+	// Other model options go here
+	sequelize, // We need to pass the connection instance
+	modelName: 'Target', // We need to choose the model name
+	tableName: "Targets"
+});
 
-	Target.associate = (models) => {
-		// define association between tables
-		// a "Target" has many "courses"
-		Target.hasMany(models.Source, {
-			as: 'sources',
-			foreignKey: {
-				fieldName: 'targetId',
-				allowNull: false,
-			},
-		});
-	};
+// // Target.hasMany(Source, { as: 'sources', foreignKey: 'targetId' });
+// Target.associate = (models) => {
+// 	// define association between tables
+// 	// a "Target" has many "courses"
+// 	Target.hasMany(models.Source, {
+// 		as: 'sources',
+// 		foreignKey: {
+// 			fieldName: 'targetId',
+// 			allowNull: false,
+// 		},
+// 	});
+// };
 
-	return Target;
-};
+module.exports = { Target };

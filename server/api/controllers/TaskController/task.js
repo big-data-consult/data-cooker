@@ -158,7 +158,7 @@ const TaskController = () => {
 			//  if task exists
 			if (task) {
 				//  if task permission matches current user's role
-				if (task.permissionId >= req.currentUser.roleId) {
+				if (!req.currentUser.roleId || req.currentUser.roleId <= task.permissionId) {
 					//  Keep original value if field is not provided
 					const updatedTask = {
 						jobId: req.body.jobId ? req.body.jobId : task.jobId,
@@ -209,12 +209,17 @@ const TaskController = () => {
 	const deleteTasks = async (req, res) => {
 		const filter = req.query.filter ? JSON.parse(req.query.filter) : {};
 
-		//  delete job from Jobs table
-		Task.destroy({
-			where: filter
-		}).then(deleted => {
-			res.status(204).end(deleted);
-		});
+		// Only the user with admin role can do multi-deletion
+		if (req.currentUser.roleId && req.currentUser.roleId !== 1) {
+			res.status(403).json({ message: 'Only user with admin role can delete multiple rows!' });
+		} else {
+			//  delete job from Jobs table
+			Task.destroy({
+				where: filter
+			}).then(deleted => {
+				res.status(204).end(deleted);
+			});
+		}
 	};
 
 
@@ -244,7 +249,7 @@ const TaskController = () => {
 			]
 		}).then(task => {
 			//  if task permission matches current user's role
-			if (task.permissionId >= req.currentUser.roleId) {
+			if (!req.currentUser.roleId || req.currentUser.roleId <= task.permissionId) {
 				//  delete task from Tasks table
 				const deletedTask = Task.destroy(
 					{

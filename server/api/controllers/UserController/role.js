@@ -2,7 +2,6 @@ const { Role } = require('../../models');
 
 
 const RoleController = () => {
-
 	const getRoles = async (req, res) => {
 		const roles = await Role.findAll({
 			attributes: ['id', 'roleName'],

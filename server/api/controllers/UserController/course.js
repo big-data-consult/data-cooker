@@ -143,12 +143,17 @@ const CourseController = () => {
 	const deleteCourses = (req, res, next) => {
 		const filter = req.query.filter ? JSON.parse(req.query.filter) : {};
 
-		// delete user from users table
-		Course.destroy({
-			where: filter,
-		}).then((deleted) => {
-			res.status(204).end(deleted);
-		});
+		// Only the user with admin role can do multi-deletion
+		if (req.currentUser.roleId && req.currentUser.roleId !== 1) {
+			res.status(403).json({ message: 'Only user with admin role can delete multiple rows!' });
+		} else {
+			// delete user from users table
+			Course.destroy({
+				where: filter,
+			}).then((deleted) => {
+				res.status(204).end(deleted);
+			});
+		}
 	};
 
 	const deleteCourse = (req, res, next) => {

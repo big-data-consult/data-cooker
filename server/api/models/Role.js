@@ -1,36 +1,42 @@
-// const User = require("./user");
+const { Sequelize } = require('sequelize');
 
-const tableName = 'Roles';
+const sequelize = require('../../config/database');
+const { User } = require('./User');
 
-module.exports = (sequelize, DataTypes) => {
-	const Role = sequelize.define('Role', {
-		// id: {
-		// 	type: DataTypes.INTEGER,
-		// 	primaryKey: true,
-		// 	autoIncrement: true,
-		// },
-		roleName: {
-			type: DataTypes.STRING,
-			allowNull: false,
-			validate: {
-				notEmpty: {
-					msg: 'Please enter a role Name',
-				},
-			},
-		},
-	}, { tableName });
+const Role = sequelize.define('Role', {
+	roleName: {
+		type: Sequelize.STRING,
+		unique: true,
+	},
+}, {
+	// Other model options go here
+	sequelize, // We need to pass the connection instance
+	modelName: 'Role', // We need to choose the model name
+	tableName: 'Roles'
+});
 
-	Role.associate = (models) => {
-		// define association between tables
-		// a "role" has many "users"
-		Role.hasMany(models.User, {
-			as: 'users',
-			foreignKey: {
-				fieldName: 'roleId',
-				allowNull: true,
-			},
-		});
-	};
 
-	return Role;
-};
+// // Role.hasMany(User, { as: 'users', foreignKey: 'roleId' });
+// Role.associate = (models) => {
+// 	// define association between tables
+// 	// a "role" has many "users"
+// 	Role.hasMany(models.User, {
+// 		as: 'users',
+// 		foreignKey: {
+// 			fieldName: 'roleId',
+// 			allowNull: true,
+// 		},
+// 	});
+
+// 	// define association between tables
+// 	// a "role" has many "users"
+// 	Role.hasMany(models.Permission, {
+// 		as: 'permissions',
+// 		foreignKey: {
+// 			fieldName: 'roleId',
+// 			allowNull: true,
+// 		},
+// 	});
+// };
+
+module.exports = { Role };

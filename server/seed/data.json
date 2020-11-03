@@ -203,6 +203,27 @@
 			"note": "This is third note ..",
 			"userId": 2
 		}
+	],
+	"permissions": [
+		{
+			"id": 1,
+			"pluginId": 1,
+			"roleId": 1
+		},
+		{
+			"id": 2,
+			"pluginId": 2,
+			"roleId": 1
+		},
+		{
+			"id": 3,
+			"pluginId": 1,
+			"roleId": 2
+		},
+		{
+			"id": 4,
+			"pluginId": 1,
+			"roleId": 3
+		}
 	]
-
 }

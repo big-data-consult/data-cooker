@@ -12,7 +12,9 @@ module.exports = (req, res, next) => {
       const credentials = parts[1];
 
       if (/^Bearer$/.test(scheme)) {
-        tokenToVerify = credentials;
+		tokenToVerify = credentials;
+		// below is added by Jing on 2020-11-01
+		req.currentUser = user;
       } else {
         return res.status(401).json({ msg: 'Format for Authorization: Bearer [token]' });
       }

@@ -15,6 +15,7 @@ class Database {
 		this.sources = seedData.sources;
 		this.courses = seedData.courses;
 		this.notes = seedData.notes;
+		this.permissions = seedData.permissions;
 		this.enableLogging = enableLogging;
 		this.context = new Context('./db/database.sqlite', enableLogging);
 		this.PasswordHasher = bcryptService();
@@ -48,8 +49,8 @@ class Database {
 				updatedAt
 			)
 			VALUES(
-				?, /* id */
-				?, /* avatarData */
+				? /* id */,
+				? /* avatarData */,
 				datetime('now'), 
 				datetime('now')
 			);`,
@@ -67,8 +68,8 @@ class Database {
 				updatedAt
 			)
 			VALUES(
-				?, /* id */
-				?, /* roleName */
+				? /* id */,
+				? /* roleName */,
 				datetime('now'), 
 				datetime('now')
 			);`,
@@ -92,15 +93,15 @@ class Database {
 				roleId 
 			)
 			VALUES(
-				?, /* userName */
-				?, /* firstName */
-				?, /* lastName */
-				?, /* email */
-				?, /* password */
-				?, /* permissionId */
+				? /* userName */,
+				? /* firstName */,
+				? /* lastName */,
+				? /* email */,
+				? /* password */,
+				? /* permissionId */,
 				datetime('now'), 
 				datetime('now'),
-				?, /* avatarId */
+				? /* avatarId */,
 				? /* roleId */
 			);`,
 			user.userName,
@@ -133,18 +134,18 @@ class Database {
 				updatedAt
 			)
 			VALUES(
-				?, /* jobName */
-				?, /* jobDescription */
-				'', /* jobStatus */
-				1, /* jobEnabled */
-				1, /* repeatSchedule */
-				?, /* scheduleType */
-				?, /* scheduleCron */
-				'', /* scheduleBegin */
-				'', /* scheduleEnd */
-				'', /* nextSchedule */
-				'', /* lastSchedule */
-				2, /* permissionId */
+				? /* jobName */,
+				? /* jobDescription */,
+				'' /* jobStatus */,
+				1 /* jobEnabled */,
+				1 /* repeatSchedule */,
+				? /* scheduleType */,
+				? /* scheduleCron */,
+				'' /* scheduleBegin */,
+				'' /* scheduleEnd */,
+				'' /* nextSchedule */,
+				'' /* lastSchedule */,
+				2 /* permissionId */,
 				datetime('now'), 
 				datetime('now')
 			);`,
@@ -173,16 +174,16 @@ class Database {
 				jobId
 			)
 			VALUES(
-				?, /* taskNo */
-				?, /* taskName */
-				'', /* taskDescription */
-				'', /* taskExecutor */
-				'', /* taskStatus */
-				?, /* nextTaskOnSuccess */
-				?, /* nextTaskOnFailure */
-				'', /* lastScheduledTime */
-				'', /* lastCompleteTime */
-				2, /* permissionId */
+				? /* taskNo */,
+				? /* taskName */,
+				'' /* taskDescription */,
+				'' /* taskExecutor */,
+				'' /* taskStatus */,
+				? /* nextTaskOnSuccess */,
+				? /* nextTaskOnFailure */,
+				'' /* lastScheduledTime */,
+				'' /* lastCompleteTime */,
+				2 /* permissionId */,
 				datetime('now'), 
 				datetime('now'),
 				? /* jobId */
@@ -220,24 +221,24 @@ class Database {
 				updatedAt
 			)
 			VALUES(
-				?, /* targetLabel */
-				?, /* targetData */
-				?, /* batchControlColumn */
-				5, /* batchControlSize */
-				'', /* batchControlNext */
-				'', /* batchProcessed */
-				'', /* batchProcessing */
-				'', /* batchMicroChunkCurrent */
-				'', /* batchScheduleType */
-				'', /* batchScheduleLast */
-				'', /* patternColumns */
-				'', /* groupByColumns */
-				0, /* groupByPattern */
-				0, /* groupByFlexible */
-				'', /* aggregateColumns */
-				'', /* aggregateFunctions */
-				'', /* suppoetSpVersions */
-				?, /* permissionId */
+				? /* targetLabel */,
+				? /* targetData */,
+				? /* batchControlColumn */,
+				5 /* batchControlSize */,
+				'' /* batchControlNext */,
+				'' /* batchProcessed */,
+				'' /* batchProcessing */,
+				'' /* batchMicroChunkCurrent */,
+				'' /* batchScheduleType */,
+				'' /* batchScheduleLast */,
+				'' /* patternColumns */,
+				'' /* groupByColumns */,
+				0 /* groupByPattern */,
+				0 /* groupByFlexible */,
+				'' /* aggregateColumns */,
+				'' /* aggregateFunctions */,
+				'' /* suppoetSpVersions */,
+				? /* permissionId */,
 				datetime('now'), 
 				datetime('now')
 			);`,
@@ -266,16 +267,16 @@ class Database {
 				targetId
 			)
 			VALUES(
-				?, /* sourceLabel */
-				?, /* sourceData */
-				0, /* sourceEnabled */
-				'', /* sourceReadyTime */
-				'', /* sourceCheckTime */
-				'', /* sourceCheckQuery */
-				0, /* patternDefault */
-				0, /* patternFlexible */
-				?, /* transformation */
-				?, /* permissionId */
+				? /* sourceLabel */,
+				? /* sourceData */,
+				0 /* sourceEnabled */,
+				'' /* sourceReadyTime */,
+				'' /* sourceCheckTime */,
+				'' /* sourceCheckQuery */,
+				0 /* patternDefault */,
+				0 /* patternFlexible */,
+				? /* transformation */,
+				? /* permissionId */,
 				datetime('now'), 
 				datetime('now'),
 				? /* targetId */
@@ -300,10 +301,10 @@ class Database {
 				userId
 			)
 			VALUES(
-				?, /* title */
-				?, /* description */
-				?, /* estimatedTime */
-				?, /* materialsNeeded */
+				? /* title */,
+				? /* description */,
+				? /* estimatedTime */,
+				? /* materialsNeeded */,
 				datetime('now'), 
 				datetime('now'),
 				? /* userId */
@@ -325,13 +326,32 @@ class Database {
 				userId
 			)
 			VALUES(
-				?, /* note */
+				? /* note */,
 				datetime('now'), 
 				datetime('now'),
 				? /* userId */
 			);`,
 			note.note,
 			note.userId
+		);
+	}
+
+	createPermission(permission) {
+		return this.context.execute(`
+			INSERT INTO Permissions(
+				pluginId,
+				createdAt, 
+				updatedAt,
+				roleId
+			)
+			VALUES(
+				? /* pluginId */,
+				datetime('now'), 
+				datetime('now'),
+				? /* roleId */
+			);`,
+			permission.pluginId,
+			permission.roleId
 		);
 	}
 
@@ -400,13 +420,22 @@ class Database {
 		}
 	}
 
+	async createPermissions(permissions) {
+		for (const permission of permissions) {
+			await this.createPermission(permission);
+		}
+	}
+
 	async init(migrate) {
 
 		// clear tables
 		if (migrate) {
 			await this.context.execute(`
+				DELETE FROM Permissions;
 				DELETE FROM Notes;
 				DELETE FROM Courses;
+				DELETE FROM Tasks;
+				DELETE FROM Jobs;
 				DELETE FROM Sources;
 				DELETE FROM Targets;
 				DELETE FROM Users;
@@ -686,6 +715,31 @@ class Database {
 
 		this.log('Creating the Note records...');
 		await this.createNotes(this.notes);
+
+
+		// load permissions
+		const permissionTableExists = await this.tableExists('Permissions');
+		if (!migrate && permissionTableExists) {
+			this.log('Dropping the Permissions table...');
+			await this.context.execute(`
+				DROP TABLE IF EXISTS Permissions;
+			`);
+		}
+
+		this.log('Creating the Permissions table...');
+		await this.context.execute(`
+			CREATE TABLE IF NOT EXISTS Permissions (
+				id INTEGER PRIMARY KEY AUTOINCREMENT, 
+				pluginId INTEGER NULL DEFAULT NULL,
+				createdAt DATETIME NOT NULL, 
+				updatedAt DATETIME NOT NULL, 
+				roleId INTEGER NOT NULL
+					REFERENCES Roles (id)
+			);
+			`);
+
+		this.log('Creating the Permission records...');
+		await this.createPermissions(this.permissions);
 
 
 		// Done

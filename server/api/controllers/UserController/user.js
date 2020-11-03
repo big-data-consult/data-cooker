@@ -138,11 +138,11 @@ const UserController = () => {
 			// if user exists
 			if (user) {
 				// if user permission matches current user's role
-				if (req.currentUser.roleId !== 1 && user.id !== req.currentUser.id) {
+				if (req.currentUser.roleId && req.currentUser.roleId !== 1 && req.currentUser.id !== user.id) {
 					// Return a response with a 403 Client forbidden HTTP status code.
-					res.status(403).json({ message: 'No permission to change user profile!' });
+					res.status(403).json({ message: 'Permission insufficient to change user profile!' });
 				}
-				else if (req.currentUser.roleId !== 1) {
+				else if (req.currentUser.roleId && req.currentUser.roleId !== 1 && req.body.roleId !== user.roleId) {
 					res.status(403).json({ message: 'No permission to change user\'s role!' });
 				}
 				else {
@@ -188,12 +188,17 @@ const UserController = () => {
 	const deleteUsers = async (req, res) => {
 		const filter = req.query.filter ? JSON.parse(req.query.filter) : {};
 
-		// delete user from users table
-		User.destroy({
-			where: filter,
-		}).then((deleted) => {
-			res.status(204).end(deleted);
-		});
+		// Only the user with admin role can do multi-deletion
+		if (req.currentUser.roleId && req.currentUser.roleId !== 1) {
+			res.status(403).json({ message: 'Only user with admin role can delete multiple rows!' });
+		} else {
+			// delete user from users table
+			User.destroy({
+				where: filter,
+			}).then((deleted) => {
+				res.status(204).end(deleted);
+			});
+		}
 	};
 
 
@@ -203,7 +208,7 @@ const UserController = () => {
 			attributes: ['id', 'userName', 'firstName', 'lastName', 'email', 'avatarId', 'roleId', 'permissionId'],
 		}).then((user) => {
 			// if user permission matches current user's role
-			if (user.id === req.currentUser.id || req.currentUser.roleId === 1) {
+			if (!req.currentUser.roleId || req.currentUser.roleId === 1 /* || req.currentUser.id === user.id */) {
 				// delete user from Users table
 				User.destroy(
 					{

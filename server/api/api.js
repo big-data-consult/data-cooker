@@ -26,11 +26,11 @@ const environment = process.env.NODE_ENV;
 const DB = dbService(environment, config.migrate).start();
 const api = express();
 const server = http.Server(api);
-const publicRouter = mapRoutes(config.publicRoutes, 'api/controllers/publicControllers/');
+const publicRouter = mapRoutes(config.publicRoutes, 'api/controllers/');
 // const DB = dbService(environment, config.migrate).start();
 
 // private routes
-const privateRouter = mapRoutes(config.privateRoutes, 'api/controllers/privateControllers/');
+const privateRouter = mapRoutes(config.privateRoutes, 'api/controllers/');
 // const roleRouter = require('./respful/role');
 // const userRouter = require('./respful/user');
 // const avatarRouter = require('./respful/avatar');

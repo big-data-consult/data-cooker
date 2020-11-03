@@ -1,10 +1,10 @@
-const Permission = require('../../models').Role;
+const { Permission } = require('../../models');
 
 
 const PermissionController = () => {
 	const getPermissions = async (req, res) => {
 		const permissions = await Permission.findAll({
-			attributes: ['id', 'roleName'],
+			attributes: ['id', 'pluginId', 'roleId'],
 		});
 		res.header('Access-Control-Expose-Headers', 'X-Total-Count')
 			.header('X-Total-Count', permissions.length)
@@ -13,7 +13,7 @@ const PermissionController = () => {
 
 	const getPermission = async (req, res) => {
 		const permission = await Permission.findByPk(req.params.id, {
-			attributes: ['id', 'roleName'],
+			attributes: ['id', 'pluginId', 'roleId'],
 		});
 
 		if (permission) {

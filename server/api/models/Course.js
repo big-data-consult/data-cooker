@@ -1,61 +1,49 @@
-// const User = require('./user');
+const { Sequelize } = require('sequelize');
 
-const tableName = 'Courses';
+const sequelize = require('../../config/database');
+const { User } = require("./User");
 
-module.exports = function (sequelize, DataTypes) {
-	const Course = sequelize.define('Course', {
-		// id: {
-		// 	type: DataTypes.INTEGER,
-		// 	primaryKey: true,
-		// 	autoIncrement: true,
-		// },
-		title: {
-			type: DataTypes.STRING,
+const Course = sequelize.define('Course', {
+	// id: {
+	//   type: Sequelize.INTEGER,
+	//   primaryKey: true,
+	//   autoIncrement: true,
+	// },
+	title: {
+		type: Sequelize.STRING,
+		allowNull: false,
+		unique: true,
+	},
+	description: {
+		type: Sequelize.TEXT,
+		allowNull: false,
+		unique: true,
+	},
+	estimatedTime: {
+		type: Sequelize.STRING,
+		allowNull: true,
+	},
+	materialsNeeded: {
+		type: Sequelize.STRING,
+		allowNull: true,
+	},
+}, {
+	// Other model options go here
+	sequelize, // We need to pass the connection instance
+	modelName: 'Course', // We need to choose the model name
+	tableName: 'Courses'
+});
+
+// Course.belongsTo(User, { as: 'user' });
+Course.associate = (models) => {
+	//Course' belongs to a single User
+	Course.belongsTo(models.User, {
+		as: 'course',
+		foreignKey: {
+			fieldName: 'userId',
 			allowNull: false,
-			unique: true,
-			validate: {
-				notEmpty: {
-					msg: 'Title is required',
-				},
-				notNull: {
-					msg: 'Must contain a Title property',
-				},
-			},
 		},
-		description: {
-			type: DataTypes.TEXT,
-			allowNull: false,
-			unique: true,
-			validate: {
-				notEmpty: {
-					msg: 'Description is required',
-				},
-				notNull: {
-					msg: 'Must contain a description property',
-				},
-			},
-		},
-		estimatedTime: {
-			type: DataTypes.STRING,
-			allowNull: true,
-		},
-		materialsNeeded: {
-			type: DataTypes.STRING,
-			allowNull: true,
-		},
-	}, { tableName });
-
-	Course.associate = (models) => {
-		//Course' belongs to a single User
-		Course.belongsTo(models.User, {
-			as: 'course',
-			foreignKey: {
-				fieldName: 'userId',
-				allowNull: false,
-			},
-
-		});
-	};
-
-	return Course;
+	});
 };
+
+module.exports = { Course };

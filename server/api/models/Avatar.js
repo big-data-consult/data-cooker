@@ -1,36 +1,31 @@
-// const User = require("./user");
+const { Sequelize } = require('sequelize');
 
-const tableName = 'Avatars';
+const sequelize = require('../../config/database');
+const { User } = require('./User');
 
-module.exports = (sequelize, DataTypes) => {
-	const Avatar = sequelize.define('Avatar', {
-		// id: {
-		// 	type: DataTypes.INTEGER,
-		// 	primaryKey: true,
-		// 	autoIncrement: true,
-		// },
-		avatarData: {
-			type: DataTypes.STRING,
-			allowNull: false,
-			validate: {
-				notEmpty: {
-					msg: 'Please enter a avatar Data',
-				},
-			},
-		},
-	}, { tableName });
+const Avatar = sequelize.define('Avatar', {
+	avatarData: {
+		type: Sequelize.STRING,
+		unique: false,
+	},
+}, {
+	// Other model options go here
+	sequelize, // We need to pass the connection instance
+	modelName: 'Avatar', // We need to choose the model name
+	tableName: 'Avatars'
+});
 
-	Avatar.associate = (models) => {
-		// define association between tables
-		// a "avatar" has many "users"
-		Avatar.hasMany(models.User, {
-			as: 'users',
-			foreignKey: {
-				fieldName: 'avatarId',
-				allowNull: true,
-			},
-		});
-	};
+// // Avatar.hasMany(User, { as: 'users', foreignKey: 'avatarId' });
+// Avatar.associate = (models) => {
+// 	// define association between tables
+// 	// a "avatar" has many "users"
+// 	Avatar.hasMany(models.User, {
+// 		as: 'users',
+// 		foreignKey: {
+// 			fieldName: 'avatarId',
+// 			allowNull: true,
+// 		},
+// 	});
+// };
 
-	return Avatar;
-};
+module.exports = { Avatar };

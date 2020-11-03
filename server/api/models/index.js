@@ -1,35 +1,39 @@
-const fs = require('fs');
-const path = require('path');
-const Sequelize = require('sequelize');
+const { Avatar } = require('./Avatar');
+const { Course } = require('./Course');
+const { Job } = require('./Job');
+const { Note } = require('./Note');
+const { Permission } = require('./Permission');
+const { Role } = require('./Role');
+const { Source } = require('./Source');
+const { Target } = require('./Target');
+const { Task } = require('./Task');
+const { User } = require('./User');
 
-const basename = path.basename(__filename);
-const env = process.env.NODE_ENV || 'development';
-const config = require(path.join(__dirname, '/../../config/_config.json'))[env];
-const db = {};
 
-let sequelize;
-if (config.use_env_variable) {
-	sequelize = new Sequelize(process.env[config.use_env_variable], config);
-} else {
-	sequelize = new Sequelize(config.database, config.username, config.password, config);
-}
+Course.belongsTo(User, { as: 'user' });
+Note.belongsTo(User, { as: 'user' });
+Permission.belongsTo(User, { as: 'permission' });
+Source.belongsTo(Target, { as: 'target' });
+Task.belongsTo(Job, { as: 'job' });
+User.belongsTo(Avatar, { as: 'avatar' });
+User.belongsTo(Role, { as: 'role' });
 
-fs.readdirSync(__dirname)
-	.filter(file => {
-		return (file.indexOf('.') !== 0) && (file !== basename) && (file.slice(-3) === '.js');
-	})
-	.forEach((file) => {
-		const model = sequelize.import(path.join(__dirname, file));
-		db[model.name] = model;
-	});
+// Avatar.hasMany(User, { as: 'users', foreignKey: 'avatarId' });
+// Role.hasMany(User, { as: 'users', foreignKey: 'roleId' });
+// Target.hasMany(Source, { as: 'sources', foreignKey: 'targetId' });
+// User.hasMany(Note, { as: 'notes', foreignKey: 'userId' });
+// User.hasMany(Course, { as: 'courses', foreignKey: 'userId' });
 
-Object.keys(db).forEach((modelName) => {
-	if (db[modelName].associate) {
-		db[modelName].associate(db);
-	}
-});
 
-db.sequelize = sequelize;
-db.Sequelize = Sequelize;
-
-module.exports = db;
+module.exports = {
+	Avatar,
+	Course,
+	Job,
+	Note,
+	Permission,
+	Role,
+	Source,
+	Target,
+	Task,
+	User,
+};
