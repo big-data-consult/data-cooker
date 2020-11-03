@@ -11,7 +11,7 @@ export const UserCreate = props => (
 			<TextInput source="email" />
 			<TextInput source="password" />
 			<ReferenceInput source="avatarId" reference="avatars"><SelectInput optionText="id" /></ReferenceInput>
-			<ReferenceInput source="roleId" reference="roles"><SelectInput optionText="id" /></ReferenceInput>
+			<ReferenceInput source="roleId" reference="roles"><SelectInput optionText="roleName" /></ReferenceInput>
 			{/* <ReferenceInput source="permissionId" reference="permissions"><SelectInput optionText="id" /></ReferenceInput> */}
 		</SimpleForm>
 	</Create>

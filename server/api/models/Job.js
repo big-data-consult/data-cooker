@@ -5,9 +5,9 @@ const { Task } = require('./Task');
 
 const Job = sequelize.define('Job', {
 	// id: {
-	// 	type: Sequelize.INTEGER,
-	// 	primaryKey: true,
-	// 	autoIncrement: true,
+	//   type: Sequelize.INTEGER,
+	//   primaryKey: true,
+	//   autoIncrement: true,
 	// },
 	jobName: {
 		type: Sequelize.STRING,
@@ -100,7 +100,6 @@ const Job = sequelize.define('Job', {
 	},
 	permissionId: Sequelize.INTEGER,
 }, {
-	// Other model options go here
 	sequelize, // We need to pass the connection instance
 	modelName: 'Job', // We need to choose the model name
 	tableName: "Jobs"
@@ -108,8 +107,6 @@ const Job = sequelize.define('Job', {
 
 
 // Job.associate = (models) => {
-// 	// define association between tables
-// 	// a "Job" has many "courses"
 // 	Job.hasMany(models.Task, {
 // 		as: 'tasks',
 // 		foreignKey: {

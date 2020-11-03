@@ -15,6 +15,11 @@ const hooks = {
 };
 
 const User = sequelize.define('User', {
+	// id: {
+	//   type: Sequelize.INTEGER,
+	//   primaryKey: true,
+	//   autoIncrement: true,
+	// },
 	userName: {
 		type: Sequelize.STRING,
 		unique: true,
@@ -34,6 +39,10 @@ const User = sequelize.define('User', {
 	password: {
 		type: Sequelize.STRING,
 	},
+	permissionId: {
+		type: Sequelize.INTEGER,
+		allowNull: true,
+	},
 	// avatarId: {
 	// 	type: Sequelize.INTEGER,
 	// 	allowNull: true
@@ -42,12 +51,7 @@ const User = sequelize.define('User', {
 	// 	type: Sequelize.INTEGER,
 	// 	allowNull: true,
 	// },
-	permissionId: {
-		type: Sequelize.INTEGER,
-		allowNull: true,
-	},
 }, {
-	// Other model options go here
 	hooks,
 	sequelize, // We need to pass the connection instance
 	modelName: 'User', // We need to choose the model name
@@ -62,12 +66,7 @@ User.prototype.toJSON = function () {
 	return values;
 };
 
-// User.hasMany(Note, { as: 'notes', foreignKey: 'userId' });
-// User.hasMany(Course, { as: 'courses', foreignKey: 'userId' });
-// User.belongsTo(Avatar, { as: 'avatar' });
-// User.belongsTo(Role, { as: 'role' });
 User.associate = (models) => {
-	// User' belongs to a single 'Role'
 	User.belongsTo(models.Role, {
 		as: 'role',
 		foreignKey: {
@@ -75,7 +74,6 @@ User.associate = (models) => {
 		},
 	});
 
-	// User' belongs to a single 'Avatar'
 	User.belongsTo(models.Avatar, {
 		as: 'avatar',
 		foreignKey: {
@@ -83,7 +81,6 @@ User.associate = (models) => {
 		},
 	});
 
-	// //'User' has many 'Courses'
 	// User.hasMany(models.Course, {
 	// 	as: 'courses',
 	// 	foreignKey: {
@@ -91,7 +88,6 @@ User.associate = (models) => {
 	// 	},
 	// });
 
-	// //'User' has many 'Notes'
 	// User.hasMany(models.Note, {
 	// 	as: 'notes',
 	// 	foreignKey: {

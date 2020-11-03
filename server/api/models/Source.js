@@ -3,14 +3,10 @@ const sequelize = require('../../config/database');
 const Target = require("./Target");
 
 const Source = sequelize.define('Source', {
-	// targetId: {
-	// 	type: Sequelize.INTEGER,
-	// 	allowNull: false,
-	// 	validate: {
-	// 		notEmpty: {
-	// 			msg: 'Please enter the id value of the aggration target',
-	// 		},
-	// 	},
+	// id: {
+	//   type: Sequelize.INTEGER,
+	//   primaryKey: true,
+	//   autoIncrement: true,
 	// },
 	sourceLabel: {
 		type: Sequelize.STRING,
@@ -96,14 +92,16 @@ const Source = sequelize.define('Source', {
 		},
 	},
 	permissionId: Sequelize.INTEGER,
+	// targetId: {
+	// 	type: Sequelize.INTEGER,
+	// 	allowNull: true
+	// },
 }, {
-	// Other model options go here
 	sequelize, // We need to pass the connection instance
 	modelName: 'Source', // We need to choose the model name
 	tableName: 'Sources'
 });
 
-// Source.belongsTo(Target, { as: 'target' });
 Source.associate = (models) => {
 	// define association between tables
 	// a "Source" belongs to a single "target"

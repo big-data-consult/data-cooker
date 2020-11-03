@@ -4,6 +4,11 @@ const sequelize = require('../../config/database');
 const { Job } = require('./Job');
 
 const Task = sequelize.define('Task', {
+	// id: {
+	//   type: Sequelize.INTEGER,
+	//   primaryKey: true,
+	//   autoIncrement: true,
+	// },
 	taskNo: {
 		type: Sequelize.INTEGER,
 		allowNull: false,
@@ -86,16 +91,17 @@ const Task = sequelize.define('Task', {
 		},
 	},
 	permissionId: Sequelize.INTEGER,
+	// jobId: {
+	// 	type: Sequelize.INTEGER,
+	// 	allowNull: true
+	// },
 }, {
-	// Other model options go here
 	sequelize, // We need to pass the connection instance
 	modelName: 'Task', // We need to choose the model name
 	tableName: 'Tasks'
 });
 
 Task.associate = (models) => {
-	// define association between tables
-	// a "Task" belongs to a single "job"
 	Task.belongsTo(models.Job, {
 		as: 'job',
 		foreignKey: {

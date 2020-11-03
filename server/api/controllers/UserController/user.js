@@ -1,4 +1,4 @@
-const bcryptjs = require('bcryptjs');
+// const bcryptjs = require('bcryptjs');
 const { validationResult } = require('express-validator');
 const { User, Avatar, Role } = require('../../models');
 
@@ -72,7 +72,7 @@ const UserController = () => {
 			next(err);
 		} else {
 			// bcrypt will has the new user's password in the database
-			const hashedPassword = bcryptjs.hashSync(req.body.password);
+			//const hashedPassword = bcryptjs.hashSync(req.body.password);
 
 			// Create new user object
 			const newUser = {
@@ -80,7 +80,7 @@ const UserController = () => {
 				firstName: req.body.firstName,
 				lastName: req.body.lastName,
 				email: req.body.email,
-				password: hashedPassword,
+				password: req.body.password,
 				avatarId: req.body.avatarId,
 				roleId: req.body.roleId,
 				permissionId: 1, // permission is static
@@ -147,14 +147,13 @@ const UserController = () => {
 				}
 				else {
 					// Keep original value if any field is not provided
-					const hashedPassword = req.body.password ? bcryptjs.hashSync(req.body.password) : user.password;
 					const newRole = req.currentUser.roleId === 1 ? req.body.roleId : user.roleId;
 					const updatedUser = {
 						userName: req.body.userName ? req.body.userName : user.userName,
 						firstName: req.body.firstName ? req.body.firstName : user.firstName,
 						lastName: req.body.lastName ? req.body.lastName : user.lastName,
 						email: req.body.email ? req.body.email : user.email,
-						password: hashedPassword,
+						password: user.password,
 						avatarId: req.body.avatarId ? req.body.avatarId : user.avatarId,
 						roleId: newRole
 					};

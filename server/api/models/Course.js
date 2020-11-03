@@ -27,16 +27,17 @@ const Course = sequelize.define('Course', {
 		type: Sequelize.STRING,
 		allowNull: true,
 	},
+	// useId: {
+	// 	type: Sequelize.INTEGER,
+	// 	allowNull: true
+	// },
 }, {
-	// Other model options go here
 	sequelize, // We need to pass the connection instance
 	modelName: 'Course', // We need to choose the model name
 	tableName: 'Courses'
 });
 
-// Course.belongsTo(User, { as: 'user' });
 Course.associate = (models) => {
-	//Course' belongs to a single User
 	Course.belongsTo(models.User, {
 		as: 'course',
 		foreignKey: {

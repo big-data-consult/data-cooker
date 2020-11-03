@@ -4,6 +4,11 @@ const sequelize = require('../../config/database');
 const { Source } = require('./Source');
 
 const Target = sequelize.define('Target', {
+	// id: {
+	//   type: Sequelize.INTEGER,
+	//   primaryKey: true,
+	//   autoIncrement: true,
+	// },
 	targetLabel: {
 		type: Sequelize.STRING,
 		unique: true,
@@ -151,13 +156,11 @@ const Target = sequelize.define('Target', {
 	},
 	permissionId: Sequelize.INTEGER,
 }, {
-	// Other model options go here
 	sequelize, // We need to pass the connection instance
 	modelName: 'Target', // We need to choose the model name
 	tableName: "Targets"
 });
 
-// // Target.hasMany(Source, { as: 'sources', foreignKey: 'targetId' });
 // Target.associate = (models) => {
 // 	// define association between tables
 // 	// a "Target" has many "courses"
