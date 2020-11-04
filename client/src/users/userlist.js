@@ -26,7 +26,7 @@ export const UserList = props => {
 				/>
 			) : (
 					<Datagrid>
-						<TextField label="User ID" source="id" />
+						<TextField source="id" />
 						<ReferenceField source="avatarId" reference="avatars"><ImageField source="avatarData" /></ReferenceField>
 						<TextField source="userName" />
 						<TextField source="firstName" />

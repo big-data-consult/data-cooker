@@ -14,8 +14,8 @@ export const JobList = props => {
 				/>
 			) : (
 					<Datagrid /* rowClick={ (e) => { e.stopPropagation(); alert(1) } } */>
-						{/* <NumberField source="id" /> */}
-						<TextField label="Job ID" source="jobName" />
+						<NumberField source="id" />
+						<TextField source="jobName" />
 						{/* <DateField source="jobDescription" /> */}
 						<TextField source="scheduleCron" />
 						<NumberField source="jobEnabled" />

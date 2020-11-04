@@ -35,7 +35,7 @@ export const SourceList = props => {
                     <TextField source="transformation" />
                     <ReferenceField source="permissionId" reference="permissions"><TextField source="id" /></ReferenceField>
                     <ReferenceField source="target.targetId" reference="target.targets"><TextField source="id" /></ReferenceField> */}
-                    <ReferenceField source="targetId" reference="targets"><ChipField source="targetData" /></ReferenceField>
+                    <ReferenceField label="Target data" source="targetId" reference="targets"><ChipField source="targetData" /></ReferenceField>
                     <EditButton />
                 </Datagrid>
             )}

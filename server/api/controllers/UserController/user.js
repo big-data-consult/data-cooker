@@ -1,6 +1,6 @@
 // const bcryptjs = require('bcryptjs');
 const { validationResult } = require('express-validator');
-const { User, Avatar, Role } = require('../../models');
+const { User, Avatar, Role, Department } = require('../../models');
 
 const UserController = () => {
 	const getUsers = async (req, res) => {
@@ -14,7 +14,7 @@ const UserController = () => {
 		} : queryFilter;
 
 		const users = await User.findAll({
-			attributes: ['id', 'userName', 'firstName', 'lastName', 'email', 'avatarId', 'roleId', 'permissionId'],
+			attributes: ['id', 'userName', 'firstName', 'lastName', 'email', 'departmentId', 'avatarId', 'roleId', 'permissionId'],
 			include: [
 				// {
 				// 	model: Role,
@@ -42,8 +42,18 @@ const UserController = () => {
 
 	const getUser = async (req, res) => {
 		const user = await User.findByPk(req.params.id, {
-			attributes: ['id', 'userName', 'firstName', 'lastName', 'email', 'avatarId', 'roleId', 'permissionId'],
+			attributes: ['id', 'userName', 'firstName', 'lastName', 'email', 'departmentId', 'avatarId', 'roleId', 'permissionId'],
 			include: [
+				{
+					model: Department,
+					as: 'department',
+					attributes: ['id', 'department'],
+					// },
+					// {
+					// 	model: avatarId,
+					// 	as: 'avatar',
+					// 	attributes: ['id', 'avatarData'],
+				},
 				{
 					model: Role,
 					as: 'role',

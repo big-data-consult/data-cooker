@@ -24,7 +24,7 @@ export const TaskList = props => {
             ) : (
 				<Datagrid /* rowClick="edit" */>
 					{/* <TextField source="id" /> */}
-					<ReferenceField source="jobId" reference="jobs"><ChipField source="jobName" /></ReferenceField>
+					<ReferenceField label="Job name" source="jobId" reference="jobs"><ChipField source="jobName" /></ReferenceField>
 					<TextField source="taskName" />
 					<NumberField source="taskNo" />
 					{/* <TextField source="taskDescription" /> */}
