@@ -5,6 +5,13 @@ const privateRoutes = {
 	'GET /roles': 'UserController/role.getRoles',
 	'GET /roles/:id': 'UserController/role.getRole',
 
+	'GET /departments': 'UserController/department.getDepartments',
+	'GET /departments/:id': 'UserController/department.getDepartment',
+	'POST /departments': 'UserController/department.postDepartment',
+	'PUT /departments/:id': 'UserController/department.postDepartment',
+	'DELETE /departments': 'UserController/department.deleteDepartments',
+	'DELETE /departments/:id': 'UserController/department.deleteDepartment',
+
 	'GET /users': 'UserController/user.getUsers',
 	'GET /users/:id': 'UserController/user.getUser',
 	'POST /users': 'UserController/user.postUser',

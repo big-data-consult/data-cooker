@@ -67,17 +67,24 @@ User.prototype.toJSON = function () {
 };
 
 User.associate = (models) => {
-	User.belongsTo(models.Role, {
-		as: 'role',
-		foreignKey: {
-			fieldName: 'roleId',
-		},
-	});
-
 	User.belongsTo(models.Avatar, {
 		as: 'avatar',
 		foreignKey: {
 			fieldName: 'avatarId',
+		},
+	});
+
+	User.belongsTo(models.Department, {
+		as: 'department',
+		foreignKey: {
+			fieldName: 'departmentId',
+		},
+	});
+
+	User.belongsTo(models.Role, {
+		as: 'role',
+		foreignKey: {
+			fieldName: 'roleId',
 		},
 	});
 

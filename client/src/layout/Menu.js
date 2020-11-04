@@ -32,6 +32,7 @@ import BarChartIcon from '@material-ui/icons/BarChart';
 
 import Settings from '@material-ui/icons/Settings';
 import PeopleIcon from '@material-ui/icons/People';
+import GroupWorkIcon from '@material-ui/icons/GroupWork';
 import LabelIcon from '@material-ui/icons/Label';
 
 import SettingsIcon from '@material-ui/icons/Settings';
@@ -218,21 +219,21 @@ const Menu: FC<Props> = ({ onMenuClick, dense, logout }) => {
                 dense={dense}
             >
                 <MenuItemLink
-                    to={`/users`}
-                    primaryText={translate(`Users`, {
+                    to={`/departments`}
+                    primaryText={translate(`Departments`, {
                         smart_count: 2,
                     })}
-                    leftIcon={<PeopleIcon />}
+                    leftIcon={<GroupWorkIcon />}
                     onClick={onMenuClick}
                     sidebarIsOpen={open}
                     dense={dense}
                 />
                 <MenuItemLink
-                    to={`/roles`}
-                    primaryText={translate(`Roles`, {
+                    to={`/users`}
+                    primaryText={translate(`Users`, {
                         smart_count: 2,
                     })}
-                    leftIcon={<LabelIcon />}
+                    leftIcon={<PeopleIcon />}
                     onClick={onMenuClick}
                     sidebarIsOpen={open}
                     dense={dense}

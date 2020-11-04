@@ -4,6 +4,9 @@ import { Filter, ReferenceInput, SelectInput, SimpleList, List, Datagrid, TextFi
 
 const UserFilter = (props) => (
 	<Filter {...props}>
+		<ReferenceInput label="Department" source="departmentId" reference="departments" alwaysOn >
+			<SelectInput optionText="department" />
+		</ReferenceInput>
 		<ReferenceInput label="Role Name" source="roleId" reference="roles" alwaysOn >
 			<SelectInput optionText="roleName" />
 		</ReferenceInput>
@@ -23,12 +26,13 @@ export const UserList = props => {
 				/>
 			) : (
 					<Datagrid>
-						<TextField source="id" />
+						<TextField label="User ID" source="id" />
 						<ReferenceField source="avatarId" reference="avatars"><ImageField source="avatarData" /></ReferenceField>
 						<TextField source="userName" />
 						<TextField source="firstName" />
 						<TextField source="lastName" />
 						<EmailField source="email" />
+						<ReferenceField source="departmentId" reference="departments"><ChipField source="department" /></ReferenceField>
 						<ReferenceField source="roleId" reference="roles"><ChipField source="roleName" /></ReferenceField>
 						{/* <ReferenceField source="permissionId" reference="permissions"><TextField source="id" /></ReferenceField> */}
 						<EditButton />

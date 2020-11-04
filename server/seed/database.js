@@ -8,6 +8,7 @@ class Database {
 	constructor(seedData, enableLogging) {
 		this.avatars = seedData.avatars;
 		this.roles = seedData.roles;
+		this.departments = seedData.departments;
 		this.users = seedData.users;
 		this.jobs = seedData.jobs;
 		this.tasks = seedData.tasks;
@@ -78,6 +79,25 @@ class Database {
 		);
 	}
 
+	createDepartment(department) {
+		return this.context.execute(`
+			INSERT INTO Departments(
+				id, 
+				department, 
+				createdAt, 
+				updatedAt
+			)
+			VALUES(
+				? /* id */,
+				? /* department */,
+				datetime('now'), 
+				datetime('now')
+			);`,
+			department.id,
+			department.department
+		);
+	}
+
 	createUser(user) {
 		return this.context.execute(`
 			INSERT INTO Users(
@@ -89,6 +109,7 @@ class Database {
 				permissionId, 
 				createdAt, 
 				updatedAt,
+				departmentId, 
 				avatarId, 
 				roleId 
 			)
@@ -101,6 +122,7 @@ class Database {
 				? /* permissionId */,
 				datetime('now'), 
 				datetime('now'),
+				? /* departmentId */,
 				? /* avatarId */,
 				? /* roleId */
 			);`,
@@ -110,6 +132,7 @@ class Database {
 			user.email,
 			user.password,
 			user.permissionId,
+			user.departmentId,
 			user.avatarId,
 			user.roleId
 		);
@@ -378,6 +401,12 @@ class Database {
 		}
 	}
 
+	async createDepartments(departments) {
+		for (const department of departments) {
+			await this.createDepartment(department);
+		}
+	}
+
 	async createUsers(users) {
 		for (const user of users) {
 			await this.createUser(user);
@@ -441,6 +470,7 @@ class Database {
 				DELETE FROM Users;
 				DELETE FROM Roles;
 				DELETE FROM Avatars;
+				DELETE FROM Departments;
 			`);
 		}
 		
@@ -490,6 +520,29 @@ class Database {
 		await this.createRoles(this.roles);
 
 
+		// load departments
+		const departmentTableExists = await this.tableExists('Departments');
+		if (!migrate && departmentTableExists) {
+			this.log('Dropping the Departments table...');
+			await this.context.execute(`
+				DROP TABLE IF EXISTS Departments;
+			`);
+		}
+
+		this.log('Creating the Departments table...');
+		await this.context.execute(`
+			CREATE TABLE IF NOT EXISTS Departments (
+				id INTEGER PRIMARY KEY AUTOINCREMENT, 
+				department VARCHAR(255) NOT NULL DEFAULT '',
+				createdAt DATETIME NOT NULL, 
+				updatedAt DATETIME NOT NULL
+			);
+			`);
+
+		this.log('Creating the department records...');
+		await this.createDepartments(this.departments);
+
+
 		// load users
 		const userTableExists = await this.tableExists('Users');
 		if (!migrate && userTableExists) {
@@ -511,6 +564,7 @@ class Database {
 				permissionId INTEGER NOT NULL, 
 				createdAt DATETIME NOT NULL, 
 				updatedAt DATETIME NOT NULL,
+				departmentId INTEGER NULL REFERENCES Departments (id),
 				avatarId INTEGER NULL REFERENCES Avatars (id),
 				roleId INTEGER NULL REFERENCES Roles (id)
 			);

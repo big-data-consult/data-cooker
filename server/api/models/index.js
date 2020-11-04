@@ -1,5 +1,6 @@
 const { Avatar } = require('./Avatar');
 const { Course } = require('./Course');
+const { Department } = require('./Department');
 const { Job } = require('./Job');
 const { Note } = require('./Note');
 const { Permission } = require('./Permission');
@@ -17,6 +18,7 @@ Source.belongsTo(Target, { as: 'target' });
 Task.belongsTo(Job, { as: 'job' });
 User.belongsTo(Avatar, { as: 'avatar' });
 User.belongsTo(Role, { as: 'role' });
+User.belongsTo(Department, { as: 'department' });
 
 // Avatar.hasMany(User, { as: 'users', foreignKey: 'avatarId' });
 // Role.hasMany(User, { as: 'users', foreignKey: 'roleId' });
@@ -28,6 +30,7 @@ User.belongsTo(Role, { as: 'role' });
 module.exports = {
 	Avatar,
 	Course,
+	Department,
 	Job,
 	Note,
 	Permission,

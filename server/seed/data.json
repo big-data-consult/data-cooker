@@ -35,6 +35,24 @@
 			"roleName": "Guest"
 		}
 	],
+	"departments": [
+		{
+			"id": 1,
+			"department": "Data Engineering"
+		},
+		{
+			"id": 2,
+			"department": "Data Analyticals"
+		},
+		{
+			"id": 3,
+			"department": "Data Science"
+		},
+		{
+			"id": 4,
+			"department": "Business Intelligence"
+		}
+	],
 	"users": [
 		{
 			"userName": "Joe.Smith",
@@ -43,6 +61,7 @@
 			"email": "joe@smith.com",
 			"password": "joepassword",
 			"permissionId": 1,
+			"departmentId": 1,
 			"avatarId": 1,
 			"roleId": 1
 		},
@@ -53,6 +72,7 @@
 			"email": "sally@jones.com",
 			"password": "sallypassword",
 			"permissionId": 1,
+			"departmentId": 2,
 			"avatarId": 2,
 			"roleId": 2
 		},
@@ -63,6 +83,7 @@
 			"email": "john@doe.com",
 			"password": "johnpassword",
 			"permissionId": 1,
+			"departmentId": 1,
 			"avatarId": 3,
 			"roleId": 3
 		}

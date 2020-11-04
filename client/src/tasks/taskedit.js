@@ -4,7 +4,7 @@ import { Edit, SimpleForm, TextInput, NumberInput, ReferenceInput, SelectInput} 
 export const TaskEdit = props => (
     <Edit {...props}>
         <SimpleForm>
-            <TextInput source="id" />
+            <TextInput label="Task ID" source="id" />
             <ReferenceInput source="jobId" reference="jobs"><SelectInput optionText="jobName" /></ReferenceInput>
             <NumberInput source="taskNo" />
             <TextInput source="taskName" />

@@ -7,6 +7,8 @@ import MyLayout from './layout/MyLayout';
 import authProvider from './providers/authProvider';
 import jsonServerProvider from './providers/dataProvider';
 import i18nProvider from './providers/i18nProvider';
+import { DepartmentList } from './departments/departmentlist';
+import { DepartmentShow } from './departments/departmentshow';
 import { RoleList } from './roles/rolelist';
 import { RoleShow } from './roles/roleshow';
 import { UserList } from './users/userlist';
@@ -108,6 +110,7 @@ class App extends Component {
 					<Resource name="users" list={UserList} edit={UserEdit} create={UserCreate} show={UserShow} />,
 					<Resource name="avatars" list={AvatarList} show={AvatarShow} />,
 					<Resource name="roles" list={RoleList} show={RoleShow} />,
+					<Resource name="departments" list={DepartmentList} show={DepartmentShow} />,
 					<Resource name="permissions" />
 				]}
 			</Admin>
