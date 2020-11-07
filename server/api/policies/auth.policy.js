@@ -13,8 +13,6 @@ module.exports = (req, res, next) => {
 
       if (/^Bearer$/.test(scheme)) {
 		tokenToVerify = credentials;
-		// below is added by Jing on 2020-11-01
-		req.currentUser = user;
       } else {
         return res.status(401).json({ msg: 'Format for Authorization: Bearer [token]' });
       }
@@ -29,8 +27,11 @@ module.exports = (req, res, next) => {
   }
 
   return JWTService().verify(tokenToVerify, (err, thisToken) => {
-    if (err) return res.status(401).json({ err });
-    req.token = thisToken;
+	if (err) return res.status(401).json({ err });
+	// console.log("#".repeat(55));
+	console.log(thisToken);
+	console.log("#".repeat(55));
+	req.token = thisToken;
     return next();
   });
 };

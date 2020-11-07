@@ -158,7 +158,7 @@ const SourceController = () => {
 			//  if source exists
 			if (source) {
 				//  if source permission matches current user's role
-				if (!req.currentUser.roleId || req.currentUser.roleId <= source.permissionId) {
+				if (!req.token.roleId || req.token.roleId <= source.permissionId) {
 					//  Keep original value if field is not provided
 					const updatedSource = {
 						targetId: req.body.targetId ? req.body.targetId : source.targetId,
@@ -208,15 +208,13 @@ const SourceController = () => {
 	const deleteSources = async (req, res) => {
 		const filter = req.query.filter ? JSON.parse(req.query.filter) : {};
 
-		// Only the user with admin role can do multi-deletion
-		if (req.currentUser.roleId && req.currentUser.roleId !== 1) {
+		if (req.token.roleId && req.token.roleId !== 1) {
 			res.status(403).json({ message: 'Only user with admin role can delete multiple rows!' });
 		} else {
-			//  delete target from Targets table
 			Source.destroy({
 				where: filter
 			}).then(deleted => {
-				res.status(204).end(deleted);
+				res.json({ deleted }).status(204).end();
 			});
 		}
 	};
@@ -247,7 +245,7 @@ const SourceController = () => {
 			]
 		}).then(source => {
 			//  if source permission matches current user's role
-			if (!req.currentUser.roleId || req.currentUser.roleId <= source.permissionId) {
+			if (!req.token.roleId || req.token.roleId <= source.permissionId) {
 				//  delete source from Sources table
 				const deletedSource = Source.destroy(
 					{

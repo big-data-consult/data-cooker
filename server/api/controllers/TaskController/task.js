@@ -91,7 +91,6 @@ const TaskController = () => {
 			//  Return the validation errors to the client.
 			return res.status(400).json({ errors: errorMessages });
 		} else {
-
 			//  get the job from the request body.
 			const task = req.body;
 
@@ -158,7 +157,7 @@ const TaskController = () => {
 			//  if task exists
 			if (task) {
 				//  if task permission matches current user's role
-				if (!req.currentUser.roleId || req.currentUser.roleId <= task.permissionId) {
+				if (!req.token.roleId || req.token.roleId <= task.permissionId) {
 					//  Keep original value if field is not provided
 					const updatedTask = {
 						jobId: req.body.jobId ? req.body.jobId : task.jobId,
@@ -210,7 +209,7 @@ const TaskController = () => {
 		const filter = req.query.filter ? JSON.parse(req.query.filter) : {};
 
 		// Only the user with admin role can do multi-deletion
-		if (req.currentUser.roleId && req.currentUser.roleId !== 1) {
+		if (req.token.roleId && req.token.roleId !== 1) {
 			res.status(403).json({ message: 'Only user with admin role can delete multiple rows!' });
 		} else {
 			//  delete job from Jobs table
@@ -249,7 +248,7 @@ const TaskController = () => {
 			]
 		}).then(task => {
 			//  if task permission matches current user's role
-			if (!req.currentUser.roleId || req.currentUser.roleId <= task.permissionId) {
+			if (!req.token.roleId || req.token.roleId <= task.permissionId) {
 				//  delete task from Tasks table
 				const deletedTask = Task.destroy(
 					{

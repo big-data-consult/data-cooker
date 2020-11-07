@@ -43,9 +43,10 @@ const httpClient = (url, options = {}) => {
 	// Add authentication token
 	const token = localStorage.getItem('token');
 	options.headers.set('Authorization', 'Bearer ' + token);
-	// Add user roleId for permission check
-	const user = JSON.parse(localStorage.getItem('user'));
-	options.headers.set('user', JSON.stringify({ id: user.id, roleId: user.roleId }));
+	// // Add user roleId for permission check
+	// const user = localStorage.getItem('user');
+	// // const user = JSON.parse(localStorage.getItem('user'));
+	// options.headers.set('user', JSON.stringify({ id: user.id, roleId: user.roleId }));
 
 	// Add additional headers as needed
 	options.headers.set('X-Custom-Header', 'foobar');

@@ -90,7 +90,7 @@ const CourseController = () => {
 	};
 
 	const putCourse = (req, res, next) => {
-		const user = req.currentUser;
+		// const user = req.token;
 		// If title is left null
 		if (!req.body.title && !req.body.description) {
 			const err = new Error('Please enter a title and a description.');
@@ -115,18 +115,18 @@ const CourseController = () => {
 						message: 'Course Not Found'
 					});
 				} else if (course) {
-					if (user.id === course.userId) {
+					if (req.token.roleId === course.userId) {
 						const updateCourse = {
 							id: req.body.id,
 							title: req.body.title,
 							description: req.body.description,
 							estimatedTime: req.body.estimatedTime,
 							materialsNeeded: req.body.materialsNeeded,
-							userId: req.currentUser.id,
+							userId: req.token.id,
 						};
 						course.update(req.body);
 					} else {
-						res.location('/').status(403).json('You do not have permissions to update this course');
+						res.location('/').status(403).json('Only course owner can update course');
 					}
 				}
 			}).then(() => {
@@ -144,8 +144,8 @@ const CourseController = () => {
 		const filter = req.query.filter ? JSON.parse(req.query.filter) : {};
 
 		// Only the user with admin role can do multi-deletion
-		if (req.currentUser.roleId && req.currentUser.roleId !== 1) {
-			res.status(403).json({ message: 'Only user with admin role can delete multiple rows!' });
+		if (req.token.roleId !== 1) {
+			res.status(403).json({ message: 'Only admin can use the multi-selection to delete course!' });
 		} else {
 			// delete user from users table
 			Course.destroy({
@@ -157,7 +157,7 @@ const CourseController = () => {
 	};
 
 	const deleteCourse = (req, res, next) => {
-		const user = req.currentUser;
+		// const user = req.token;
 		// Find one course to delete
 		Course.findOne({
 			where: {
@@ -170,7 +170,7 @@ const CourseController = () => {
 				res.status(404).json({
 					message: 'Course Not Found'
 				});
-			} else if (user.id === course.userId) {
+			} else if (req.token.roleId === course.userId) {
 				// Delete the course
 				return course.destroy();
 			} else {

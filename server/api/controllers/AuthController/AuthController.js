@@ -32,7 +32,7 @@ const AuthController = () => {
 					roleId,
 					permissionId,
 				});
-				const token = authService().issue({ id: user.id });
+				const token = authService().issue({ id: user.id, roleId: user.roleId });
 
 				return res.status(200).json({ token, user });
 			} catch (err) {
@@ -76,7 +76,7 @@ const AuthController = () => {
 				}
 
 				if (bcryptService().comparePassword(password, user.password)) {
-					const token = authService().issue({ id: user.id });
+					const token = authService().issue({ id: user.id, roleId: user.roleId });
 
 					return res.status(200).json({ token, user });
 				}
@@ -94,7 +94,7 @@ const AuthController = () => {
 	const validate = (req, res) => {
 		const { token } = req.body;
 
-		authService().verify(token, (err) => {
+		authService().verify(token, (err, decoded) => {
 			if (err) {
 				return res.status(401).json({ isvalid: false, err: 'Invalid Token!' });
 			}

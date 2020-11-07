@@ -142,7 +142,7 @@ const JobController = () => {
 				],
 			}).then((job) => {
 				// if job permission matches current user's role
-				if (!req.currentUser.roleId || req.currentUser.roleId <= job.permissionId) {
+				if (!req.token.roleId || req.token.roleId <= job.permissionId) {
 					// Keep original value if field is not provided
 					const updatedTrget = {
 						jobName: req.body.jobName ? req.body.jobName : job.jobName,
@@ -194,7 +194,7 @@ const JobController = () => {
 		const filter = req.query.filter ? JSON.parse(req.query.filter) : {};
 
 		// Only the user with admin role can do multi-deletion
-		if (req.currentUser.roleId && req.currentUser.roleId !== 1) {
+		if (req.token.roleId && req.token.roleId !== 1) {
 			res.status(403).json({ message: 'Only user with admin role can delete multiple rows!' });
 		} else {
 			// delete job from Jobs table
@@ -227,7 +227,7 @@ const JobController = () => {
 			]
 		}).then((job) => {
 			// if job permission matches current user's role
-			if (!req.currentUser.roleId || req.currentUser.roleId <= job.permissionId) {
+			if (!req.token.roleId || req.token.roleId <= job.permissionId) {
 				// delete job from Jobs table
 				Job.destroy({
 					where: {

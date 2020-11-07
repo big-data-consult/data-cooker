@@ -25,7 +25,9 @@ const DepartmentController = () => {
 	};
 
 	const postDepartment = async (req, res, next) => {
-		if (!req.body.department && !req.body.description) {
+		if (req.token.roleId !== 1) {
+			res.status(403).json({ message: 'Only admin can create department!' });
+		} else if (!req.body.department && !req.body.description) {
 			const err = new Error('Please enter a department and a description.');
 			err.status = 400;
 			next(err);
@@ -64,9 +66,11 @@ const DepartmentController = () => {
 
 
 	const putDepartment = async (req, res, next) => {
-		const user = req.currentUser;
+		const user = req.token;
 		// If department is left null
-		if (!req.body.department && !req.body.description) {
+		if (req.token.roleId !== 1) {
+			res.status(403).json({ message: 'Only admin can change department!' });
+		} else if (!req.body.department && !req.body.description) {
 			const err = new Error('Please enter a department and a description.');
 			err.status = 400;
 			next(err);
@@ -93,7 +97,7 @@ const DepartmentController = () => {
 						const updateDepartment = {
 							id: req.body.id,
 							department: req.body.department,
-							userId: req.currentUser.id,
+							userId: req.token.id,
 						};
 						department.update(req.body);
 					} else {
@@ -114,9 +118,8 @@ const DepartmentController = () => {
 	const deleteDepartments = async (req, res, next) => {
 		const filter = req.query.filter ? JSON.parse(req.query.filter) : {};
 
-		// Only the user with admin role can do multi-deletion
-		if (req.currentUser.roleId && req.currentUser.roleId !== 1) {
-			res.status(403).json({ message: 'Only user with admin role can delete multiple rows!' });
+		if (req.token.roleId !== 1) {
+			res.status(403).json({ message: 'Only admin can delete department!' });
 		} else {
 			// delete user from users table
 			Department.destroy({
@@ -128,34 +131,36 @@ const DepartmentController = () => {
 	};
 
 	const deleteDepartment = async (req, res, next) => {
-		const user = req.currentUser;
-		// Find one department to delete
-		Department.findOne({
-			where: {
-				id: req.params.id
-			}
-		}).then((department) => {
-			// If department doesn't exist
-			if (!department) {
-				// Show error
-				res.status(404).json({
-					message: 'Department Not Found'
-				});
-			} else if (user.id === department.userId) {
-				// Delete the department
-				return department.destroy();
-			} else {
-				res.location('/').status(403).json('You do not have permissions to delete this department');
-			}
-		}).then(() => {
-			// Return no content and end the request
-			res.status(204).end();
-		})
-			// Catch the errors
-			.catch((err) => {
+		const user = req.token;
+		if (req.token.roleId !== 1) {
+			res.status(403).json({ message: 'Only admin can delete department!' });
+		} else {
+			// Find one department to delete
+			Department.findOne({
+				where: {
+					id: req.params.id
+				}
+			}).then((department) => {
+				// If department doesn't exist
+				if (!department) {
+					// Show error
+					res.status(404).json({
+						message: 'Department Not Found'
+					});
+				} else if (user.id === department.userId) {
+					// Delete the department
+					return department.destroy();
+				} else {
+					res.location('/').status(403).json('You do not have permissions to delete this department');
+				}
+			}).then(() => {
+				// Return no content and end the request
+				res.status(204).end();
+			}).catch((err) => {
 				err.status = 400;
 				next(err);
 			});
+		}
 	};
 
 	return {

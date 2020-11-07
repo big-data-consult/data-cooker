@@ -90,7 +90,7 @@ const NoteController = () => {
 
 
 	const putNote = async (req, res, next) => {
-		const user = req.currentUser;
+		// const user = req.token;
 		// If note is left null
 		if (!req.body.note && !req.body.description) {
 			const err = new Error('Please enter a note and a description.');
@@ -115,11 +115,11 @@ const NoteController = () => {
 						message: 'Note Not Found'
 					});
 				} else if (note) {
-					if (user.id === note.userId) {
+					if (req.token.roleId === note.userId) {
 						const updateNote = {
 							id: req.body.id,
 							note: req.body.note,
-							userId: req.currentUser.id,
+							userId: req.token.id,
 						};
 						note.update(req.body);
 					} else {
@@ -141,8 +141,8 @@ const NoteController = () => {
 		const filter = req.query.filter ? JSON.parse(req.query.filter) : {};
 
 		// Only the user with admin role can do multi-deletion
-		if (req.currentUser.roleId && req.currentUser.roleId !== 1) {
-			res.status(403).json({ message: 'Only user with admin role can delete multiple rows!' });
+		if (req.token.roleId !== 1) {
+			res.status(403).json({ message: 'Only admin can use multi-selector to delete notes!' });
 		} else {
 			// delete user from users table
 			Note.destroy({
@@ -154,7 +154,7 @@ const NoteController = () => {
 	};
 
 	const deleteNote = async (req, res, next) => {
-		const user = req.currentUser;
+		// const user = req.token;
 		// Find one note to delete
 		Note.findOne({
 			where: {
@@ -167,11 +167,11 @@ const NoteController = () => {
 				res.status(404).json({
 					message: 'Note Not Found'
 				});
-			} else if (user.id === note.userId) {
+			} else if (req.token.roleId === 1 || req.token.roleId === note.userId) {
 				// Delete the note
 				return note.destroy();
 			} else {
-				res.location('/').status(403).json('You do not have permissions to delete this note');
+				res.location('/').status(403).json('Only admin or not owner can delete this note');
 			}
 		}).then(() => {
 			// Return no content and end the request

@@ -167,7 +167,7 @@ const TargetController = () => {
 				],
 			}).then((target) => {
 				// if target permission matches current user's role
-				if (!req.currentUser.roleId || req.currentUser.roleId <= target.permissionId) {
+				if (!req.token.roleId || req.token.roleId <= target.permissionId) {
 					// Keep original value if field is not provided
 					const updatedTrget = {
 						targetLabel: req.body.targetLabel ? req.body.targetLabel : target.targetLabel,
@@ -231,7 +231,7 @@ const TargetController = () => {
 		const filter = req.query.filter ? JSON.parse(req.query.filter) : {};
 
 		// Only the user with admin role can do multi-deletion
-		if (req.currentUser.roleId && req.currentUser.roleId !== 1) {
+		if (req.token.roleId && req.token.roleId !== 1) {
 			res.status(403).json({ message: 'Only user with admin role can delete multiple rows!' });
 		} else {
 			// delete target from Targets table
@@ -270,7 +270,7 @@ const TargetController = () => {
 			]
 		}).then((target) => {
 			// if target permission matches current user's role
-			if (!req.currentUser.roleId || req.currentUser.roleId <= target.permissionId) {
+			if (!req.token.roleId || req.token.roleId <= target.permissionId) {
 				// delete target from Targets table
 				Target.destroy({
 					where: {

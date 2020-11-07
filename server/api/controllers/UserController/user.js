@@ -82,7 +82,7 @@ const UserController = () => {
 			next(err);
 		} else {
 			// bcrypt will has the new user's password in the database
-			//const hashedPassword = bcryptjs.hashSync(req.body.password);
+			// const hashedPassword = bcryptjs.hashSync(req.body.password);
 
 			// Create new user object
 			const newUser = {
@@ -148,16 +148,16 @@ const UserController = () => {
 			// if user exists
 			if (user) {
 				// if user permission matches current user's role
-				if (req.currentUser.roleId && req.currentUser.roleId !== 1 && req.currentUser.id !== user.id) {
+				if (req.token.roleId !== 1 && req.token.id !== user.id) {
 					// Return a response with a 403 Client forbidden HTTP status code.
-					res.status(403).json({ message: 'Permission insufficient to change user profile!' });
+					res.status(403).json({ message: 'Insufficient permissions to change user profile!' });
 				}
-				else if (req.currentUser.roleId && req.currentUser.roleId !== 1 && req.body.roleId !== user.roleId) {
+				else if (req.token.roleId && req.token.roleId !== 1 && req.body.roleId !== user.roleId) {
 					res.status(403).json({ message: 'No permission to change user\'s role!' });
 				}
 				else {
 					// Keep original value if any field is not provided
-					const newRole = req.currentUser.roleId === 1 ? req.body.roleId : user.roleId;
+					const newRole = req.token.roleId === 1 ? req.body.roleId : user.roleId;
 					const updatedUser = {
 						userName: req.body.userName ? req.body.userName : user.userName,
 						firstName: req.body.firstName ? req.body.firstName : user.firstName,
@@ -198,8 +198,8 @@ const UserController = () => {
 		const filter = req.query.filter ? JSON.parse(req.query.filter) : {};
 
 		// Only the user with admin role can do multi-deletion
-		if (req.currentUser.roleId && req.currentUser.roleId !== 1) {
-			res.status(403).json({ message: 'Only user with admin role can delete multiple rows!' });
+		if (req.token.roleId !== 1) {
+			res.status(403).json({ message: 'Only admin can use the multi-selector to delete users!' });
 		} else {
 			// delete user from users table
 			User.destroy({
@@ -217,7 +217,10 @@ const UserController = () => {
 			attributes: ['id', 'userName', 'firstName', 'lastName', 'email', 'avatarId', 'roleId', 'permissionId'],
 		}).then((user) => {
 			// if user permission matches current user's role
-			if (!req.currentUser.roleId || req.currentUser.roleId === 1 /* || req.currentUser.id === user.id */) {
+			if (req.token.roleId !== 1 /* || req.token.id === user.id */) {
+				// Return a response with a 403 Client forbidden HTTP status code.
+				res.status(403).json({ message: 'Insufficent permissions. Only admin can delete user!' });
+			} else {
 				// delete user from Users table
 				User.destroy(
 					{
@@ -229,9 +232,6 @@ const UserController = () => {
 					const { id } = deleted;
 					res.json({ id }).status(204).end();
 				});
-			} else {
-				// Return a response with a 403 Client forbidden HTTP status code.
-				res.status(403).json({ message: 'Access not permitted' });
 			}
 		});
 	};
