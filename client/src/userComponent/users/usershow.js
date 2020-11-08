@@ -10,6 +10,7 @@ export const UserShow = props => (
             <TextField source="lastName" />
             <TextField source="email" />
             <ReferenceField source="avatarId" reference="avatars"><NumberField source="id" /></ReferenceField>
+			<ReferenceField source="departmentId" reference="departments"><TextField source="department" /></ReferenceField>
             <ReferenceField source="roleId" reference="roles"><TextField source="roleName" /></ReferenceField>
             {/* <ReferenceField source="permissionId" reference="permissions"><TextField source="id" /></ReferenceField> */}
             {/* <NumberField source="role.id" /> */}
