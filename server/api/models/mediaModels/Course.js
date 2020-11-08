@@ -1,7 +1,7 @@
 const { Sequelize } = require('sequelize');
 
-const sequelize = require('../../config/database');
-const { User } = require("./User");
+const sequelize = require('../../../config/database');
+const { User } = require("../userModels/User");
 
 const Course = sequelize.define('Course', {
 	// id: {
@@ -27,17 +27,24 @@ const Course = sequelize.define('Course', {
 		type: Sequelize.STRING,
 		allowNull: true,
 	},
-	// useId: {
-	// 	type: Sequelize.INTEGER,
-	// 	allowNull: true
-	// },
+	createorId: {
+		type: Sequelize.INTEGER,
+		allowNull: true
+	},
 }, {
 	sequelize, // We need to pass the connection instance
 	modelName: 'Course', // We need to choose the model name
-	tableName: 'Courses'
+	tableName: 'media_Courses'
 });
 
 Course.associate = (models) => {
+	Course.belongsTo(models.Plugin, {
+		as: 'plugin',
+		foreignKey: {
+			fieldName: 'pluginId',
+		},
+	});
+
 	Course.belongsTo(models.User, {
 		as: 'course',
 		foreignKey: {

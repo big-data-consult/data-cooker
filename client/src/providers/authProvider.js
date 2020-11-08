@@ -22,14 +22,14 @@ const authProvider = {
             })
             .then(pass => {
                 // localStorage.setItem('token', JSON.stringify(pass.token));
-                // localStorage.setItem('user', JSON.stringify(pass.user));
+                localStorage.setItem('user', JSON.stringify(pass.user));
                 localStorage.setItem('token', pass.token);
-                localStorage.setItem('user', pass.user);
+                // localStorage.setItem('user', pass.user);
                 localStorage.setItem('id', pass.user.email);
                 localStorage.setItem('fullName', pass.user.firstName + ' ' + pass.user.lastName);
                 localStorage.setItem('avatar',  pass.user.avatar.avatarData);
                 localStorage.setItem('roleId', pass.user.roleId);
-                localStorage.setItem('permissions', pass.user.permissionId);
+                // localStorage.setItem('permissions', pass.user.permissionId);
             });
     },
 
@@ -41,7 +41,7 @@ const authProvider = {
         localStorage.removeItem('fullName');
         localStorage.removeItem('avatar');
         localStorage.removeItem('roleId');
-        localStorage.removeItem('permissions');
+        // localStorage.removeItem('permissions');
         return Promise.resolve();
     },
 
@@ -55,7 +55,7 @@ const authProvider = {
             localStorage.removeItem('fullName');
             localStorage.removeItem('avatar');
             localStorage.removeItem('roleId');
-            localStorage.removeItem('permissions');
+            // localStorage.removeItem('permissions');
             return Promise.reject();
         }
         return Promise.resolve(status);

@@ -6,6 +6,7 @@ const Context = require('./context');
 class Database {
 
 	constructor(seedData, enableLogging) {
+		this.plugins = seedData.plugins;
 		this.avatars = seedData.avatars;
 		this.roles = seedData.roles;
 		this.departments = seedData.departments;
@@ -41,10 +42,29 @@ class Database {
 		);
 	}
 
+	createPlugin(plugin) {
+		return this.context.execute(`
+			INSERT INTO core_Plugins(
+				id, 
+				pluginName, 
+				createdAt, 
+				updatedAt
+			)
+			VALUES(
+				? /* id */,
+				? /* pluginName */,
+				datetime('now'), 
+				datetime('now')
+			);`,
+			plugin.id,
+			plugin.pluginName
+		);
+	}
+
 	createAvatar(avatar) {
 		return this.context.execute(`
-			INSERT INTO Avatars(
-				id, 
+			INSERT INTO user_Avatars(
+				id,
 				avatarData, 
 				createdAt, 
 				updatedAt
@@ -62,7 +82,7 @@ class Database {
 
 	createRole(role) {
 		return this.context.execute(`
-			INSERT INTO Roles(
+			INSERT INTO user_Roles(
 				id, 
 				roleName, 
 				createdAt, 
@@ -75,13 +95,14 @@ class Database {
 				datetime('now')
 			);`,
 			role.id,
+			// role.pluginId,
 			role.roleName
 		);
 	}
 
 	createDepartment(department) {
 		return this.context.execute(`
-			INSERT INTO Departments(
+			INSERT INTO user_Departments(
 				id, 
 				department, 
 				createdAt, 
@@ -100,7 +121,7 @@ class Database {
 
 	createUser(user) {
 		return this.context.execute(`
-			INSERT INTO Users(
+			INSERT INTO user_Users(
 				userName, 
 				firstName, 
 				lastName, 
@@ -140,7 +161,8 @@ class Database {
 
 	createJob(job) {
 		return this.context.execute(`
-			INSERT INTO Jobs(
+			INSERT INTO task_Jobs(
+				pluginId, 
 				jobName,
 				jobDescription,
 				jobStatus,
@@ -157,6 +179,7 @@ class Database {
 				updatedAt
 			)
 			VALUES(
+				? /* pluginId */,
 				? /* jobName */,
 				? /* jobDescription */,
 				'' /* jobStatus */,
@@ -172,6 +195,7 @@ class Database {
 				datetime('now'), 
 				datetime('now')
 			);`,
+			job.pluginId,
 			job.jobName,
 			job.jobDescription,
 			job.scheduleType,
@@ -181,7 +205,8 @@ class Database {
 
 	createTask(task) {
 		return this.context.execute(`
-			INSERT INTO Tasks(
+			INSERT INTO task_Tasks(
+				pluginId, 
 				taskNo,
 				taskName,
 				taskDescription,
@@ -197,6 +222,7 @@ class Database {
 				jobId
 			)
 			VALUES(
+				? /* pluginId */,
 				? /* taskNo */,
 				? /* taskName */,
 				'' /* taskDescription */,
@@ -211,6 +237,7 @@ class Database {
 				datetime('now'),
 				? /* jobId */
 			);`,
+			task.pluginId,
 			task.taskNo,
 			task.taskName,
 			task.nextTaskOnSuccess,
@@ -221,7 +248,8 @@ class Database {
 
 	createTarget(target) {
 		return this.context.execute(`
-			INSERT INTO Targets(
+			INSERT INTO agg_Targets(
+				pluginId, 
 				targetLabel,
 				targetData,
 				batchControlColumn,
@@ -244,6 +272,7 @@ class Database {
 				updatedAt
 			)
 			VALUES(
+				? /* pluginId */,
 				? /* targetLabel */,
 				? /* targetData */,
 				? /* batchControlColumn */,
@@ -265,6 +294,7 @@ class Database {
 				datetime('now'), 
 				datetime('now')
 			);`,
+			target.pluginId,
 			target.targetLabel,
 			target.targetData,
 			target.batchControlColumn,
@@ -274,7 +304,8 @@ class Database {
 
 	createSource(source) {
 		return this.context.execute(`
-			INSERT INTO Sources(
+			INSERT INTO agg_Sources(
+				pluginId, 
 				sourceLabel,
 				sourceData,
 				sourceEnabled,
@@ -290,6 +321,7 @@ class Database {
 				targetId
 			)
 			VALUES(
+				? /* pluginId */,
 				? /* sourceLabel */,
 				? /* sourceData */,
 				0 /* sourceEnabled */,
@@ -304,6 +336,7 @@ class Database {
 				datetime('now'),
 				? /* targetId */
 			);`,
+			source.pluginId,
 			source.sourceLabel,
 			source.sourceData,
 			source.transformation,
@@ -314,54 +347,60 @@ class Database {
 
 	createCourse(course) {
 		return this.context.execute(`
-			INSERT INTO Courses(
+			INSERT INTO media_Courses(
+				pluginId, 
 				title, 
 				description, 
 				estimatedTime, 
 				materialsNeeded, 
 				createdAt, 
 				updatedAt,
-				userId
+				createorId
 			)
 			VALUES(
+				? /* pluginId */,
 				? /* title */,
 				? /* description */,
 				? /* estimatedTime */,
 				? /* materialsNeeded */,
 				datetime('now'), 
 				datetime('now'),
-				? /* userId */
+				? /* createorId */
 			);`,
+			course.pluginId,
 			course.title,
 			course.description,
 			course.estimatedTime,
 			course.materialsNeeded,
-			course.userId
+			course.createorId
 		);
 	}
 
 	createNote(note) {
 		return this.context.execute(`
-			INSERT INTO Notes(
+			INSERT INTO media_Notes(
+				pluginId, 
 				note, 
 				createdAt, 
 				updatedAt,
-				userId
+				createorId
 			)
 			VALUES(
+				? /* pluginId */,
 				? /* note */,
 				datetime('now'), 
 				datetime('now'),
-				? /* userId */
+				? /* createorId */
 			);`,
+			note.pluginId,
 			note.note,
-			note.userId
+			note.createorId
 		);
 	}
 
 	createPermission(permission) {
 		return this.context.execute(`
-			INSERT INTO Permissions(
+			INSERT INTO core_Permissions(
 				pluginId,
 				createdAt, 
 				updatedAt,
@@ -387,6 +426,12 @@ class Database {
 			usersWithHashedPasswords.push({ ...user, password: hashedPassword });
 		}
 		return usersWithHashedPasswords;
+	}
+
+	async createPlugins(plugins) {
+		for (const plugin of plugins) {
+			await this.createPlugin(plugin);
+		}
 	}
 
 	async createAvatars(avatars) {
@@ -460,32 +505,56 @@ class Database {
 		// clear tables
 		if (migrate) {
 			await this.context.execute(`
-				DELETE FROM Permissions;
-				DELETE FROM Notes;
-				DELETE FROM Courses;
-				DELETE FROM Tasks;
-				DELETE FROM Jobs;
-				DELETE FROM Sources;
-				DELETE FROM Targets;
-				DELETE FROM Users;
-				DELETE FROM Roles;
-				DELETE FROM Avatars;
-				DELETE FROM Departments;
+				DELETE FROM core_Permissions;
+				DELETE FROM media_Notes;
+				DELETE FROM media_Courses;
+				DELETE FROM task_Tasks;
+				DELETE FROM task_Jobs;
+				DELETE FROM agg_Sources;
+				DELETE FROM agg_Targets;
+				DELETE FROM user_Users;
+				DELETE FROM user_Departments;
+				DELETE FROM user_Roles;
+				DELETE FROM user_Avatars;
+				DELETE FROM core_Plugins;
 			`);
 		}
 		
-		// load avatars
-		const avatarTableExists = await this.tableExists('Avatars');
-		if (!migrate && avatarTableExists) {
-			this.log('Dropping the Avatars table...');
+		// load plugins
+		const pluginTableExists = await this.tableExists('core_Plugins');
+		if (!migrate && pluginTableExists) {
+			this.log('Dropping the core_Plugins table...');
 			await this.context.execute(`
-				DROP TABLE IF EXISTS Avatars;
+				DROP TABLE IF EXISTS core_Plugins;
 			`);
 		}
 
-		this.log('Creating the Avatars table...');
+		this.log('Creating the Plugins table...');
 		await this.context.execute(`
-			CREATE TABLE IF NOT EXISTS Avatars (
+			CREATE TABLE IF NOT EXISTS core_Plugins (
+				id INTEGER PRIMARY KEY AUTOINCREMENT, 
+				pluginName VARCHAR(255) NOT NULL DEFAULT '',
+				createdAt DATETIME NOT NULL, 
+				updatedAt DATETIME NOT NULL
+			);
+			`);
+
+		this.log('Creating the plugin records...');
+		await this.createPlugins(this.plugins);
+
+
+		// load avatars
+		const avatarTableExists = await this.tableExists('user_Avatars');
+		if (!migrate && avatarTableExists) {
+			this.log('Dropping the user_Avatars table...');
+			await this.context.execute(`
+				DROP TABLE IF EXISTS user_Avatars;
+			`);
+		}
+
+		this.log('Creating the user_Avatars table...');
+		await this.context.execute(`
+			CREATE TABLE IF NOT EXISTS user_Avatars (
 				id INTEGER PRIMARY KEY AUTOINCREMENT, 
 				avatarData VARCHAR(2048) NOT NULL DEFAULT '',
 				createdAt DATETIME NOT NULL, 
@@ -498,17 +567,17 @@ class Database {
 
 
 		// load roles
-		const roleTableExists = await this.tableExists('Roles');
+		const roleTableExists = await this.tableExists('user_Roles');
 		if (!migrate && roleTableExists) {
-			this.log('Dropping the Roles table...');
+			this.log('Dropping the user_Roles table...');
 			await this.context.execute(`
-				DROP TABLE IF EXISTS Roles;
+				DROP TABLE IF EXISTS user_Roles;
 			`);
 		}
 
-		this.log('Creating the Roles table...');
+		this.log('Creating the user_Roles table...');
 		await this.context.execute(`
-			CREATE TABLE IF NOT EXISTS Roles (
+			CREATE TABLE IF NOT EXISTS user_Roles (
 				id INTEGER PRIMARY KEY AUTOINCREMENT, 
 				roleName VARCHAR(255) NOT NULL DEFAULT '',
 				createdAt DATETIME NOT NULL, 
@@ -521,17 +590,17 @@ class Database {
 
 
 		// load departments
-		const departmentTableExists = await this.tableExists('Departments');
+		const departmentTableExists = await this.tableExists('user_Departments');
 		if (!migrate && departmentTableExists) {
-			this.log('Dropping the Departments table...');
+			this.log('Dropping the user_Departments table...');
 			await this.context.execute(`
-				DROP TABLE IF EXISTS Departments;
+				DROP TABLE IF EXISTS user_Departments;
 			`);
 		}
 
-		this.log('Creating the Departments table...');
+		this.log('Creating the user_Departments table...');
 		await this.context.execute(`
-			CREATE TABLE IF NOT EXISTS Departments (
+			CREATE TABLE IF NOT EXISTS user_Departments (
 				id INTEGER PRIMARY KEY AUTOINCREMENT, 
 				department VARCHAR(255) NOT NULL DEFAULT '',
 				createdAt DATETIME NOT NULL, 
@@ -544,17 +613,17 @@ class Database {
 
 
 		// load users
-		const userTableExists = await this.tableExists('Users');
+		const userTableExists = await this.tableExists('user_Users');
 		if (!migrate && userTableExists) {
-			this.log('Dropping the Users table...');
+			this.log('Dropping the user_Users table...');
 			await this.context.execute(`
-				DROP TABLE IF EXISTS Users;
+				DROP TABLE IF EXISTS user_Users;
 			`);
 		}
 
 		this.log('Creating the Users table...');
 		await this.context.execute(`
-			CREATE TABLE IF NOT EXISTS Users (
+			CREATE TABLE IF NOT EXISTS user_Users (
 				id INTEGER PRIMARY KEY AUTOINCREMENT, 
 				userName VARCHAR(255) NOT NULL DEFAULT '', 
 				firstName VARCHAR(255) NOT NULL DEFAULT '', 
@@ -564,9 +633,9 @@ class Database {
 				permissionId INTEGER NOT NULL, 
 				createdAt DATETIME NOT NULL, 
 				updatedAt DATETIME NOT NULL,
-				departmentId INTEGER NULL REFERENCES Departments (id),
-				avatarId INTEGER NULL REFERENCES Avatars (id),
-				roleId INTEGER NULL REFERENCES Roles (id)
+				departmentId INTEGER NULL REFERENCES user_Departments (id),
+				avatarId INTEGER NULL REFERENCES user_Avatars (id),
+				roleId INTEGER NULL REFERENCES user_Roles (id)
 			);
 			`);
 
@@ -579,17 +648,17 @@ class Database {
 
 
 		// load jobs
-		const jobTableExists = await this.tableExists('Jobs');
+		const jobTableExists = await this.tableExists('task_Jobs');
 		if (!migrate && jobTableExists) {
-			this.log('Dropping the Jobs table...');
+			this.log('Dropping the task_Jobs table...');
 			await this.context.execute(`
-				DROP TABLE IF EXISTS Jobs;
+				DROP TABLE IF EXISTS task_Jobs;
 			`);
 		}
 
 		this.log('Creating the Jobs table...');
 		await this.context.execute(`
-			CREATE TABLE IF NOT EXISTS Jobs (
+			CREATE TABLE IF NOT EXISTS task_Jobs (
 				id INTEGER PRIMARY KEY AUTOINCREMENT, 
 				jobName STRING NOT NULL,
 				jobDescription STRING,
@@ -604,7 +673,8 @@ class Database {
 				lastSchedule STRING,
 				permissionId INTEGER, 
 				createdAt DATETIME NOT NULL, 
-				updatedAt DATETIME NOT NULL
+				updatedAt DATETIME NOT NULL,
+				pluginId INTEGER NOT NULL REFERENCES core_Plugins (id) ON DELETE CASCADE ON UPDATE CASCADE
 			);
 			`);
 
@@ -613,17 +683,17 @@ class Database {
 
 
 		// load tasks
-		const taskTableExists = await this.tableExists('Tasks');
+		const taskTableExists = await this.tableExists('task_Tasks');
 		if (!migrate && taskTableExists) {
-			this.log('Dropping the Tasks table...');
+			this.log('Dropping the task_Tasks table...');
 			await this.context.execute(`
-				DROP TABLE IF EXISTS Tasks;
+				DROP TABLE IF EXISTS task_Tasks;
 			`);
 		}
 
-		this.log('Creating the Tasks table...');
+		this.log('Creating the task_Tasks table...');
 		await this.context.execute(`
-			CREATE TABLE IF NOT EXISTS Tasks (
+			CREATE TABLE IF NOT EXISTS task_Tasks (
 				id INTEGER PRIMARY KEY AUTOINCREMENT, 
 				taskNo INTEGER NOT NULL,
 				taskName STRING NOT NULL,
@@ -637,26 +707,26 @@ class Database {
 				permissionId INTEGER NOT NULL, 
 				createdAt DATETIME NOT NULL, 
 				updatedAt DATETIME NOT NULL,
-				jobId INTEGER NOT NULL
-					REFERENCES Jobs (id) ON DELETE CASCADE ON UPDATE CASCADE
-			);
+				jobId INTEGER NOT NULL REFERENCES task_Jobs (id) ON DELETE CASCADE ON UPDATE CASCADE,
+				pluginId INTEGER NOT NULL REFERENCES core_Plugins (id) ON DELETE CASCADE ON UPDATE CASCADE
+				);
 			`);
 
 		this.log('Creating the task records...');
 		await this.createTasks(this.tasks);
 
 		// load targets
-		const targetTableExists = await this.tableExists('Targets');
+		const targetTableExists = await this.tableExists('agg_Targets');
 		if (!migrate && targetTableExists) {
-			this.log('Dropping the Targets table...');
+			this.log('Dropping the agg_Targets table...');
 			await this.context.execute(`
-				DROP TABLE IF EXISTS Targets;
+				DROP TABLE IF EXISTS agg_Targets;
 			`);
 		}
 
-		this.log('Creating the Targets table...');
+		this.log('Creating the agg_Targets table...');
 		await this.context.execute(`
-			CREATE TABLE IF NOT EXISTS Targets (
+			CREATE TABLE IF NOT EXISTS agg_Targets (
 				id INTEGER PRIMARY KEY AUTOINCREMENT, 
 				targetLabel STRING,
 				targetData STRING NOT NULL,
@@ -677,7 +747,8 @@ class Database {
 				suppoetSpVersions BLOB,
 				permissionId INTEGER NOT NULL, 
 				createdAt DATETIME NOT NULL, 
-				updatedAt DATETIME NOT NULL
+				updatedAt DATETIME NOT NULL,
+				pluginId INTEGER NOT NULL REFERENCES core_Plugins (id) ON DELETE CASCADE ON UPDATE CASCADE
 			);
 			`);
 
@@ -686,17 +757,17 @@ class Database {
 
 
 		// load sources
-		const sourceTableExists = await this.tableExists('Sources');
+		const sourceTableExists = await this.tableExists('agg_Sources');
 		if (!migrate && sourceTableExists) {
-			this.log('Dropping the Sources table...');
+			this.log('Dropping the agg_Sources table...');
 			await this.context.execute(`
-				DROP TABLE IF EXISTS Sources;
+				DROP TABLE IF EXISTS agg_Sources;
 			`);
 		}
 
-		this.log('Creating the Sources table...');
+		this.log('Creating the agg_Sources table...');
 		await this.context.execute(`
-			CREATE TABLE IF NOT EXISTS Sources (
+			CREATE TABLE IF NOT EXISTS agg_Sources (
 				id INTEGER PRIMARY KEY AUTOINCREMENT, 
 				sourceLabel STRING,
 				sourceData STRING NOT NULL,
@@ -710,26 +781,26 @@ class Database {
 				permissionId INTEGER NOT NULL, 
 				createdAt DATETIME NOT NULL, 
 				updatedAt DATETIME NOT NULL,
-				targetId INTEGER NULL DEFAULT NULL
-					REFERENCES Targets (id) ON DELETE CASCADE ON UPDATE CASCADE
-			);
+				targetId INTEGER NULL DEFAULT NULL REFERENCES agg_Targets (id) ON DELETE CASCADE ON UPDATE CASCADE,
+				pluginId INTEGER NOT NULL REFERENCES core_Plugins (id) ON DELETE CASCADE ON UPDATE CASCADE
+				);
 			`);
 
 		this.log('Creating the source records...');
 		await this.createSources(this.sources);
 
 		// load courses
-		const courseTableExists = await this.tableExists('Courses');
+		const courseTableExists = await this.tableExists('media_Courses');
 		if (!migrate && courseTableExists) {
-			this.log('Dropping the Courses table...');
+			this.log('Dropping the media_Courses table...');
 			await this.context.execute(`
-				DROP TABLE IF EXISTS Courses;
+				DROP TABLE IF EXISTS media_Courses;
 			`);
 		}
 
-		this.log('Creating the Courses table...');
+		this.log('Creating the media_Courses table...');
 		await this.context.execute(`
-			CREATE TABLE IF NOT EXISTS Courses (
+			CREATE TABLE IF NOT EXISTS media_Courses (
 				id INTEGER PRIMARY KEY AUTOINCREMENT, 
 				title VARCHAR(255) NOT NULL DEFAULT '', 
 				description TEXT NOT NULL DEFAULT '', 
@@ -737,9 +808,9 @@ class Database {
 				materialsNeeded VARCHAR(255), 
 				createdAt DATETIME NOT NULL, 
 				updatedAt DATETIME NOT NULL, 
-				userId INTEGER NULL DEFAULT NULL 
-					REFERENCES Users (id) ON DELETE CASCADE ON UPDATE CASCADE
-			);
+				createorId INTEGER NULL DEFAULT NULL,
+				pluginId INTEGER NOT NULL REFERENCES core_Plugins (id) ON DELETE CASCADE ON UPDATE CASCADE
+				);
 			`);
 
 		this.log('Creating the course records...');
@@ -747,24 +818,24 @@ class Database {
 
 
 		// load notes
-		const noteTableExists = await this.tableExists('Notes');
+		const noteTableExists = await this.tableExists('media_Notes');
 		if (!migrate && noteTableExists) {
-			this.log('Dropping the Notes table...');
+			this.log('Dropping the media_Notes table...');
 			await this.context.execute(`
-				DROP TABLE IF EXISTS Notes;
+				DROP TABLE IF EXISTS media_Notes;
 			`);
 		}
 
-		this.log('Creating the Notes table...');
+		this.log('Creating the media_Notes table...');
 		await this.context.execute(`
-			CREATE TABLE IF NOT EXISTS Notes (
+			CREATE TABLE IF NOT EXISTS media_Notes (
 				id INTEGER PRIMARY KEY AUTOINCREMENT, 
 				note VARCHAR(255) NOT NULL DEFAULT '', 
 				createdAt DATETIME NOT NULL, 
 				updatedAt DATETIME NOT NULL, 
-				userId INTEGER NULL DEFAULT NULL
-					REFERENCES Users (id) ON DELETE CASCADE ON UPDATE CASCADE
-			);
+				createorId INTEGER NULL DEFAULT NULL,
+				pluginId INTEGER NOT NULL REFERENCES core_Plugins (id) ON DELETE CASCADE ON UPDATE CASCADE
+				);
 			`);
 
 		this.log('Creating the Note records...');
@@ -772,24 +843,23 @@ class Database {
 
 
 		// load permissions
-		const permissionTableExists = await this.tableExists('Permissions');
+		const permissionTableExists = await this.tableExists('core_Permissions');
 		if (!migrate && permissionTableExists) {
-			this.log('Dropping the Permissions table...');
+			this.log('Dropping the core_Permissions table...');
 			await this.context.execute(`
-				DROP TABLE IF EXISTS Permissions;
+				DROP TABLE IF EXISTS core_Permissions;
 			`);
 		}
 
-		this.log('Creating the Permissions table...');
+		this.log('Creating the core_Permissions table...');
 		await this.context.execute(`
-			CREATE TABLE IF NOT EXISTS Permissions (
+			CREATE TABLE IF NOT EXISTS core_Permissions (
 				id INTEGER PRIMARY KEY AUTOINCREMENT, 
-				pluginId INTEGER NULL DEFAULT NULL,
 				createdAt DATETIME NOT NULL, 
 				updatedAt DATETIME NOT NULL, 
-				roleId INTEGER NOT NULL
-					REFERENCES Roles (id)
-			);
+				roleId INTEGER NOT NULL REFERENCES user_Roles (id),
+				pluginId INTEGER NOT NULL REFERENCES core_Plugins (id)
+				);
 			`);
 
 		this.log('Creating the Permission records...');

@@ -52,10 +52,10 @@ const createSource = {
 			name: 'transformation',
 			type: new GraphQLNonNull(GraphQLString),
 		},
-		permissionId: {
-			name: 'permissionId',
-			type: new GraphQLNonNull(GraphQLInt),
-		},
+		// permissionId: {
+		// 	name: 'permissionId',
+		// 	type: new GraphQLNonNull(GraphQLInt),
+		// },
 	},
 	resolve: (value, {
 		targetId,
@@ -68,7 +68,7 @@ const createSource = {
 		patternDefault,
 		patternFlexible,
 		transformation,
-		permissionId,
+		// permissionId,
 	}) => (
 			Source.create({
 				targetId,
@@ -81,7 +81,7 @@ const createSource = {
 				patternDefault,
 				patternFlexible,
 				transformation,
-				permissionId,
+				// permissionId,
 			})
 		),
 };
@@ -134,10 +134,10 @@ const updateSource = {
 			name: 'transformation',
 			type: new GraphQLNonNull(GraphQLString),
 		},
-		permissionId: {
-			name: 'permissionId',
-			type: new GraphQLNonNull(GraphQLInt),
-		},
+		// permissionId: {
+		// 	name: 'permissionId',
+		// 	type: new GraphQLNonNull(GraphQLInt),
+		// },
 	},
 	resolve: async (value, {
 		id,
@@ -151,7 +151,7 @@ const updateSource = {
 		patternDefault,
 		patternFlexible,
 		transformation,
-		permissionId,
+		// permissionId,
 	}) => {
 		const foundSource = await Source.findByPk(id);
 
@@ -170,7 +170,7 @@ const updateSource = {
 			patternDefault,
 			patternFlexible,
 			transformation,
-			permissionId,
+			// permissionId,
 		});
 
 		return foundSource.update(updatedSource);

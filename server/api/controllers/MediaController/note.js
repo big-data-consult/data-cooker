@@ -115,7 +115,7 @@ const NoteController = () => {
 						message: 'Note Not Found'
 					});
 				} else if (note) {
-					if (req.token.roleId === note.userId) {
+					if (req.token.roleId === note.creatorId) {
 						const updateNote = {
 							id: req.body.id,
 							note: req.body.note,
@@ -148,7 +148,8 @@ const NoteController = () => {
 			Note.destroy({
 				where: filter,
 			}).then((deleted) => {
-				res.status(204).end(deleted);
+				const { id } = deleted;
+				res.json({ id }).status(204).end();
 			});
 		}
 	};
@@ -167,7 +168,7 @@ const NoteController = () => {
 				res.status(404).json({
 					message: 'Note Not Found'
 				});
-			} else if (req.token.roleId === 1 || req.token.roleId === note.userId) {
+			} else if (req.token.roleId === note.creatorId) {
 				// Delete the note
 				return note.destroy();
 			} else {

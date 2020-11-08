@@ -1,5 +1,5 @@
 const { validationResult } = require('express-validator');
-const { Job, Task } = require('../../models');
+const { Job, Task, Plugin } = require('../../models');
 
 const TaskController = () => {
 	const getTasks = async (req, res) => {
@@ -29,12 +29,17 @@ const TaskController = () => {
 				'permissionId',
 			],
 			include: [
-				// {
-				// 	model: Job,
-				// 	as: 'job',
-				// 	attributes: ['id', 'jobName', 'scheduleType'],
-				// },
-				{ all: true, nested: true }
+				{
+					model: Plugin,
+					as: 'plugin',
+					attributes: ['id', 'pluginName'],
+				},
+				{
+					model: Job,
+					as: 'job',
+					attributes: ['id', 'jobName', 'scheduleType'],
+				},
+				// { all: true, nested: true }
 			],
 			where: filter,
 			order: [sort],
@@ -157,7 +162,7 @@ const TaskController = () => {
 			//  if task exists
 			if (task) {
 				//  if task permission matches current user's role
-				if (!req.token.roleId || req.token.roleId <= task.permissionId) {
+				if (req.token.roleId === 1) {
 					//  Keep original value if field is not provided
 					const updatedTask = {
 						jobId: req.body.jobId ? req.body.jobId : task.jobId,
@@ -209,14 +214,15 @@ const TaskController = () => {
 		const filter = req.query.filter ? JSON.parse(req.query.filter) : {};
 
 		// Only the user with admin role can do multi-deletion
-		if (req.token.roleId && req.token.roleId !== 1) {
+		if (req.token.roleId !== 1) {
 			res.status(403).json({ message: 'Only user with admin role can delete multiple rows!' });
 		} else {
 			//  delete job from Jobs table
 			Task.destroy({
 				where: filter
 			}).then(deleted => {
-				res.status(204).end(deleted);
+				const { id } = deleted;
+				res.json({ id }).status(204).end();
 			});
 		}
 	};
@@ -248,7 +254,7 @@ const TaskController = () => {
 			]
 		}).then(task => {
 			//  if task permission matches current user's role
-			if (!req.token.roleId || req.token.roleId <= task.permissionId) {
+			if (req.token.roleId === 1) {
 				//  delete task from Tasks table
 				const deletedTask = Task.destroy(
 					{

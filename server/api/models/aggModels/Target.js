@@ -1,6 +1,6 @@
 const { Sequelize } = require('sequelize');
 
-const sequelize = require('../../config/database');
+const sequelize = require('../../../config/database');
 const { Source } = require('./Source');
 
 const Target = sequelize.define('Target', {
@@ -154,14 +154,21 @@ const Target = sequelize.define('Target', {
 			},
 		},
 	},
-	permissionId: Sequelize.INTEGER,
+	// permissionId: Sequelize.INTEGER,
 }, {
 	sequelize, // We need to pass the connection instance
 	modelName: 'Target', // We need to choose the model name
-	tableName: "Targets"
+	tableName: "agg_Targets"
 });
 
-// Target.associate = (models) => {
+Target.associate = (models) => {
+	Target.belongsTo(models.Plugin, {
+		as: 'plugin',
+		foreignKey: {
+			fieldName: 'pluginId',
+		},
+	});
+
 // 	// define association between tables
 // 	// a "Target" has many "courses"
 // 	Target.hasMany(models.Source, {
@@ -171,6 +178,6 @@ const Target = sequelize.define('Target', {
 // 			allowNull: false,
 // 		},
 // 	});
-// };
+};
 
 module.exports = { Target };

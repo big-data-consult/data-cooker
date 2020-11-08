@@ -1,6 +1,6 @@
 const { Sequelize } = require('sequelize');
 
-const sequelize = require('../../config/database');
+const sequelize = require('../../../config/database');
 const { User } = require('./User');
 
 const Department = sequelize.define('Department', {
@@ -16,11 +16,18 @@ const Department = sequelize.define('Department', {
 }, {
 	sequelize, // We need to pass the connection instance
 	modelName: 'Department', // We need to choose the model name
-	tableName: 'Departments'
+	tableName: 'user_Departments'
 });
 
 
-// Department.associate = (models) => {
+Department.associate = (models) => {
+	Department.belongsTo(models.Plugin, {
+		as: 'plugin',
+		foreignKey: {
+			fieldName: 'pluginId',
+		},
+	});
+
 // 	Department.hasMany(models.User, {
 // 		as: 'users',
 // 		foreignKey: {
@@ -36,6 +43,6 @@ const Department = sequelize.define('Department', {
 // 			allowNull: true,
 // 		},
 // 	});
-// };
+};
 
 module.exports = { Department };

@@ -1,6 +1,6 @@
 const { Sequelize } = require('sequelize');
 
-const sequelize = require('../../config/database');
+const sequelize = require('../../../config/database');
 const { User } = require('./User');
 
 const Role = sequelize.define('Role', {
@@ -16,11 +16,18 @@ const Role = sequelize.define('Role', {
 }, {
 	sequelize, // We need to pass the connection instance
 	modelName: 'Role', // We need to choose the model name
-	tableName: 'Roles'
+	tableName: 'user_Roles'
 });
 
 
-// Role.associate = (models) => {
+Role.associate = (models) => {
+	Role.belongsTo(models.Plugin, {
+		as: 'plugin',
+		foreignKey: {
+			fieldName: 'pluginId',
+		},
+	});
+
 // 	Role.hasMany(models.User, {
 // 		as: 'users',
 // 		foreignKey: {
@@ -36,6 +43,6 @@ const Role = sequelize.define('Role', {
 // 			allowNull: true,
 // 		},
 // 	});
-// };
+};
 
 module.exports = { Role };

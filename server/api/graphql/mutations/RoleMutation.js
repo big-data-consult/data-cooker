@@ -17,18 +17,18 @@ const createRole = {
 			name: 'roleName',
 			type: new GraphQLNonNull(GraphQLString),
 		},
-		permissionId: {
-			name: 'permissionId',
-			type: new GraphQLNonNull(GraphQLInt),
-		},
+		// permissionId: {
+		// 	name: 'permissionId',
+		// 	type: new GraphQLNonNull(GraphQLInt),
+		// },
 	},
 	resolve: (value, {
 		roleName,
-		permissionId,
+		// permissionId,
 	}) => (
 			Role.create({
 				roleName,
-				permissionId,
+				// permissionId,
 			})
 		),
 };

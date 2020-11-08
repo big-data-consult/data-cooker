@@ -1,24 +1,38 @@
-const { Avatar } = require('./Avatar');
-const { Course } = require('./Course');
-const { Department } = require('./Department');
-const { Job } = require('./Job');
-const { Note } = require('./Note');
-const { Permission } = require('./Permission');
-const { Role } = require('./Role');
-const { Source } = require('./Source');
-const { Target } = require('./Target');
-const { Task } = require('./Task');
-const { User } = require('./User');
+const { Plugin } = require('./coreModels/Plugin');
+const { Avatar } = require('./userModels/Avatar');
+const { Role } = require('./userModels/Role');
+const { Department } = require('./userModels/Department');
+const { User } = require('./userModels/User');
+const { Job } = require('./taskModels/Job');
+const { Task } = require('./taskModels/Task');
+const { Source } = require('./aggModels/Source');
+const { Target } = require('./aggModels/Target');
+const { Note } = require('./mediaModels/Note');
+const { Course } = require('./mediaModels/Course');
+const { Permission } = require('./coreModels/Permission');
 
 
-Course.belongsTo(User, { as: 'user' });
-Note.belongsTo(User, { as: 'user' });
-Permission.belongsTo(User, { as: 'permission' });
+// Course.belongsTo(User, { as: 'user' });
+// Note.belongsTo(User, { as: 'user' });
+Permission.belongsTo(Role, { as: 'permission' });
 Source.belongsTo(Target, { as: 'target' });
 Task.belongsTo(Job, { as: 'job' });
 User.belongsTo(Avatar, { as: 'avatar' });
 User.belongsTo(Role, { as: 'role' });
 User.belongsTo(Department, { as: 'department' });
+
+// Permission.belongsTo(Plugin, { as: 'plugin' });
+Plugin.hasMany(Permission, { as: 'permission' });
+// Role.belongsTo(Plugin, { as: 'plugin' });
+// Avatar.belongsTo(Plugin, { as: 'plugin' });
+// Department.belongsTo(Plugin, { as: 'plugin' });
+// User.belongsTo(Plugin, { as: 'plugin' });
+Job.belongsTo(Plugin, { as: 'plugin' });
+Task.belongsTo(Plugin, { as: 'plugin' });
+Source.belongsTo(Plugin, { as: 'plugin' });
+Target.belongsTo(Plugin, { as: 'plugin' });
+Note.belongsTo(Plugin, { as: 'plugin' });
+Course.belongsTo(Plugin, { as: 'plugin' });
 
 // Avatar.hasMany(User, { as: 'users', foreignKey: 'avatarId' });
 // Role.hasMany(User, { as: 'users', foreignKey: 'roleId' });
@@ -28,15 +42,17 @@ User.belongsTo(Department, { as: 'department' });
 
 
 module.exports = {
+	Plugin,
 	Avatar,
-	Course,
-	Department,
-	Job,
-	Note,
-	Permission,
 	Role,
+	Department,
+	User,
+	Job,
+	Task,
 	Source,
 	Target,
-	Task,
-	User,
-};
+	Course,
+	Note,
+	Permission,
+}
+;

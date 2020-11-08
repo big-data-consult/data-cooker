@@ -1,9 +1,9 @@
 const { Sequelize } = require('sequelize');
-const bcryptSevice = require('../services/bcrypt.service');
-const sequelize = require('../../config/database');
+const bcryptSevice = require('../../services/bcrypt.service');
+const sequelize = require('../../../config/database');
 
-const { Note } = require('./Note');
-const { Course } = require("./Course");
+const { Note } = require('../mediaModels/Note');
+const { Course } = require("../mediaModels/Course");
 const { Avatar } = require('./Avatar');
 const { Role } = require("./Role");
 
@@ -39,10 +39,10 @@ const User = sequelize.define('User', {
 	password: {
 		type: Sequelize.STRING,
 	},
-	permissionId: {
-		type: Sequelize.INTEGER,
-		allowNull: true,
-	},
+	// permissionId: {
+	// 	type: Sequelize.INTEGER,
+	// 	allowNull: true,
+	// },
 	// avatarId: {
 	// 	type: Sequelize.INTEGER,
 	// 	allowNull: true
@@ -55,7 +55,7 @@ const User = sequelize.define('User', {
 	hooks,
 	sequelize, // We need to pass the connection instance
 	modelName: 'User', // We need to choose the model name
-	tableName: 'Users'
+	tableName: 'user_Users'
 });
 
 
@@ -67,6 +67,13 @@ User.prototype.toJSON = function () {
 };
 
 User.associate = (models) => {
+	User.belongsTo(models.Plugin, {
+		as: 'plugin',
+		foreignKey: {
+			fieldName: 'pluginId',
+		},
+	});
+
 	User.belongsTo(models.Avatar, {
 		as: 'avatar',
 		foreignKey: {

@@ -80,10 +80,10 @@ const createTarget = {
 			name: 'suppoetSpVersions', /* ObjType */
 			type: new GraphQLNonNull(GraphQLString),
 		},
-		permissionId: {
-			name: 'permissionId',
-			type: new GraphQLNonNull(GraphQLInt),
-		},
+		// permissionId: {
+		// 	name: 'permissionId',
+		// 	type: new GraphQLNonNull(GraphQLInt),
+		// },
 	},
 	resolve: (value, {
 		targetLabel,
@@ -103,7 +103,7 @@ const createTarget = {
 		aggregateColumns,
 		aggregateFunctions,
 		suppoetSpVersions,
-		permissionId,
+		// permissionId,
 	}) => (
 			Target.create({
 				targetLabel,
@@ -123,7 +123,7 @@ const createTarget = {
 				aggregateColumns,
 				aggregateFunctions,
 				suppoetSpVersions,
-				permissionId,
+				// permissionId,
 			})
 		),
 };
@@ -204,10 +204,10 @@ const updateTarget = {
 			name: 'suppoetSpVersions', /* ObjType */
 			type: new GraphQLNonNull(GraphQLString),
 		},
-		permissionId: {
-			name: 'permissionId',
-			type: new GraphQLNonNull(GraphQLInt),
-		},
+		// permissionId: {
+		// 	name: 'permissionId',
+		// 	type: new GraphQLNonNull(GraphQLInt),
+		// },
 	},
 	resolve: async (value, {
 		id,
@@ -228,7 +228,7 @@ const updateTarget = {
 		aggregateColumns,
 		aggregateFunctions,
 		suppoetSpVersions,
-		permissionId,
+		// permissionId,
 	}) => {
 		const foundTarget = await Target.findByPk(id);
 
@@ -254,7 +254,7 @@ const updateTarget = {
 			aggregateColumns,
 			aggregateFunctions,
 			suppoetSpVersions,
-			permissionId,
+			// permissionId,
 		});
 
 		return foundTarget.update(updatedTarget);

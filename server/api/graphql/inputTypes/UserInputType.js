@@ -44,9 +44,9 @@ const UserInputType = (type) => {
 				roleId: {
 					type: GraphQLInt,
 				},
-				permissionId: {
-					type: GraphQLInt,
-				},
+				// permissionId: {
+				// 	type: GraphQLInt,
+				// },
 			};
 			break;
 		default:

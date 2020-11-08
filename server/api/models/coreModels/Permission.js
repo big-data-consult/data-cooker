@@ -1,6 +1,6 @@
 const { Sequelize } = require('sequelize');
 
-const sequelize = require('../../config/database');
+const sequelize = require('../../../config/database');
 // const { Permission } = require("./Permission");
 
 const Permission = sequelize.define('Permission', {
@@ -9,9 +9,12 @@ const Permission = sequelize.define('Permission', {
 	//   primaryKey: true,
 	//   autoIncrement: true,
 	// },
-	pluginId: {
-		type: Sequelize.INTEGER,
-	},
+	permisionNote: {
+		type: Sequelize.STRING,
+	}
+	// pluginId: {
+	// 	type: Sequelize.INTEGER,
+	// },
 	// roleId: {
 	// 	type: Sequelize.INTEGER,
 	// 	allowNull: true
@@ -19,7 +22,7 @@ const Permission = sequelize.define('Permission', {
 }, {
 	sequelize, // We need to pass the connection instance
 	modelName: 'Permission', // We need to choose the model name
-	tableName: 'Permissions'
+	tableName: 'core_Permissions'
 });
 
 Permission.associate = (models) => {

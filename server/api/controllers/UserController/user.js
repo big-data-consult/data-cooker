@@ -205,8 +205,9 @@ const UserController = () => {
 			User.destroy({
 				where: filter,
 			}).then((deleted) => {
-				res.status(204).end(deleted);
-			});
+				const { id } = deleted;
+				res.json({ id }).status(204).end();
+		});
 		}
 	};
 

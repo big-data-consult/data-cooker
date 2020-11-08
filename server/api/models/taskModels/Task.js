@@ -1,6 +1,6 @@
 const { Sequelize } = require('sequelize');
 
-const sequelize = require('../../config/database');
+const sequelize = require('../../../config/database');
 const { Job } = require('./Job');
 
 const Task = sequelize.define('Task', {
@@ -90,7 +90,7 @@ const Task = sequelize.define('Task', {
 			},
 		},
 	},
-	permissionId: Sequelize.INTEGER,
+	// permissionId: Sequelize.INTEGER,
 	// jobId: {
 	// 	type: Sequelize.INTEGER,
 	// 	allowNull: true
@@ -98,10 +98,17 @@ const Task = sequelize.define('Task', {
 }, {
 	sequelize, // We need to pass the connection instance
 	modelName: 'Task', // We need to choose the model name
-	tableName: 'Tasks'
+	tableName: 'task_Tasks'
 });
 
 Task.associate = (models) => {
+	Task.belongsTo(models.Plugin, {
+		as: 'plugin',
+		foreignKey: {
+			fieldName: 'pluginId',
+		},
+	});
+
 	Task.belongsTo(models.Job, {
 		as: 'job',
 		foreignKey: {

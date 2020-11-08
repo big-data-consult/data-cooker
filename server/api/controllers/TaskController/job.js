@@ -1,5 +1,5 @@
 const { check, validationResult } = require('express-validator');
-const { Job } = require('../../models');
+const { Job, Plugin } = require('../../models');
 
 
 const JobController = () => {
@@ -24,6 +24,14 @@ const JobController = () => {
 				'nextSchedule',
 				'lastSchedule',
 				'permissionId',
+			],
+			include: [
+				{
+					model: Plugin,
+					as: 'plugin',
+					attributes: ['id', 'pluginName'],
+				},
+				// { all: true, nested: true }
 			],
 			where: filter,
 			order: [sort],
@@ -142,7 +150,7 @@ const JobController = () => {
 				],
 			}).then((job) => {
 				// if job permission matches current user's role
-				if (!req.token.roleId || req.token.roleId <= job.permissionId) {
+				if (req.token.roleId === 1) {
 					// Keep original value if field is not provided
 					const updatedTrget = {
 						jobName: req.body.jobName ? req.body.jobName : job.jobName,
@@ -194,14 +202,15 @@ const JobController = () => {
 		const filter = req.query.filter ? JSON.parse(req.query.filter) : {};
 
 		// Only the user with admin role can do multi-deletion
-		if (req.token.roleId && req.token.roleId !== 1) {
+		if (req.token.roleId !== 1) {
 			res.status(403).json({ message: 'Only user with admin role can delete multiple rows!' });
 		} else {
 			// delete job from Jobs table
 			Job.destroy({
 				where: filter
 			}).then((deleted) => {
-				res.status(204).end(deleted);
+				const { id } = deleted;
+				res.json({ id }).status(204).end();
 			});
 		}
 	};
@@ -227,7 +236,7 @@ const JobController = () => {
 			]
 		}).then((job) => {
 			// if job permission matches current user's role
-			if (!req.token.roleId || req.token.roleId <= job.permissionId) {
+			if (req.token.roleId === 1) {
 				// delete job from Jobs table
 				Job.destroy({
 					where: {

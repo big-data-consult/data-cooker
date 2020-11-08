@@ -1,5 +1,5 @@
 const { Sequelize } = require('sequelize');
-const sequelize = require('../../config/database');
+const sequelize = require('../../../config/database');
 const Target = require("./Target");
 
 const Source = sequelize.define('Source', {
@@ -91,7 +91,7 @@ const Source = sequelize.define('Source', {
 			},
 		},
 	},
-	permissionId: Sequelize.INTEGER,
+	// permissionId: Sequelize.INTEGER,
 	// targetId: {
 	// 	type: Sequelize.INTEGER,
 	// 	allowNull: true
@@ -99,11 +99,18 @@ const Source = sequelize.define('Source', {
 }, {
 	sequelize, // We need to pass the connection instance
 	modelName: 'Source', // We need to choose the model name
-	tableName: 'Sources'
+	tableName: 'agg_Sources'
 });
 
 Source.associate = (models) => {
 	// define association between tables
+	Source.belongsTo(models.Plugin, {
+		as: 'plugin',
+		foreignKey: {
+			fieldName: 'pluginId',
+		},
+	});
+
 	// a "Source" belongs to a single "target"
 	Source.belongsTo(models.Target, {
 		as: 'target',

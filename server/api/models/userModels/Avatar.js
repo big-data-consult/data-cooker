@@ -1,6 +1,6 @@
 const { Sequelize } = require('sequelize');
 
-const sequelize = require('../../config/database');
+const sequelize = require('../../../config/database');
 const { User } = require('./User');
 
 const Avatar = sequelize.define('Avatar', {
@@ -16,10 +16,17 @@ const Avatar = sequelize.define('Avatar', {
 }, {
 	sequelize, // We need to pass the connection instance
 	modelName: 'Avatar', // We need to choose the model name
-	tableName: 'Avatars'
+	tableName: 'user_Avatars'
 });
 
-// Avatar.associate = (models) => {
+Avatar.associate = (models) => {
+	Avatar.belongsTo(models.Plugin, {
+		as: 'plugin',
+		foreignKey: {
+			fieldName: 'pluginId',
+		},
+	});
+
 // 	Avatar.hasMany(models.User, {
 // 		as: 'users',
 // 		foreignKey: {
@@ -27,6 +34,6 @@ const Avatar = sequelize.define('Avatar', {
 // 			allowNull: true,
 // 		},
 // 	});
-// };
+};
 
 module.exports = { Avatar };

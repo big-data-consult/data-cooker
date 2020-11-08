@@ -1,5 +1,5 @@
 const { validationResult } = require('express-validator');
-const { Target, Source } = require('../../models');
+const { Target, Source, Plugin } = require('../../models');
 
 const SourceController = () => {
 	const getSources = async (req, res) => {
@@ -29,12 +29,17 @@ const SourceController = () => {
 				'permissionId',
 			],
 			include: [
-				// {
-				// 	model: Target,
-				// 	as: 'target',
-				// 	attributes: ['id', 'targetLabel', 'targetData'],
-				// },
-				{ all: true, nested: true }
+				{
+					model: Plugin,
+					as: 'plugin',
+					attributes: ['id', 'pluginName'],
+				},
+				{
+					model: Target,
+					as: 'target',
+					attributes: ['id', 'targetLabel', 'targetData'],
+				},
+				// { all: true, nested: true }
 			],
 			where: filter,
 			order: [sort],
@@ -158,7 +163,7 @@ const SourceController = () => {
 			//  if source exists
 			if (source) {
 				//  if source permission matches current user's role
-				if (!req.token.roleId || req.token.roleId <= source.permissionId) {
+				if (req.token.roleId === 1) {
 					//  Keep original value if field is not provided
 					const updatedSource = {
 						targetId: req.body.targetId ? req.body.targetId : source.targetId,
@@ -208,13 +213,14 @@ const SourceController = () => {
 	const deleteSources = async (req, res) => {
 		const filter = req.query.filter ? JSON.parse(req.query.filter) : {};
 
-		if (req.token.roleId && req.token.roleId !== 1) {
+		if (req.token.roleId !== 1) {
 			res.status(403).json({ message: 'Only user with admin role can delete multiple rows!' });
 		} else {
 			Source.destroy({
 				where: filter
 			}).then(deleted => {
-				res.json({ deleted }).status(204).end();
+				const { id } = deleted;
+				res.json({ id }).status(204).end();
 			});
 		}
 	};
@@ -245,7 +251,7 @@ const SourceController = () => {
 			]
 		}).then(source => {
 			//  if source permission matches current user's role
-			if (!req.token.roleId || req.token.roleId <= source.permissionId) {
+			if (req.token.roleId === 1) {
 				//  delete source from Sources table
 				const deletedSource = Source.destroy(
 					{

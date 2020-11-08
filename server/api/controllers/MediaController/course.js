@@ -115,7 +115,7 @@ const CourseController = () => {
 						message: 'Course Not Found'
 					});
 				} else if (course) {
-					if (req.token.roleId === course.userId) {
+					if (req.token.roleId === course.creatorId) {
 						const updateCourse = {
 							id: req.body.id,
 							title: req.body.title,
@@ -151,7 +151,8 @@ const CourseController = () => {
 			Course.destroy({
 				where: filter,
 			}).then((deleted) => {
-				res.status(204).end(deleted);
+				const { id } = deleted;
+				res.json({ id }).status(204).end();
 			});
 		}
 	};
@@ -170,7 +171,7 @@ const CourseController = () => {
 				res.status(404).json({
 					message: 'Course Not Found'
 				});
-			} else if (req.token.roleId === course.userId) {
+			} else if (req.token.roleId === course.creatorId) {
 				// Delete the course
 				return course.destroy();
 			} else {
