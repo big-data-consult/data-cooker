@@ -27,7 +27,7 @@ const Course = sequelize.define('Course', {
 		type: Sequelize.STRING,
 		allowNull: true,
 	},
-	createorId: {
+	creatorId: {
 		type: Sequelize.INTEGER,
 		allowNull: true
 	},

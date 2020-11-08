@@ -26,7 +26,7 @@ const SourceController = () => {
 				'patternDefault',
 				'patternFlexible',
 				'transformation',
-				'permissionId',
+				// 'permissionId',
 			],
 			include: [
 				{
@@ -66,7 +66,7 @@ const SourceController = () => {
 				'patternDefault',
 				'patternFlexible',
 				'transformation',
-				'permissionId',
+				// 'permissionId',
 			],
 			include: [
 				{
@@ -113,7 +113,7 @@ const SourceController = () => {
 				patternDefault: source.patternDefault,
 				patternFlexible: source.patternFlexible,
 				transformation: source.transformation,
-				permissionId: 2,
+				// permissionId: 2,
 			}).then((created) => {
 				const { id } = created;
 				// res.json({ id }).status(201).end();
@@ -149,7 +149,7 @@ const SourceController = () => {
 					'patternDefault',
 					'patternFlexible',
 					'transformation',
-					'permissionId',
+					// 'permissionId',
 				],
 				include: [
 					{
@@ -176,7 +176,7 @@ const SourceController = () => {
 						patternDefault: req.body.patternDefault ? req.body.patternDefault : source.patternDefault,
 						patternFlexible: req.body.patternFlexible ? req.body.patternFlexible : source.patternFlexible,
 						transformation: req.body.transformation ? req.body.transformation : source.transformation,
-						permissionId: req.body.permissionId ? req.body.permissionId : source.permissionId,
+						// permissionId: req.body.permissionId ? req.body.permissionId : source.permissionId,
 					};
 
 					//  update source details in Sources table
@@ -191,7 +191,7 @@ const SourceController = () => {
 						patternDefault: updatedSource.patternDefault,
 						patternFlexible: updatedSource.patternFlexible,
 						transformation: updatedSource.transformation,
-						permissionId: 2
+						// permissionId: 2
 					}, {
 						where: {
 							id: source.id
@@ -240,7 +240,7 @@ const SourceController = () => {
 				'patternDefault',
 				'patternFlexible',
 				'transformation',
-				'permissionId'
+				// 'permissionId'
 			],
 			include: [
 				{

@@ -43,10 +43,10 @@ const UserType = new GraphQLObjectType({
 			type: GraphQLInt,
 			resolve: (user) => user.roleId,
 		},
-		permissionId: {
-			type: GraphQLInt,
-			resolve: (user) => user.permissionId,
-		},
+		// permissionId: {
+		// 	type: GraphQLInt,
+		// 	resolve: (user) => user.permissionId,
+		// },
 		notes: {
 			type: new GraphQLList(NoteType),
 			resolve: (user) => user.getNotes(),

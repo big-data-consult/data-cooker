@@ -14,7 +14,7 @@ const { Permission } = require('./coreModels/Permission');
 
 // Course.belongsTo(User, { as: 'user' });
 // Note.belongsTo(User, { as: 'user' });
-Permission.belongsTo(Role, { as: 'permission' });
+Permission.belongsTo(Role, { as: 'role' });
 Source.belongsTo(Target, { as: 'target' });
 Task.belongsTo(Job, { as: 'job' });
 User.belongsTo(Avatar, { as: 'avatar' });
@@ -22,7 +22,7 @@ User.belongsTo(Role, { as: 'role' });
 User.belongsTo(Department, { as: 'department' });
 
 // Permission.belongsTo(Plugin, { as: 'plugin' });
-Plugin.hasMany(Permission, { as: 'permission' });
+Plugin.hasMany(Permission, { as: 'permissions' });
 // Role.belongsTo(Plugin, { as: 'plugin' });
 // Avatar.belongsTo(Plugin, { as: 'plugin' });
 // Department.belongsTo(Plugin, { as: 'plugin' });

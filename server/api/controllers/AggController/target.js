@@ -30,7 +30,7 @@ const TargetController = () => {
 				'aggregateColumns',
 				'aggregateFunctions',
 				'suppoetSpVersions',
-				'permissionId',
+				// 'permissionId',
 			],
 			include: [
 				{
@@ -72,7 +72,7 @@ const TargetController = () => {
 				'aggregateColumns',
 				'aggregateFunctions',
 				'suppoetSpVersions',
-				'permissionId',
+				// 'permissionId',
 			],
 		});
 
@@ -126,7 +126,7 @@ const TargetController = () => {
 					aggregateColumns: target.aggregateColumns,
 					aggregateFunctions: target.aggregateFunctions,
 					suppoetSpVersions: target.suppoetSpVersions,
-					permissionId: 2,
+					// permissionId: 2,
 				}).then((created) => {
 					const { id } = created;
 					res.json({ id }).status(201).end();
@@ -171,7 +171,7 @@ const TargetController = () => {
 					'aggregateColumns',
 					'aggregateFunctions',
 					'suppoetSpVersions',
-					'permissionId',
+					// 'permissionId',
 				],
 			}).then((target) => {
 				// if target permission matches current user's role
@@ -217,7 +217,7 @@ const TargetController = () => {
 						aggregateColumns: updatedTrget.aggregateColumns,
 						aggregateFunctions: updatedTrget.aggregateFunctions,
 						suppoetSpVersions: updatedTrget.suppoetSpVersions,
-						permissionId: 2,
+						// permissionId: 2,
 					}, {
 						where: {
 							id: target.id,
@@ -274,7 +274,7 @@ const TargetController = () => {
 				'aggregateColumns',
 				'aggregateFunctions',
 				'suppoetSpVersions',
-				'permissionId'
+				// 'permissionId'
 			]
 		}).then((target) => {
 			// if target permission matches current user's role

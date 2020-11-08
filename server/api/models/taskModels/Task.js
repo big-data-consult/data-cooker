@@ -36,7 +36,7 @@ const Task = sequelize.define('Task', {
 			},
 		},
 	},
-	taskExecutor: {
+	taskWorker: {
 		type: Sequelize.INTEGER,
 		allowNull: false,
 		validate: {

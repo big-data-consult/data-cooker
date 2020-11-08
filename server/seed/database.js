@@ -127,7 +127,6 @@ class Database {
 				lastName, 
 				email, 
 				password, 
-				permissionId, 
 				createdAt, 
 				updatedAt,
 				departmentId, 
@@ -140,7 +139,6 @@ class Database {
 				? /* lastName */,
 				? /* email */,
 				? /* password */,
-				? /* permissionId */,
 				datetime('now'), 
 				datetime('now'),
 				? /* departmentId */,
@@ -152,7 +150,6 @@ class Database {
 			user.lastName,
 			user.email,
 			user.password,
-			user.permissionId,
 			user.departmentId,
 			user.avatarId,
 			user.roleId
@@ -174,7 +171,7 @@ class Database {
 				scheduleEnd,
 				nextSchedule,
 				lastSchedule,
-				permissionId,
+				creatorId,
 				createdAt,
 				updatedAt
 			)
@@ -191,7 +188,7 @@ class Database {
 				'' /* scheduleEnd */,
 				'' /* nextSchedule */,
 				'' /* lastSchedule */,
-				2 /* permissionId */,
+				? /* creatorId */,
 				datetime('now'), 
 				datetime('now')
 			);`,
@@ -199,7 +196,8 @@ class Database {
 			job.jobName,
 			job.jobDescription,
 			job.scheduleType,
-			job.scheduleCron
+			job.scheduleCron,
+			job.creatorId
 		);
 	}
 
@@ -210,13 +208,13 @@ class Database {
 				taskNo,
 				taskName,
 				taskDescription,
-				taskExecutor,
+				taskWorker,
 				taskStatus,
 				nextTaskOnSuccess,
 				nextTaskOnFailure,
 				lastScheduledTime,
 				lastCompleteTime,
-				permissionId,
+				creatorId,
 				createdAt, 
 				updatedAt,
 				jobId
@@ -226,13 +224,13 @@ class Database {
 				? /* taskNo */,
 				? /* taskName */,
 				'' /* taskDescription */,
-				'' /* taskExecutor */,
+				'' /* taskWorker */,
 				'' /* taskStatus */,
 				? /* nextTaskOnSuccess */,
 				? /* nextTaskOnFailure */,
 				'' /* lastScheduledTime */,
 				'' /* lastCompleteTime */,
-				2 /* permissionId */,
+				? /* creatorId */,
 				datetime('now'), 
 				datetime('now'),
 				? /* jobId */
@@ -242,6 +240,7 @@ class Database {
 			task.taskName,
 			task.nextTaskOnSuccess,
 			task.nextTaskOnFailure,
+			task.creatorId,
 			task.jobId
 		);
 	}
@@ -267,7 +266,7 @@ class Database {
 				aggregateColumns,
 				aggregateFunctions,
 				suppoetSpVersions,
-				permissionId,
+				creatorId,
 				createdAt,
 				updatedAt
 			)
@@ -290,7 +289,7 @@ class Database {
 				'' /* aggregateColumns */,
 				'' /* aggregateFunctions */,
 				'' /* suppoetSpVersions */,
-				? /* permissionId */,
+				? /* creatorId */,
 				datetime('now'), 
 				datetime('now')
 			);`,
@@ -298,7 +297,7 @@ class Database {
 			target.targetLabel,
 			target.targetData,
 			target.batchControlColumn,
-			target.permissionId
+			target.creatorId
 		);
 	}
 
@@ -315,7 +314,7 @@ class Database {
 				patternDefault,
 				patternFlexible,
 				transformation,
-				permissionId,
+				creatorId,
 				createdAt, 
 				updatedAt,
 				targetId
@@ -331,7 +330,7 @@ class Database {
 				0 /* patternDefault */,
 				0 /* patternFlexible */,
 				? /* transformation */,
-				? /* permissionId */,
+				? /* creatorId */,
 				datetime('now'), 
 				datetime('now'),
 				? /* targetId */
@@ -340,7 +339,7 @@ class Database {
 			source.sourceLabel,
 			source.sourceData,
 			source.transformation,
-			source.permissionId,
+			source.creatorId,
 			source.targetId
 		);
 	}
@@ -355,7 +354,7 @@ class Database {
 				materialsNeeded, 
 				createdAt, 
 				updatedAt,
-				createorId
+				creatorId
 			)
 			VALUES(
 				? /* pluginId */,
@@ -365,14 +364,14 @@ class Database {
 				? /* materialsNeeded */,
 				datetime('now'), 
 				datetime('now'),
-				? /* createorId */
+				? /* creatorId */
 			);`,
 			course.pluginId,
 			course.title,
 			course.description,
 			course.estimatedTime,
 			course.materialsNeeded,
-			course.createorId
+			course.creatorId
 		);
 	}
 
@@ -383,18 +382,18 @@ class Database {
 				note, 
 				createdAt, 
 				updatedAt,
-				createorId
+				creatorId
 			)
 			VALUES(
 				? /* pluginId */,
 				? /* note */,
 				datetime('now'), 
 				datetime('now'),
-				? /* createorId */
+				? /* creatorId */
 			);`,
 			note.pluginId,
 			note.note,
-			note.createorId
+			note.creatorId
 		);
 	}
 
@@ -402,16 +401,19 @@ class Database {
 		return this.context.execute(`
 			INSERT INTO core_Permissions(
 				pluginId,
+				permisionNote,
 				createdAt, 
 				updatedAt,
 				roleId
 			)
 			VALUES(
 				? /* pluginId */,
+				? /* permisionNote */,
 				datetime('now'), 
 				datetime('now'),
 				? /* roleId */
 			);`,
+			permission.permisionNote,
 			permission.pluginId,
 			permission.roleId
 		);
@@ -630,7 +632,6 @@ class Database {
 				lastName VARCHAR(255) NOT NULL DEFAULT '', 
 				email VARCHAR(255) NOT NULL DEFAULT '' UNIQUE, 
 				password VARCHAR(255) NOT NULL DEFAULT '', 
-				permissionId INTEGER NOT NULL, 
 				createdAt DATETIME NOT NULL, 
 				updatedAt DATETIME NOT NULL,
 				departmentId INTEGER NULL REFERENCES user_Departments (id),
@@ -671,7 +672,7 @@ class Database {
 				scheduleEnd STRING,
 				nextSchedule STRING,
 				lastSchedule STRING,
-				permissionId INTEGER, 
+				creatorId INTEGER, 
 				createdAt DATETIME NOT NULL, 
 				updatedAt DATETIME NOT NULL,
 				pluginId INTEGER NOT NULL REFERENCES core_Plugins (id) ON DELETE CASCADE ON UPDATE CASCADE
@@ -698,13 +699,13 @@ class Database {
 				taskNo INTEGER NOT NULL,
 				taskName STRING NOT NULL,
 				taskDescription STRING,
-				taskExecutor STRING NOT NULL,
+				taskWorker STRING NOT NULL,
 				taskStatus STRING,
 				nextTaskOnSuccess NTEGER,
 				nextTaskOnFailure INTEGER,
 				lastScheduledTime STRING,
 				lastCompleteTime STRING,
-				permissionId INTEGER NOT NULL, 
+				creatorId INTEGER NOT NULL, 
 				createdAt DATETIME NOT NULL, 
 				updatedAt DATETIME NOT NULL,
 				jobId INTEGER NOT NULL REFERENCES task_Jobs (id) ON DELETE CASCADE ON UPDATE CASCADE,
@@ -745,7 +746,7 @@ class Database {
 				aggregateColumns BLOB NOT NULL,
 				aggregateFunctions BLOB NOT NULL,
 				suppoetSpVersions BLOB,
-				permissionId INTEGER NOT NULL, 
+				creatorId INTEGER NOT NULL, 
 				createdAt DATETIME NOT NULL, 
 				updatedAt DATETIME NOT NULL,
 				pluginId INTEGER NOT NULL REFERENCES core_Plugins (id) ON DELETE CASCADE ON UPDATE CASCADE
@@ -778,7 +779,7 @@ class Database {
 				patternDefault INTEGER NOT NULL,
 				patternFlexible NTEGER NOT NULL,
 				transformation STRING NOT NULL,
-				permissionId INTEGER NOT NULL, 
+				creatorId INTEGER NOT NULL, 
 				createdAt DATETIME NOT NULL, 
 				updatedAt DATETIME NOT NULL,
 				targetId INTEGER NULL DEFAULT NULL REFERENCES agg_Targets (id) ON DELETE CASCADE ON UPDATE CASCADE,
@@ -808,7 +809,7 @@ class Database {
 				materialsNeeded VARCHAR(255), 
 				createdAt DATETIME NOT NULL, 
 				updatedAt DATETIME NOT NULL, 
-				createorId INTEGER NULL DEFAULT NULL,
+				creatorId INTEGER NULL DEFAULT NULL,
 				pluginId INTEGER NOT NULL REFERENCES core_Plugins (id) ON DELETE CASCADE ON UPDATE CASCADE
 				);
 			`);
@@ -833,7 +834,7 @@ class Database {
 				note VARCHAR(255) NOT NULL DEFAULT '', 
 				createdAt DATETIME NOT NULL, 
 				updatedAt DATETIME NOT NULL, 
-				createorId INTEGER NULL DEFAULT NULL,
+				creatorId INTEGER NULL DEFAULT NULL,
 				pluginId INTEGER NOT NULL REFERENCES core_Plugins (id) ON DELETE CASCADE ON UPDATE CASCADE
 				);
 			`);
@@ -854,7 +855,8 @@ class Database {
 		this.log('Creating the core_Permissions table...');
 		await this.context.execute(`
 			CREATE TABLE IF NOT EXISTS core_Permissions (
-				id INTEGER PRIMARY KEY AUTOINCREMENT, 
+				id INTEGER PRIMARY KEY AUTOINCREMENT,
+				permisionNote VARCHAR(255) NULL DEFAULT '', 
 				createdAt DATETIME NOT NULL, 
 				updatedAt DATETIME NOT NULL, 
 				roleId INTEGER NOT NULL REFERENCES user_Roles (id),

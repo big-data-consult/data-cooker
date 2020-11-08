@@ -12,7 +12,7 @@ const Note = sequelize.define('Note', {
 	note: {
 		type: Sequelize.STRING,
 	},
-	createorId: {
+	creatorId: {
 		type: Sequelize.INTEGER,
 		allowNull: true
 	},

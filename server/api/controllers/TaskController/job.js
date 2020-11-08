@@ -23,7 +23,7 @@ const JobController = () => {
 				'scheduleEnd',
 				'nextSchedule',
 				'lastSchedule',
-				'permissionId',
+				// 'permissionId',
 			],
 			include: [
 				{
@@ -59,7 +59,7 @@ const JobController = () => {
 				'scheduleEnd',
 				'nextSchedule',
 				'lastSchedule',
-				'permissionId',
+				// 'permissionId',
 			],
 		});
 
@@ -107,7 +107,7 @@ const JobController = () => {
 					scheduleEnd: job.scheduleEnd,
 					nextSchedule: job.nextSchedule,
 					lastSchedule: job.lastSchedule,
-					permissionId: 2,
+					// permissionId: 2,
 				}).then((created) => {
 					const { id } = created;
 					res.json({ id }).status(201).end();
@@ -146,7 +146,7 @@ const JobController = () => {
 					'scheduleEnd',
 					'nextSchedule',
 					'lastSchedule',
-					'permissionId',
+					// 'permissionId',
 				],
 			}).then((job) => {
 				// if job permission matches current user's role
@@ -180,7 +180,7 @@ const JobController = () => {
 						scheduleEnd: updatedTrget.scheduleEnd,
 						nextSchedule: updatedTrget.nextSchedule,
 						lastSchedule: updatedTrget.lastSchedule,
-						permissionId: 2,
+						// permissionId: 2,
 					}, {
 						where: {
 							id: job.id,
@@ -232,7 +232,7 @@ const JobController = () => {
 				'scheduleEnd',
 				'nextSchedule',
 				'lastSchedule',
-				'permissionId'
+				// 'permissionId'
 			]
 		}).then((job) => {
 			// if job permission matches current user's role

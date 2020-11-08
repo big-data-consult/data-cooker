@@ -9,7 +9,7 @@ export const TaskCreate = props => (
             <NumberInput source="taskNo" />
             <TextInput source="taskName" />
             <TextInput source="taskDescription" />
-            <TextInput source="taskExecutor" />
+            <TextInput source="taskWorker" />
             {/* <TextInput source="taskStatus" /> */}
             <TextInput source="nextTaskOnSuccess" />
             <TextInput source="nextTaskOnFailure" />

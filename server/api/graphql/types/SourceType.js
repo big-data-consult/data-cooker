@@ -52,10 +52,10 @@ const SourceType = new GraphQLObjectType({
 			type: GraphQLString,
 			resolve: (source) => source.transformation,
 		},
-		permissionId: {
-			type: GraphQLInt,
-			resolve: (source) => source.permissionId,
-		},
+		// permissionId: {
+		// 	type: GraphQLInt,
+		// 	resolve: (source) => source.permissionId,
+		// },
 		createdAt: {
 			type: GraphQLString,
 			resolve: (source) => source.createdAt,

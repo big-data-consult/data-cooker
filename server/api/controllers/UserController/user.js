@@ -14,7 +14,7 @@ const UserController = () => {
 		} : queryFilter;
 
 		const users = await User.findAll({
-			attributes: ['id', 'userName', 'firstName', 'lastName', 'email', 'departmentId', 'avatarId', 'roleId', 'permissionId'],
+			attributes: ['id', 'userName', 'firstName', 'lastName', 'email', 'departmentId', 'avatarId', 'roleId' ],
 			include: [
 				// {
 				// 	model: Role,
@@ -42,7 +42,7 @@ const UserController = () => {
 
 	const getUser = async (req, res) => {
 		const user = await User.findByPk(req.params.id, {
-			attributes: ['id', 'userName', 'firstName', 'lastName', 'email', 'departmentId', 'avatarId', 'roleId', 'permissionId'],
+			attributes: ['id', 'userName', 'firstName', 'lastName', 'email', 'departmentId', 'avatarId', 'roleId' ],
 			include: [
 				{
 					model: Department,
@@ -93,7 +93,7 @@ const UserController = () => {
 				password: req.body.password,
 				avatarId: req.body.avatarId,
 				roleId: req.body.roleId,
-				permissionId: 1, // permission is static
+				// permissionId: 1, // permission is static
 			};
 
 			await User.findOne({ where: { email: newUser.email } })
@@ -142,7 +142,7 @@ const UserController = () => {
 		} else {
 			// find existing user
 			const user = await User.findByPk(req.params.id, {
-				attributes: ['id', 'userName', 'firstName', 'lastName', 'email', 'password', 'avatarId', 'roleId', 'permissionId'],
+				attributes: ['id', 'userName', 'firstName', 'lastName', 'email', 'password', 'avatarId', 'roleId' ],
 			});
 
 			// if user exists
@@ -177,7 +177,7 @@ const UserController = () => {
 						password: updatedUser.password,
 						avatarId: updatedUser.avatarId,
 						roleId: updatedUser.roleId,
-						permissionId: 1
+						// permissionId: 1
 					}, {
 						where: {
 							id: user.id,
@@ -215,7 +215,7 @@ const UserController = () => {
 	const deleteUser = async (req, res) => {
 		// find existing user
 		await User.findByPk(req.params.id, {
-			attributes: ['id', 'userName', 'firstName', 'lastName', 'email', 'avatarId', 'roleId', 'permissionId'],
+			attributes: ['id', 'userName', 'firstName', 'lastName', 'email', 'avatarId', 'roleId' ],
 		}).then((user) => {
 			// if user permission matches current user's role
 			if (req.token.roleId !== 1 /* || req.token.id === user.id */) {

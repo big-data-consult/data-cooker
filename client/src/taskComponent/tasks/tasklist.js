@@ -28,7 +28,7 @@ export const TaskList = props => {
 					<TextField source="taskName" />
 					<NumberField source="taskNo" />
 					{/* <TextField source="taskDescription" /> */}
-					{/* <TextField source="taskExecutor" /> */}
+					{/* <TextField source="taskWorker" /> */}
 					{/* <TextField source="taskStatus" /> */}
 					<NumberField source="nextTaskOnSuccess" />
 					<NumberField source="nextTaskOnFailure" />

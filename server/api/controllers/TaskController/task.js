@@ -20,13 +20,13 @@ const TaskController = () => {
 				'taskNo',
 				'taskName',
 				'taskDescription',
-				'taskExecutor',
+				'taskWorker',
 				'taskStatus',
 				'nextTaskOnSuccess',
 				'nextTaskOnFailure',
 				'lastScheduledTime',
 				'lastCompleteTime',
-				'permissionId',
+				// 'permissionId',
 			],
 			include: [
 				{
@@ -60,13 +60,13 @@ const TaskController = () => {
 				'taskNo',
 				'taskName',
 				'taskDescription',
-				'taskExecutor',
+				'taskWorker',
 				'taskStatus',
 				'nextTaskOnSuccess',
 				'nextTaskOnFailure',
 				'lastScheduledTime',
 				'lastCompleteTime',
-				'permissionId',
+				// 'permissionId',
 			],
 			include: [
 				{
@@ -106,13 +106,13 @@ const TaskController = () => {
 				taskNo: task.taskNo,
 				taskName: task.taskName,
 				taskDescription: task.taskDescription,
-				taskExecutor: task.taskExecutor ? task.taskExecutor : Date.now(),
+				taskWorker: task.taskWorker ? task.taskWorker : Date.now(),
 				taskStatus: task.taskStatus,
 				nextTaskOnSuccess: task.nextTaskOnSuccess,
 				nextTaskOnFailure: task.nextTaskOnFailure,
 				lastScheduledTime: task.lastScheduledTime,
 				lastCompleteTime: task.lastCompleteTime,
-				permissionId: 2,
+				// permissionId: 2,
 			}).then((created) => {
 				const { id } = created;
 				// res.json({ id }).status(201).end();
@@ -142,13 +142,13 @@ const TaskController = () => {
 					'taskNo',
 					'taskName',
 					'taskDescription',
-					'taskExecutor',
+					'taskWorker',
 					'taskStatus',
 					'nextTaskOnSuccess',
 					'nextTaskOnFailure',
 					'lastScheduledTime',
 					'lastCompleteTime',
-					'permissionId',
+					// 'permissionId',
 				],
 				include: [
 					{
@@ -169,13 +169,13 @@ const TaskController = () => {
 						taskNo: req.body.taskNo ? req.body.taskNo : task.taskNo,
 						taskName: req.body.taskName ? req.body.taskName : task.taskName,
 						taskDescription: req.body.taskDescription ? req.body.taskDescription : task.taskDescription,
-						taskExecutor: req.body.taskExecutor ? req.body.taskExecutor : task.taskExecutor,
+						taskWorker: req.body.taskWorker ? req.body.taskWorker : task.taskWorker,
 						taskStatus: req.body.taskStatus ? req.body.taskStatus : task.taskStatus,
 						nextTaskOnSuccess: req.body.nextTaskOnSuccess ? req.body.nextTaskOnSuccess : task.nextTaskOnSuccess,
 						nextTaskOnFailure: req.body.nextTaskOnFailure ? req.body.nextTaskOnFailure : task.nextTaskOnFailure,
 						lastScheduledTime: req.body.lastScheduledTime ? req.body.lastScheduledTime : task.lastScheduledTime,
 						lastCompleteTime: req.body.lastCompleteTime ? req.body.lastCompleteTime : task.lastCompleteTime,
-						permissionId: req.body.permissionId ? req.body.permissionId : task.permissionId,
+						// permissionId: req.body.permissionId ? req.body.permissionId : task.permissionId,
 					};
 
 					//  update task details in Tasks table
@@ -184,13 +184,13 @@ const TaskController = () => {
 						taskNo: updatedTask.taskNo,
 						taskName: updatedTask.taskName,
 						taskDescription: updatedTask.taskDescription,
-						taskExecutor: updatedTask.taskExecutor,
+						taskWorker: updatedTask.taskWorker,
 						taskStatus: updatedTask.taskStatus,
 						nextTaskOnSuccess: updatedTask.nextTaskOnSuccess,
 						nextTaskOnFailure: updatedTask.nextTaskOnFailure,
 						lastScheduledTime: updatedTask.lastScheduledTime,
 						lastCompleteTime: updatedTask.lastCompleteTime,
-						permissionId: 2
+						// permissionId: 2
 					}, {
 						where: {
 							id: task.id
@@ -237,13 +237,13 @@ const TaskController = () => {
 				'taskNo',
 				'taskName',
 				'taskDescription',
-				'taskExecutor',
+				'taskWorker',
 				'taskStatus',
 				'nextTaskOnSuccess',
 				'nextTaskOnFailure',
 				'lastScheduledTime',
 				'lastCompleteTime',
-				'permissionId'
+				// 'permissionId'
 			],
 			include: [
 				{
