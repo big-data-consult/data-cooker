@@ -45,13 +45,13 @@ Course.associate = (models) => {
 		},
 	});
 
-	Course.belongsTo(models.User, {
-		as: 'course',
-		foreignKey: {
-			fieldName: 'userId',
-			allowNull: false,
-		},
-	});
+	// Course.belongsTo(models.User, {
+	// 	as: 'course',
+	// 	foreignKey: {
+	// 		fieldName: 'creatorId',
+	// 		allowNull: false,
+	// 	},
+	// });
 };
 
 module.exports = { Course };

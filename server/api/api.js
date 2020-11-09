@@ -63,10 +63,10 @@ api.use(bodyParser.json());
 api.use('/userapi', publicRouter);
 
 // private REST API
-// api.all('/respful/*', (req, res, next) => auth(req, res, next));
+api.all('/respful/*', (req, res, next) => auth(req, res, next));
 // api.put('/respful/*', (req, res, next) => auth(req, res, next));
 // api.post('/respful/*', (req, res, next) => auth(req, res, next));
-api.delete('/respful/*', (req, res, next) => auth(req, res, next));
+// api.delete('/respful/*', (req, res, next) => auth(req, res, next));
 api.use('/respful', privateRouter);
 
 

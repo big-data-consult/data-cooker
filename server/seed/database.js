@@ -66,17 +66,23 @@ class Database {
 			INSERT INTO user_Avatars(
 				id,
 				avatarData, 
+				isPublic,
+				creatorId,
 				createdAt, 
 				updatedAt
 			)
 			VALUES(
 				? /* id */,
 				? /* avatarData */,
+				? /* isPublic */,
+				? /* creatorId */,
 				datetime('now'), 
 				datetime('now')
 			);`,
 			avatar.id,
-			avatar.avatarData
+			avatar.avatarData,
+			avatar.isPublic,
+			avatar.creatorId
 		);
 	}
 
@@ -559,6 +565,8 @@ class Database {
 			CREATE TABLE IF NOT EXISTS user_Avatars (
 				id INTEGER PRIMARY KEY AUTOINCREMENT, 
 				avatarData VARCHAR(2048) NOT NULL DEFAULT '',
+				isPublic INTEGER NOT NULL,
+				creatorId INTEGER,
 				createdAt DATETIME NOT NULL, 
 				updatedAt DATETIME NOT NULL
 			);

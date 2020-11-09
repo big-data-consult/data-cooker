@@ -41,8 +41,8 @@ const createUser = {
 			name: 'roleId',
 			type: new GraphQLNonNull(GraphQLInt),
 		},
-		// permissionId: {
-		// 	name: 'permissionId',
+		// creatorId: {
+		// 	name: 'creatorId',
 		// 	type: new GraphQLNonNull(GraphQLInt),
 		// },
 	},
@@ -54,7 +54,7 @@ const createUser = {
 		password,
 		avatarId,
 		roleId,
-		// permissionId,
+		// creatorId,
 	}) => (
 			User.create({
 				userName,
@@ -64,7 +64,7 @@ const createUser = {
 				password,
 				avatarId,
 				roleId,
-				// permissionId,
+				// creatorId,
 			})
 		),
 };

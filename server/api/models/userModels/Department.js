@@ -21,28 +21,28 @@ const Department = sequelize.define('Department', {
 
 
 Department.associate = (models) => {
-	Department.belongsTo(models.Plugin, {
-		as: 'plugin',
-		foreignKey: {
-			fieldName: 'pluginId',
-		},
-	});
+	// Department.belongsTo(models.Plugin, {
+	// 	as: 'plugin',
+	// 	foreignKey: {
+	// 		fieldName: 'pluginId',
+	// 	},
+	// });
 
-// 	Department.hasMany(models.User, {
-// 		as: 'users',
-// 		foreignKey: {
-// 			fieldName: 'departmentId',
-// 			allowNull: true,
-// 		},
-// 	});
+	// Department.hasMany(models.User, {
+	// 	as: 'users',
+	// 	foreignKey: {
+	// 		fieldName: 'departmentId',
+	// 		allowNull: true,
+	// 	},
+	// });
 
-// 	Department.hasMany(models.Permission, {
-// 		as: 'permissions',
-// 		foreignKey: {
-// 			fieldName: 'departmentId',
-// 			allowNull: true,
-// 		},
-// 	});
+	// Department.hasMany(models.Permission, {
+	// 	as: 'permissions',
+	// 	foreignKey: {
+	// 		fieldName: 'departmentId',
+	// 		allowNull: true,
+	// 	},
+	// });
 };
 
 module.exports = { Department };

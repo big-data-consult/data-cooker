@@ -13,6 +13,11 @@ const Avatar = sequelize.define('Avatar', {
 		type: Sequelize.STRING,
 		unique: false,
 	},
+	isPublic: {
+		type: Sequelize.INTEGER,
+		allowNull: false,
+	},
+	creatorId: Sequelize.INTEGER,
 }, {
 	sequelize, // We need to pass the connection instance
 	modelName: 'Avatar', // We need to choose the model name
@@ -20,20 +25,20 @@ const Avatar = sequelize.define('Avatar', {
 });
 
 Avatar.associate = (models) => {
-	Avatar.belongsTo(models.Plugin, {
-		as: 'plugin',
-		foreignKey: {
-			fieldName: 'pluginId',
-		},
-	});
+	// Avatar.belongsTo(models.Plugin, {
+	// 	as: 'plugin',
+	// 	foreignKey: {
+	// 		fieldName: 'pluginId',
+	// 	},
+	// });
 
-// 	Avatar.hasMany(models.User, {
-// 		as: 'users',
-// 		foreignKey: {
-// 			fieldName: 'avatarId',
-// 			allowNull: true,
-// 		},
-// 	});
+	// Avatar.hasMany(models.User, {
+	// 	as: 'users',
+	// 	foreignKey: {
+	// 		fieldName: 'avatarId',
+	// 		allowNull: true,
+	// 	},
+	// });
 };
 
 module.exports = { Avatar };

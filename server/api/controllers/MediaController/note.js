@@ -6,7 +6,7 @@ const NoteController = () => {
 		// Find all notes
 		Note.findAll({
 			// This is all the note data
-			attributes: ['id', 'note', 'userId'],
+			attributes: ['id', 'note', 'creatorId'],
 			include: [{
 				// this is the user data associated with each note
 				model: User,
@@ -30,7 +30,7 @@ const NoteController = () => {
 			where: {
 				id: req.params.id,
 			},
-			attributes: ['id', 'note', 'userId'],
+			attributes: ['id', 'note', 'creatorId'],
 			include: [{
 				model: User,
 				attributes: ['id', 'userName', 'firstName', 'lastName', 'email'],
@@ -119,7 +119,7 @@ const NoteController = () => {
 						const updateNote = {
 							id: req.body.id,
 							note: req.body.note,
-							userId: req.token.id,
+							creatorId: req.token.id,
 						};
 						note.update(req.body);
 					} else {

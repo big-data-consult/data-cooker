@@ -30,13 +30,13 @@ Note.associate = (models) => {
 		},
 	});
 
-	Note.belongsTo(models.User, {
-		as: 'user',
-		foreignKey: {
-			fieldName: 'userId',
-			allowNull: false,
-		},
-	});
+	// Note.belongsTo(models.User, {
+	// 	as: 'user',
+	// 	foreignKey: {
+	// 		fieldName: 'creatorId',
+	// 		allowNull: false,
+	// 	},
+	// });
 };
 
 module.exports = { Note };

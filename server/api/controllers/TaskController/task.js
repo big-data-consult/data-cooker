@@ -26,7 +26,7 @@ const TaskController = () => {
 				'nextTaskOnFailure',
 				'lastScheduledTime',
 				'lastCompleteTime',
-				// 'permissionId',
+				'creatorId',
 			],
 			include: [
 				{
@@ -66,7 +66,7 @@ const TaskController = () => {
 				'nextTaskOnFailure',
 				'lastScheduledTime',
 				'lastCompleteTime',
-				// 'permissionId',
+				'creatorId',
 			],
 			include: [
 				{
@@ -112,7 +112,7 @@ const TaskController = () => {
 				nextTaskOnFailure: task.nextTaskOnFailure,
 				lastScheduledTime: task.lastScheduledTime,
 				lastCompleteTime: task.lastCompleteTime,
-				// permissionId: 2,
+				creatorId: 1,
 			}).then((created) => {
 				const { id } = created;
 				// res.json({ id }).status(201).end();
@@ -148,7 +148,7 @@ const TaskController = () => {
 					'nextTaskOnFailure',
 					'lastScheduledTime',
 					'lastCompleteTime',
-					// 'permissionId',
+					// 'creatorId',
 				],
 				include: [
 					{
@@ -175,7 +175,7 @@ const TaskController = () => {
 						nextTaskOnFailure: req.body.nextTaskOnFailure ? req.body.nextTaskOnFailure : task.nextTaskOnFailure,
 						lastScheduledTime: req.body.lastScheduledTime ? req.body.lastScheduledTime : task.lastScheduledTime,
 						lastCompleteTime: req.body.lastCompleteTime ? req.body.lastCompleteTime : task.lastCompleteTime,
-						// permissionId: req.body.permissionId ? req.body.permissionId : task.permissionId,
+						// creatorId: req.body.creatorId ? req.body.creatorId : task.creatorId,
 					};
 
 					//  update task details in Tasks table
@@ -190,7 +190,7 @@ const TaskController = () => {
 						nextTaskOnFailure: updatedTask.nextTaskOnFailure,
 						lastScheduledTime: updatedTask.lastScheduledTime,
 						lastCompleteTime: updatedTask.lastCompleteTime,
-						// permissionId: 2
+						// creatorId: 1
 					}, {
 						where: {
 							id: task.id
@@ -243,7 +243,7 @@ const TaskController = () => {
 				'nextTaskOnFailure',
 				'lastScheduledTime',
 				'lastCompleteTime',
-				// 'permissionId'
+				// 'creatorId'
 			],
 			include: [
 				{

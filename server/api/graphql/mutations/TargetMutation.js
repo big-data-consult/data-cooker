@@ -80,8 +80,8 @@ const createTarget = {
 			name: 'suppoetSpVersions', /* ObjType */
 			type: new GraphQLNonNull(GraphQLString),
 		},
-		// permissionId: {
-		// 	name: 'permissionId',
+		// creatorId: {
+		// 	name: 'creatorId',
 		// 	type: new GraphQLNonNull(GraphQLInt),
 		// },
 	},
@@ -103,7 +103,7 @@ const createTarget = {
 		aggregateColumns,
 		aggregateFunctions,
 		suppoetSpVersions,
-		// permissionId,
+		// creatorId,
 	}) => (
 			Target.create({
 				targetLabel,
@@ -123,7 +123,7 @@ const createTarget = {
 				aggregateColumns,
 				aggregateFunctions,
 				suppoetSpVersions,
-				// permissionId,
+				// creatorId,
 			})
 		),
 };
@@ -204,8 +204,8 @@ const updateTarget = {
 			name: 'suppoetSpVersions', /* ObjType */
 			type: new GraphQLNonNull(GraphQLString),
 		},
-		// permissionId: {
-		// 	name: 'permissionId',
+		// creatorId: {
+		// 	name: 'creatorId',
 		// 	type: new GraphQLNonNull(GraphQLInt),
 		// },
 	},
@@ -228,7 +228,7 @@ const updateTarget = {
 		aggregateColumns,
 		aggregateFunctions,
 		suppoetSpVersions,
-		// permissionId,
+		// creatorId,
 	}) => {
 		const foundTarget = await Target.findByPk(id);
 
@@ -254,7 +254,7 @@ const updateTarget = {
 			aggregateColumns,
 			aggregateFunctions,
 			suppoetSpVersions,
-			// permissionId,
+			// creatorId,
 		});
 
 		return foundTarget.update(updatedTarget);

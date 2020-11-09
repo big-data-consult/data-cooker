@@ -17,18 +17,18 @@ const createAvatar = {
 			name: 'avatarData',
 			type: new GraphQLNonNull(GraphQLString),
 		},
-		// permissionId: {
-		// 	name: 'permissionId',
+		// creatorId: {
+		// 	name: 'creatorId',
 		// 	type: new GraphQLNonNull(GraphQLInt),
 		// },
 	},
 	resolve: (value, {
 		avatarData,
-		// permissionId,
+		// creatorId,
 	}) => (
 			Avatar.create({
 				avatarData,
-				// permissionId,
+				// creatorId,
 			})
 		),
 };

@@ -93,7 +93,7 @@ const UserController = () => {
 				password: req.body.password,
 				avatarId: req.body.avatarId,
 				roleId: req.body.roleId,
-				// permissionId: 1, // permission is static
+				// creatorId: 1, // permission is static
 			};
 
 			await User.findOne({ where: { email: newUser.email } })
@@ -177,7 +177,7 @@ const UserController = () => {
 						password: updatedUser.password,
 						avatarId: updatedUser.avatarId,
 						roleId: updatedUser.roleId,
-						// permissionId: 1
+						// creatorId: 1
 					}, {
 						where: {
 							id: user.id,

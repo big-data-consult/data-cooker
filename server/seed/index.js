@@ -11,5 +11,5 @@ promiseFinally.shim();
 
 const migrate = false;
 database.init(migrate)
-  .catch(err => console.error(err))
-  .finally(() => process.exit());
+	.catch(err => console.error(err))
+	.finally(() => process.exit());

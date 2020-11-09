@@ -12,7 +12,7 @@ export const RoleList = props => {
                     secondaryText={record => `${record.roleName} roleName`}
                  />
             ) : (
-                <Datagrid rowClick="edit">
+                <Datagrid /* rowClick="edit" */ >
                     <TextField source="id" />
                     <TextField source="roleName" />
                 </Datagrid>

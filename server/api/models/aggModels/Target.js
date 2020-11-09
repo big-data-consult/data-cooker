@@ -154,7 +154,7 @@ const Target = sequelize.define('Target', {
 			},
 		},
 	},
-	// permissionId: Sequelize.INTEGER,
+	creatorId: Sequelize.INTEGER,
 }, {
 	sequelize, // We need to pass the connection instance
 	modelName: 'Target', // We need to choose the model name

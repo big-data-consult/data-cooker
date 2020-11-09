@@ -83,9 +83,9 @@ const TargetType = new GraphQLObjectType({
 			type: GraphQLString, /* ObjType */
 			resolve: (target) => target.suppoetSpVersions,
 		},
-		// permissionId: {
+		// creatorId: {
 		// 	type: GraphQLInt,
-		// 	resolve: (target) => target.permissionId,
+		// 	resolve: (target) => target.creatorId,
 		// },
 		sources: {
 			type: new GraphQLList(SourceType),

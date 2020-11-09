@@ -17,7 +17,7 @@ const AuthController = () => {
 			password2,
 			avatartId,
 			roleId,
-			// permissionId,
+			// creatorId,
 		} = req.body;
 
 		if (password === password2) {
@@ -30,7 +30,7 @@ const AuthController = () => {
 					password,
 					avatartId,
 					roleId,
-					// permissionId,
+					// creatorId,
 				});
 				const token = authService().issue({ id: user.id, roleId: user.roleId });
 

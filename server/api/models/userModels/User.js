@@ -39,7 +39,7 @@ const User = sequelize.define('User', {
 	password: {
 		type: Sequelize.STRING,
 	},
-	// permissionId: {
+	// creatorId: {
 	// 	type: Sequelize.INTEGER,
 	// 	allowNull: true,
 	// },
@@ -67,12 +67,12 @@ User.prototype.toJSON = function () {
 };
 
 User.associate = (models) => {
-	User.belongsTo(models.Plugin, {
-		as: 'plugin',
-		foreignKey: {
-			fieldName: 'pluginId',
-		},
-	});
+	// User.belongsTo(models.Plugin, {
+	// 	as: 'plugin',
+	// 	foreignKey: {
+	// 		fieldName: 'pluginId',
+	// 	},
+	// });
 
 	User.belongsTo(models.Avatar, {
 		as: 'avatar',
@@ -98,14 +98,14 @@ User.associate = (models) => {
 	// User.hasMany(models.Course, {
 	// 	as: 'courses',
 	// 	foreignKey: {
-	// 		fieldName: 'userId',
+	// 		fieldName: 'creatorId',
 	// 	},
 	// });
 
 	// User.hasMany(models.Note, {
 	// 	as: 'notes',
 	// 	foreignKey: {
-	// 		fieldName: 'userId',
+	// 		fieldName: 'creatorId',
 	// 	},
 	// });
 };

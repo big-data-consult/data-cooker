@@ -91,7 +91,7 @@ const Source = sequelize.define('Source', {
 			},
 		},
 	},
-	// permissionId: Sequelize.INTEGER,
+	creatorId: Sequelize.INTEGER,
 	// targetId: {
 	// 	type: Sequelize.INTEGER,
 	// 	allowNull: true

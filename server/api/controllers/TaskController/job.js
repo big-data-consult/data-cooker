@@ -23,7 +23,7 @@ const JobController = () => {
 				'scheduleEnd',
 				'nextSchedule',
 				'lastSchedule',
-				// 'permissionId',
+				'creatorId',
 			],
 			include: [
 				{
@@ -59,7 +59,7 @@ const JobController = () => {
 				'scheduleEnd',
 				'nextSchedule',
 				'lastSchedule',
-				// 'permissionId',
+				'creatorId',
 			],
 		});
 
@@ -107,7 +107,7 @@ const JobController = () => {
 					scheduleEnd: job.scheduleEnd,
 					nextSchedule: job.nextSchedule,
 					lastSchedule: job.lastSchedule,
-					// permissionId: 2,
+					creatorId: 1,
 				}).then((created) => {
 					const { id } = created;
 					res.json({ id }).status(201).end();
@@ -146,7 +146,7 @@ const JobController = () => {
 					'scheduleEnd',
 					'nextSchedule',
 					'lastSchedule',
-					// 'permissionId',
+					// 'creatorId',
 				],
 			}).then((job) => {
 				// if job permission matches current user's role
@@ -164,6 +164,7 @@ const JobController = () => {
 						scheduleEnd: req.body.scheduleEnd ? req.body.scheduleEnd : job.scheduleEnd,
 						nextSchedule: req.body.nextSchedule ? req.body.nextSchedule : job.nextSchedule,
 						lastSchedule: req.body.lastSchedule ? req.body.lastSchedule : job.lastSchedule,
+						// creatorId: req.body.creatorId ? req.body.creatorId : task.creatorId,
 					};
 
 					// update job details in Jobs table
@@ -180,7 +181,7 @@ const JobController = () => {
 						scheduleEnd: updatedTrget.scheduleEnd,
 						nextSchedule: updatedTrget.nextSchedule,
 						lastSchedule: updatedTrget.lastSchedule,
-						// permissionId: 2,
+						// creatorId: 1,
 					}, {
 						where: {
 							id: job.id,
@@ -232,7 +233,7 @@ const JobController = () => {
 				'scheduleEnd',
 				'nextSchedule',
 				'lastSchedule',
-				// 'permissionId'
+				// 'creatorId'
 			]
 		}).then((job) => {
 			// if job permission matches current user's role

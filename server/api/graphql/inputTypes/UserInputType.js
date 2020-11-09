@@ -44,7 +44,7 @@ const UserInputType = (type) => {
 				roleId: {
 					type: GraphQLInt,
 				},
-				// permissionId: {
+				// creatorId: {
 				// 	type: GraphQLInt,
 				// },
 			};

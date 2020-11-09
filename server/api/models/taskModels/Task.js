@@ -90,7 +90,7 @@ const Task = sequelize.define('Task', {
 			},
 		},
 	},
-	// permissionId: Sequelize.INTEGER,
+	creatorId: Sequelize.INTEGER,
 	// jobId: {
 	// 	type: Sequelize.INTEGER,
 	// 	allowNull: true

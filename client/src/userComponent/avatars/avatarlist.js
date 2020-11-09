@@ -12,7 +12,7 @@ export const AvatarList = props => {
                     secondaryText={record => `${record.avatarName} avatarData`}
                  />
             ) : (
-                <Datagrid rowClick="edit">
+                <Datagrid /* rowClick="edit" */>
                     <TextField source="id" />
                     <TextField source="avatarData" />
                 </Datagrid>

@@ -37,8 +37,8 @@ Course.belongsTo(Plugin, { as: 'plugin' });
 // Avatar.hasMany(User, { as: 'users', foreignKey: 'avatarId' });
 // Role.hasMany(User, { as: 'users', foreignKey: 'roleId' });
 // Target.hasMany(Source, { as: 'sources', foreignKey: 'targetId' });
-// User.hasMany(Note, { as: 'notes', foreignKey: 'userId' });
-// User.hasMany(Course, { as: 'courses', foreignKey: 'userId' });
+// User.hasMany(Note, { as: 'notes', foreignKey: 'creatorId' });
+// User.hasMany(Course, { as: 'courses', foreignKey: 'creatorId' });
 
 
 module.exports = {

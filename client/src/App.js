@@ -10,6 +10,8 @@ import i18nProvider from './providers/i18nProvider';
 
 import { DepartmentList } from './userComponent/departments/departmentlist';
 import { DepartmentShow } from './userComponent/departments/departmentshow';
+import { DepartmentEdit } from './userComponent/departments/departmentedit';
+import { DepartmentCreate } from './userComponent/departments/departmentcreate';
 import { RoleList } from './userComponent/roles/rolelist';
 import { RoleShow } from './userComponent/roles/roleshow';
 import { UserList } from './userComponent/users/userlist';
@@ -111,10 +113,10 @@ class App extends Component {
 					<Resource name="sources" options={{ label: 'Aggregation Sources' }} list={SourceList} edit={SourceEdit} create={SourceCreate} show={SourceShow} />,
 					<Resource name="jobs" options={{ label: 'Scheduled Jobs' }} list={JobList} edit={JobEdit} create={JobCreate} show={ShowGuesser} />,
 					<Resource name="tasks" options={{ label: 'Job Tasks' }} list={TaskList} edit={TaskEdit} create={TaskCreate} show={ShowGuesser} />,
-					<Resource name="users" list={UserList} edit={UserEdit} create={UserCreate} show={UserShow} />,
 					<Resource name="avatars" list={AvatarList} show={AvatarShow} />,
 					<Resource name="roles" list={RoleList} show={RoleShow} />,
-					<Resource name="departments" list={DepartmentList} show={DepartmentShow} />,
+					<Resource name="departments" list={DepartmentList} edit={DepartmentEdit} create={DepartmentCreate} show={DepartmentShow} />,
+					<Resource name="users" list={UserList} edit={UserEdit} create={UserCreate} show={UserShow} />,
 					<Resource name="permissions" />
 				]}
 			</Admin>

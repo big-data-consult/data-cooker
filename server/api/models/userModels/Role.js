@@ -21,28 +21,28 @@ const Role = sequelize.define('Role', {
 
 
 Role.associate = (models) => {
-	Role.belongsTo(models.Plugin, {
-		as: 'plugin',
-		foreignKey: {
-			fieldName: 'pluginId',
-		},
-	});
+	// Role.belongsTo(models.Plugin, {
+	// 	as: 'plugin',
+	// 	foreignKey: {
+	// 		fieldName: 'pluginId',
+	// 	},
+	// });
 
-// 	Role.hasMany(models.User, {
-// 		as: 'users',
-// 		foreignKey: {
-// 			fieldName: 'roleId',
-// 			allowNull: true,
-// 		},
-// 	});
+	// Role.hasMany(models.User, {
+	// 	as: 'users',
+	// 	foreignKey: {
+	// 		fieldName: 'roleId',
+	// 		allowNull: true,
+	// 	},
+	// });
 
-// 	Role.hasMany(models.Permission, {
-// 		as: 'permissions',
-// 		foreignKey: {
-// 			fieldName: 'roleId',
-// 			allowNull: true,
-// 		},
-// 	});
+	// Role.hasMany(models.Permission, {
+	// 	as: 'permissions',
+	// 	foreignKey: {
+	// 		fieldName: 'roleId',
+	// 		allowNull: true,
+	// 	},
+	// });
 };
 
 module.exports = { Role };

@@ -38,8 +38,8 @@ const userQuery = {
 			name: 'roleId',
 			type: GraphQLInt,
 		},
-		// permissionId: {
-		// 	name: 'permissionId',
+		// creatorId: {
+		// 	name: 'creatorId',
 		// 	type: GraphQLInt,
 		// },
 		createdAt: {

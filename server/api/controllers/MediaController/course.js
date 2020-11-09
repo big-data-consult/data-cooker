@@ -7,7 +7,7 @@ const CourseController = () => {
 		// Find all courses
 		Course.findAll({
 			// This is all the course data
-			attributes: ['id', 'title', 'description', 'estimatedTime', 'materialsNeeded', 'userId'],
+			attributes: ['id', 'title', 'description', 'estimatedTime', 'materialsNeeded', 'creatorId'],
 			include: [{
 				// this is the user data associated with each course
 				model: User,
@@ -31,7 +31,7 @@ const CourseController = () => {
 			where: {
 				id: req.params.id,
 			},
-			attributes: ['id', 'title', 'description', 'estimatedTime', 'materialsNeeded', 'userId'],
+			attributes: ['id', 'title', 'description', 'estimatedTime', 'materialsNeeded', 'creatorId'],
 			include: [{
 				model: User,
 				attributes: ['id', 'userName', 'firstName', 'lastName', 'email'],
@@ -122,7 +122,7 @@ const CourseController = () => {
 							description: req.body.description,
 							estimatedTime: req.body.estimatedTime,
 							materialsNeeded: req.body.materialsNeeded,
-							userId: req.token.id,
+							creatorId: req.token.id,
 						};
 						course.update(req.body);
 					} else {

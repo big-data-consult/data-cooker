@@ -1,5 +1,0 @@
-CREATE TABLE IF NOT EXISTS task_Tasks ( id INTEGER PRIMARY KEY AUTOINCREMENT, taskNo INTEGER NOT NULL, taskName STRING NOT NULL, taskDescription STRING, taskExecutor STRING 
-NOT NULL, taskStatus STRING, nextTaskOnSuccess NTEGER, nextTaskOnFailure INTEGER, lastScheduledTime STRING, lastCompleteTime STRING, creatorId INTEGER NOT NULL, createdAt DATETIME NOT NULL, updatedAt DATETIME NOT NULL, jobId INTEGER NOT NULL REFERENCES task_Jobs (id) ON DELETE CASCADE ON UPDATE CASCADE, pluginId INTEGER NOT NULL REFERENCES core_Plugins (id) ON DELETE CASCADE 
-ON UPDATE CASCADE );
-
-Running query: "INSERT INTO task_Tasks( pluginId, taskNo, taskName, taskDescription, taskExecutor, taskStatus, nextTaskOnSuccess, nextTaskOnFailure, lastScheduledTime, lastCompleteTime, creatorId, createdAt, updatedAt, jobId ) VALUES( ? /* pluginId */, ? /* taskNo */, ? /* taskName */, '' /* taskDescription */, '' /* taskExecutor */, '' /* taskStatus */, ? /* nextTaskOnSuccess */, ? /* nextTaskOnFailure */, '' /* lastScheduledTime */, '' /* lastCompleteTime */, 2 /* creatorId */, datetime('now'), datetime('now'), ? /* jobId */ );", with params: [1,1,"test_task_1",2,3,2,1]

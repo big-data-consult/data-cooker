@@ -12,7 +12,7 @@ export const DepartmentList = props => {
                     secondaryText={record => `${record.department} department`}
                  />
             ) : (
-                <Datagrid rowClick="edit">
+                <Datagrid /* rowClick="edit" */>
                     <TextField source="id" />
                     <TextField source="department" />
 					<EditButton />

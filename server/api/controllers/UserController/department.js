@@ -27,16 +27,8 @@ const DepartmentController = () => {
 	const postDepartment = async (req, res, next) => {
 		if (req.token.roleId !== 1) {
 			res.status(403).json({ message: 'Only admin can create department!' });
-		} else if (!req.body.department && !req.body.description) {
-			const err = new Error('Please enter a department and a description.');
-			err.status = 400;
-			next(err);
 		} else if (!req.body.department) {
 			const err = new Error('Please enter a department.');
-			err.status = 400;
-			next(err);
-		} else if (!req.body.description) {
-			const err = new Error('Please enter a description.');
 			err.status = 400;
 			next(err);
 		} else {
@@ -50,10 +42,14 @@ const DepartmentController = () => {
 					err.status = 400;
 					next(err);
 				} else {
-					Department.create(req.body).then(department => {
-						res.location(`/respful/departments/${department.id}`);
-						res.status(201).end();
-					})
+					Department.create({ department: req.body.department })
+						.then(created => {
+							res.location(`/respful/departments/${created.id}`);
+							const { id } = created;
+							if (created) {
+								res.json({ id }).status(201).end();
+							}
+						})
 						// Catch errors
 						.catch((err) => {
 							err.status = 400;
@@ -93,11 +89,11 @@ const DepartmentController = () => {
 						message: 'Department Not Found'
 					});
 				} else if (department) {
-					if (user.id === department.userId) {
+					if (req.token.roleId === 1) {
 						const updateDepartment = {
 							id: req.body.id,
 							department: req.body.department,
-							userId: req.token.id,
+							// creatorId: req.token.id,
 						};
 						department.update(req.body);
 					} else {
@@ -147,7 +143,7 @@ const DepartmentController = () => {
 					res.status(404).json({
 						message: 'Department Not Found'
 					});
-				} else if (user.id === department.userId) {
+				} else if (req.token.roleId === 1) {
 					// Delete the department
 					return department.destroy();
 				} else {
