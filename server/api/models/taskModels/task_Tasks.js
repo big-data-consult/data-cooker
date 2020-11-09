@@ -1,7 +1,7 @@
 const { Sequelize } = require('sequelize');
 
 const sequelize = require('../../../config/database');
-const { Job } = require('./Job');
+const { Job } = require('./task_Jobs');
 
 const Task = sequelize.define('Task', {
 	// id: {

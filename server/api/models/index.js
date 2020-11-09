@@ -1,15 +1,15 @@
-const { Plugin } = require('./coreModels/Plugin');
-const { Avatar } = require('./userModels/Avatar');
-const { Role } = require('./userModels/Role');
-const { Department } = require('./userModels/Department');
-const { User } = require('./userModels/User');
-const { Job } = require('./taskModels/Job');
-const { Task } = require('./taskModels/Task');
-const { Source } = require('./aggModels/Source');
-const { Target } = require('./aggModels/Target');
-const { Note } = require('./mediaModels/Note');
-const { Course } = require('./mediaModels/Course');
-const { Permission } = require('./coreModels/Permission');
+const { Plugin } = require('./coreModels/core_Plugins');
+const { Avatar } = require('./userModels/user_Avatars');
+const { Role } = require('./userModels/user_Roles');
+const { Department } = require('./userModels/user_Departments');
+const { User } = require('./userModels/user_Users');
+const { Job } = require('./taskModels/task_Jobs');
+const { Task } = require('./taskModels/task_Tasks');
+const { Source } = require('./aggModels/agg_Sources');
+const { Target } = require('./aggModels/agg_Targets');
+const { Note } = require('./mediaModels/media_Notes');
+const { Course } = require('./mediaModels/media_Courses');
+const { Permission } = require('./coreModels/core_Permissions');
 
 
 // Course.belongsTo(User, { as: 'user' });

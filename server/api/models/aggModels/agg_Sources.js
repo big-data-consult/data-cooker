@@ -1,6 +1,6 @@
 const { Sequelize } = require('sequelize');
 const sequelize = require('../../../config/database');
-const Target = require("./Target");
+const Target = require("./agg_Targets");
 
 const Source = sequelize.define('Source', {
 	// id: {

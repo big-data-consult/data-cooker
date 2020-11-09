@@ -1,7 +1,7 @@
 const { Sequelize } = require('sequelize');
 
 const sequelize = require('../../../config/database');
-const { User } = require('./User');
+const { User } = require('./user_Users');
 
 const Avatar = sequelize.define('Avatar', {
 	// id: {

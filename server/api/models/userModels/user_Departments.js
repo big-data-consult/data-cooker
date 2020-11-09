@@ -1,48 +1,48 @@
 const { Sequelize } = require('sequelize');
 
 const sequelize = require('../../../config/database');
-const { User } = require('./User');
+const { User } = require('./user_Users');
 
-const Role = sequelize.define('Role', {
+const Department = sequelize.define('Department', {
 	// id: {
 	//   type: Sequelize.INTEGER,
 	//   primaryKey: true,
 	//   autoIncrement: true,
 	// },
-	roleName: {
+	department: {
 		type: Sequelize.STRING,
 		unique: true,
 	},
 }, {
 	sequelize, // We need to pass the connection instance
-	modelName: 'Role', // We need to choose the model name
-	tableName: 'user_Roles'
+	modelName: 'Department', // We need to choose the model name
+	tableName: 'user_Departments'
 });
 
 
-Role.associate = (models) => {
-	// Role.belongsTo(models.Plugin, {
+Department.associate = (models) => {
+	// Department.belongsTo(models.Plugin, {
 	// 	as: 'plugin',
 	// 	foreignKey: {
 	// 		fieldName: 'pluginId',
 	// 	},
 	// });
 
-	// Role.hasMany(models.User, {
+	// Department.hasMany(models.User, {
 	// 	as: 'users',
 	// 	foreignKey: {
-	// 		fieldName: 'roleId',
+	// 		fieldName: 'departmentId',
 	// 		allowNull: true,
 	// 	},
 	// });
 
-	// Role.hasMany(models.Permission, {
+	// Department.hasMany(models.Permission, {
 	// 	as: 'permissions',
 	// 	foreignKey: {
-	// 		fieldName: 'roleId',
+	// 		fieldName: 'departmentId',
 	// 		allowNull: true,
 	// 	},
 	// });
 };
 
-module.exports = { Role };
+module.exports = { Department };

@@ -1,7 +1,7 @@
 const { Sequelize } = require('sequelize');
 
 const sequelize = require('../../../config/database');
-const { User } = require("../userModels/User");
+const { User } = require("../userModels/user_Users");
 
 const Note = sequelize.define('Note', {
 	// id: {

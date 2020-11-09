@@ -2,10 +2,10 @@ const { Sequelize } = require('sequelize');
 const bcryptSevice = require('../../services/bcrypt.service');
 const sequelize = require('../../../config/database');
 
-const { Note } = require('../mediaModels/Note');
-const { Course } = require("../mediaModels/Course");
-const { Avatar } = require('./Avatar');
-const { Role } = require("./Role");
+const { Note } = require('../mediaModels/media_Notes');
+const { Course } = require("../mediaModels/media_Courses");
+const { Avatar } = require('./user_Avatars');
+const { Role } = require("./user_Roles");
 
 const hooks = {
 	beforeCreate(user) {
