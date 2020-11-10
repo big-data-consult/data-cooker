@@ -2,6 +2,7 @@
 const { validationResult } = require('express-validator');
 const { User, Avatar, Role, Department } = require('../../models');
 
+
 const UserController = () => {
 	const getUsers = async (req, res) => {
 		// Get query string params

@@ -1,6 +1,7 @@
 const { validationResult } = require('express-validator');
 const { Note, User } = require('../../models');
 
+
 const NoteController = () => {
 	const getNotes = async (req, res, next) => {
 		// Find all notes

@@ -1,6 +1,7 @@
 const { Op } = require('sequelize');
 const { Avatar } = require('../../models');
 
+
 const AvatarController = () => {
 	const getAvatars = async (req, res) => {
 		const avatars = await Avatar.findAll({
