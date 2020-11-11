@@ -1,3 +1,9 @@
+# server dependencies
+server/node_modules
+server/fsjstd-restapi.db
+server/RESTAPI.postman_collection.json
+server/README.md
+
 # respapi dependencies
 respapi/node_modules
 respapi/fsjstd-restapi.db
