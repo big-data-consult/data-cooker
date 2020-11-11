@@ -1,0 +1,14 @@
+node_modules\.bin\sequelize-auto 
+	-h <host> 
+	-d <database> 
+	-u <user> 
+	-x [password] 
+	-p [port]  
+	-e [dialect] 
+	-c [/path/to/config] 
+	-o [/path/to/models] 
+	-t [tableName]
+
+node_modules\.bin\sequelize-auto -h localhost -d dvdrental -u postgres -x 0414 -p 5432 -e postgres -o "./api/models" 
+
+node_modules\.bin\sequelize-auto -h localhost -u dontcare -d ./db/database.sqlite  --dialect sqlite -o "./api/models-auto" --cm p
