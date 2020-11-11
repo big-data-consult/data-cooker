@@ -1,6 +1,7 @@
 # server dependencies
 server/node_modules
 server/fsjstd-restapi.db
+server/db/database.sqlite
 server/RESTAPI.postman_collection.json
 server/README.md
 
